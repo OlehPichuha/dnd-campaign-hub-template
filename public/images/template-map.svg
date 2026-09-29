@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1530 990" role="img" aria-labelledby="title description">
+  <title id="title">Приклад мапи для власної кампанії</title>
+  <desc id="description">Авторська умовна фентезійна мапа. Замініть її мапою свого світу за інструкцією в README.</desc>
+  <defs>
+    <radialGradient id="sea"><stop stop-color="#9dc0bf"/><stop offset="1" stop-color="#668d98"/></radialGradient>
+    <linearGradient id="land" x2="1" y2="1"><stop stop-color="#e4dab3"/><stop offset=".55" stop-color="#c8bb8f"/><stop offset="1" stop-color="#e0d1a5"/></linearGradient>
+    <pattern id="waves" width="72" height="48" patternUnits="userSpaceOnUse"><path d="M6 24q12-8 24 0t24 0" fill="none" stroke="#d6e6db" stroke-opacity=".32" stroke-width="2"/></pattern>
+    <pattern id="paper" width="110" height="110" patternUnits="userSpaceOnUse"><circle cx="18" cy="26" r="2" fill="#745e45" opacity=".08"/><circle cx="83" cy="74" r="3" fill="#745e45" opacity=".07"/><path d="M10 80l27-4m45-62 16 4" stroke="#745e45" stroke-opacity=".07"/></pattern>
+    <g id="mountain" fill="#806f5c" stroke="#645545" stroke-width="2"><path d="m0 40 30-40 29 40z"/><path d="m21 12 9-12 9 12-9-4z" fill="#eee6cc" stroke="none"/></g>
+    <g id="forest" fill="#55755e" stroke="#46624f" stroke-width="2"><path d="M17 0 3 27h8L0 47h35L24 27h8z"/><path d="M17 37v16" stroke="#6b503e"/></g>
+  </defs>
+  <rect width="1530" height="990" fill="url(#sea)"/>
+  <rect width="1530" height="990" fill="url(#waves)"/>
+  <path d="M0 121 94 110 150 151 237 122 300 176 368 160 430 225 454 313 512 344 501 402 552 455 530 520 601 586 570 665 505 700 461 762 389 750 349 823 280 855 225 899 120 870 0 925Z" fill="url(#land)" stroke="#5b6659" stroke-width="12"/>
+  <path d="M0 121 94 110 150 151 237 122 300 176 368 160 430 225 454 313 512 344 501 402 552 455 530 520 601 586 570 665 505 700 461 762 389 750 349 823 280 855 225 899 120 870 0 925Z" fill="url(#paper)"/>
+  <path d="M1005 0 1094 51 1170 32 1227 89 1336 86 1402 157 1530 178v812H917l-49-87 36-73-33-64 30-99-55-59 17-89-59-58 42-86-24-72 51-61-16-93 72-37 8-92 73-32z" fill="url(#land)" stroke="#5b6659" stroke-width="12"/>
+  <path d="M1005 0 1094 51 1170 32 1227 89 1336 86 1402 157 1530 178v812H917l-49-87 36-73-33-64 30-99-55-59 17-89-59-58 42-86-24-72 51-61-16-93 72-37 8-92 73-32z" fill="url(#paper)"/>
+  <path d="m622 120 68-22 53 28-14 65-53 24-57-32zm76 636 53-22 45 17 17 52-57 25-62-29z" fill="#d8cca6" stroke="#5b6659" stroke-width="9"/>
+  <path d="M1460 204q-128 91-150 197t-86 125q-73 30-61 113" fill="none" stroke="#7ca3a2" stroke-width="27" stroke-linecap="round"/>
+  <path d="M1460 204q-128 91-150 197t-86 125q-73 30-61 113" fill="none" stroke="#bed0b6" stroke-width="9" stroke-linecap="round"/>
+  <path d="M104 762q120-100 184-100t120-104m-141-282q95 74 152 78" fill="none" stroke="#a96b5b" stroke-opacity=".7" stroke-width="6" stroke-dasharray="13 12"/>
+  <path d="M1012 767q118-83 171-158t187-124" fill="none" stroke="#a96b5b" stroke-opacity=".7" stroke-width="6" stroke-dasharray="13 12"/>
+  <g opacity=".8"><use href="#mountain" x="174" y="317"/><use href="#mountain" x="212" y="335"/><use href="#mountain" x="251" y="310"/><use href="#mountain" x="289" y="338"/><use href="#mountain" x="320" y="311"/><use href="#mountain" x="353" y="347"/><use href="#mountain" x="1120" y="185"/><use href="#mountain" x="1161" y="214"/><use href="#mountain" x="1201" y="181"/><use href="#mountain" x="1240" y="207"/><use href="#mountain" x="1278" y="183"/><use href="#mountain" x="1334" y="215"/></g>
+  <g opacity=".8"><use href="#forest" x="192" y="548"/><use href="#forest" x="239" y="585"/><use href="#forest" x="295" y="558"/><use href="#forest" x="347" y="592"/><use href="#forest" x="400" y="562"/><use href="#forest" x="1045" y="491"/><use href="#forest" x="1095" y="523"/><use href="#forest" x="1148" y="479"/><use href="#forest" x="1197" y="518"/><use href="#forest" x="1244" y="491"/><use href="#forest" x="1293" y="527"/></g>
+  <g fill="#413d36" font-family="Georgia,serif" text-anchor="middle"><text x="283" y="266" font-size="44">Західний край</text><text x="1203" y="340" font-size="44">Східний край</text><text x="749" y="481" font-size="50" font-style="italic" fill="#e8ede0">Море пригод</text><text x="749" y="522" font-size="22" fill="#e8ede0">приклад · замініть власною мапою</text><text x="267" y="726" font-size="29">Старий тракт</text><text x="1249" y="736" font-size="29">Нова долина</text></g>
+  <g transform="translate(752 850)" fill="none" stroke="#f3ead2" stroke-width="4" opacity=".8"><circle r="49"/><path d="M0-72v144M-72 0H72M0-46l13 46-13 46-13-46z" fill="#f3ead2"/><circle r="8" fill="#465c61"/></g>
+  <rect x="18" y="18" width="1494" height="954" fill="none" stroke="#eee5cd" stroke-width="4" opacity=".65"/>
+</svg>

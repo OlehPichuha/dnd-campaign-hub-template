@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 308 410" role="img" aria-labelledby="title">
+  <title id="title">Місце для обкладинки вашої кампанії</title>
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#243953"/><stop offset="1" stop-color="#111b2a"/></linearGradient><linearGradient id="gold" x2="1" y2="1"><stop stop-color="#eed290"/><stop offset="1" stop-color="#9a7546"/></linearGradient></defs>
+  <rect width="308" height="410" rx="13" fill="url(#bg)"/>
+  <rect x="15" y="15" width="278" height="380" rx="7" fill="none" stroke="url(#gold)" stroke-width="2"/>
+  <path d="M36 248q55-66 112-24t124-56v131H36Z" fill="#315469"/><path d="M36 286q61-46 123-11t113-35v68H36Z" fill="#496778" opacity=".75"/>
+  <circle cx="153" cy="151" r="62" fill="none" stroke="#d8b977" stroke-width="2" opacity=".8"/>
+  <path d="m153 96 16 39 39 16-39 16-16 39-16-39-39-16 39-16z" fill="none" stroke="#dfc486" stroke-width="3"/>
+  <text x="154" y="47" text-anchor="middle" fill="#dac189" font-family="Georgia,serif" font-size="17" letter-spacing="3">ПРИГОДИ ЧЕКАЮТЬ</text>
+  <text x="154" y="342" text-anchor="middle" fill="#f0e6d2" font-family="Arial,sans-serif" font-weight="700" font-size="26">ВАША КАМПАНІЯ</text>
+  <text x="154" y="369" text-anchor="middle" fill="#b9c7c8" font-family="Arial,sans-serif" font-size="14">Додайте власну обкладинку</text>
+</svg>

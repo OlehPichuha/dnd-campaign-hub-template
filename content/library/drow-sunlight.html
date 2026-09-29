@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Умови освітлення для дроу</title>
+<style>
+:root{--bg:#070911;--bg2:#0b0f1c;--panel:#121627;--panel2:#181e31;--line:#29324e;--line2:#3a486b;--text:#edf1fb;--muted:#a0a9c0;--soft:#737e9d;--moon:#83c9d6;--red:#c6465a;--red2:#de5b70;--green:#42b99f;--gold:#e3c473;--warn:#e8b45f;--radius:12px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(900px 520px at 84% -8%,rgba(131,201,214,.10),transparent 60%),radial-gradient(760px 520px at 8% 92%,rgba(198,70,90,.09),transparent 62%),var(--bg);color:var(--text);font:15px/1.55 Inter,Arial,sans-serif}button,input,select{font:inherit}a{color:var(--moon)}
+.page{width:min(1160px,calc(100% - 40px));margin:auto;padding:18px 0 80px}.compact-head{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:10px 0 17px;border-bottom:1px solid var(--line)}.compact-head h1{margin:0;font-size:clamp(27px,3.4vw,38px);line-height:1.05;letter-spacing:-.04em}.anchor-nav{display:flex;justify-content:flex-end;gap:5px;flex-wrap:wrap}.anchor-nav a{padding:6px 10px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:11px;font-weight:650;text-decoration:none}.anchor-nav a:hover{border-color:var(--moon);color:var(--text)}
+.calculator{display:grid;grid-template-columns:minmax(0,1.38fr) minmax(330px,.62fr);gap:18px;align-items:start;margin-top:18px}.panel{border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(145deg,rgba(23,29,49,.95),rgba(13,16,28,.97));box-shadow:0 24px 70px rgba(0,0,0,.15)}.controls{padding:22px}.control-head{display:flex;align-items:center;justify-content:space-between;gap:18px;padding-bottom:15px;border-bottom:1px solid var(--line)}.control-head h2{margin:0;font-size:18px;letter-spacing:-.02em}.mode-switch{display:flex;padding:3px;border:1px solid var(--line);border-radius:9px;background:#0b0e18}.mode-switch button{min-height:32px;padding:0 11px;border:0;border-radius:6px;background:transparent;color:var(--muted);cursor:pointer;font-size:11px;font-weight:650}.mode-switch button[aria-pressed="true"]{background:var(--panel2);color:var(--text);box-shadow:0 0 0 1px var(--line2)}
+.block{padding:17px 0;border-bottom:1px solid var(--line)}.block:last-of-type{border-bottom:0}.label{display:block;margin:0 0 9px;color:var(--muted);font-size:12px;font-weight:700}.action-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.choice input,.place input,.answer input{position:absolute;opacity:0;pointer-events:none}.choice label{min-height:66px;display:flex;align-items:center;gap:12px;padding:11px 13px;border:1px solid var(--line);border-radius:10px;background:rgba(7,9,17,.35);color:var(--muted);cursor:pointer}.choice label:hover,.place label:hover{border-color:var(--line2);color:var(--text)}.choice .choice-icon{width:34px;height:34px;flex:none;display:grid;place-items:center;border-radius:8px;background:rgba(131,201,214,.07);color:var(--moon);font-size:18px}.choice strong{display:block;color:inherit;font-size:13px}.choice small{display:block;margin-top:2px;color:var(--soft);font-size:10px;line-height:1.3}.choice input:checked+label,.place input:checked+label{border-color:var(--moon);background:linear-gradient(145deg,rgba(131,201,214,.12),rgba(18,22,39,.85));box-shadow:0 0 0 1px rgba(131,201,214,.18)}.choice input:checked+label{color:var(--text)}
+.two-fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{display:grid;gap:7px}.field span{color:var(--muted);font-size:12px;font-weight:700}.field select,.field input[type="number"]{width:100%;min-height:44px;padding:0 12px;color:var(--text);background:#0a0d17;border:1px solid var(--line2);border-radius:8px;outline:0}.field select:hover,.field input:hover{border-color:#526181}.field select:focus,.field input:focus{border-color:var(--moon);box-shadow:0 0 0 3px rgba(131,201,214,.10)}.context-note{display:flex;gap:10px;margin-top:13px;padding:11px 12px;border:1px solid var(--line);border-radius:8px;color:var(--soft);background:rgba(7,9,17,.28);font-size:11px}.context-note b{color:var(--gold);font-size:14px}
+.location-group+.location-group{margin-top:17px}.location-head{display:flex;justify-content:space-between;gap:20px;align-items:baseline;margin-bottom:9px}.location-head strong{font-size:13px}.location-head span{color:var(--soft);font-size:11px}.place-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.place label{min-height:70px;display:flex;align-items:center;gap:9px;padding:9px 10px;border:1px solid var(--line);border-radius:9px;background:rgba(7,9,17,.32);color:var(--muted);cursor:pointer}.place-icon{width:30px;height:30px;display:grid;place-items:center;flex:none;border:1px solid var(--line);border-radius:8px;color:var(--moon);font-size:16px}.place-copy{display:grid;gap:2px}.place strong{font-size:11px;line-height:1.25}.place small{color:var(--soft);font-size:9px;line-height:1.25}.place input:checked+label strong{color:var(--text)}.conditional-fields{display:none;margin-top:12px;padding:12px;border:1px solid rgba(232,180,95,.32);border-radius:9px;background:rgba(232,180,95,.045)}.conditional-fields.open{display:grid;gap:10px}.clarifier{display:flex;align-items:center;justify-content:space-between;gap:18px}.clarifier span{color:var(--muted);font-size:11px}.answers{display:flex;gap:4px;flex:none}.answer label{display:block;padding:5px 10px;border:1px solid var(--line);border-radius:6px;color:var(--muted);cursor:pointer;font-size:10px;font-weight:700}.answer input:checked+label{border-color:var(--warn);background:rgba(232,180,95,.12);color:var(--text)}.glare-check{margin-top:12px}.glare-check small{display:block;color:var(--soft);font-size:10px}
+.advanced{display:none;padding-top:20px}.advanced.open{display:block}.advanced-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.toggle-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:14px}.check{min-height:42px;display:flex;align-items:center;gap:9px;padding:9px 11px;border:1px solid var(--line);border-radius:8px;background:rgba(7,9,17,.28);color:var(--muted);cursor:pointer;font-size:12px}.check:hover{border-color:var(--line2);color:var(--text)}.check input{width:16px;height:16px;accent-color:var(--red)}.actions{display:flex;justify-content:flex-end;margin-top:18px}.button{min-height:42px;padding:0 15px;border:1px solid var(--line2);border-radius:8px;background:var(--panel2);color:var(--text);cursor:pointer;font-weight:700}.button:hover{border-color:var(--moon)}
+.result{position:sticky;top:78px;overflow:hidden}.result[data-state="danger"]{border-color:rgba(198,70,90,.7)}.result[data-state="safe"]{border-color:rgba(66,185,159,.55)}.result[data-state="warning"]{border-color:rgba(232,180,95,.65)}.result-top{padding:24px 24px 20px;text-align:center;border-bottom:1px solid var(--line)}.result-label{font-size:10px;font-weight:750;letter-spacing:.16em;text-transform:uppercase;color:var(--soft)}.result-symbol{width:112px;height:112px;display:grid;place-items:center;margin:14px auto 15px;border:1px solid var(--line);border-radius:50%;background:#0b0e18}.result-symbol svg{width:64px;height:64px;fill:none;stroke:var(--muted);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.result-symbol .state-mark{display:none}.result[data-state="danger"] .result-symbol{border-color:rgba(198,70,90,.45);background:rgba(198,70,90,.08)}.result[data-state="danger"] .result-symbol svg{stroke:#f07b8d}.result[data-state="danger"] .state-mark.danger{display:block}.result[data-state="safe"] .result-symbol{border-color:rgba(66,185,159,.38);background:rgba(66,185,159,.07)}.result[data-state="safe"] .result-symbol svg{stroke:#6bd0b9}.result[data-state="safe"] .state-mark.safe{display:block}.result[data-state="warning"] .result-symbol{border-color:rgba(232,180,95,.45);background:rgba(232,180,95,.07)}.result[data-state="warning"] .result-symbol svg{stroke:#f2c675}.result[data-state="warning"] .state-mark.warning{display:block}.result h2{margin:0 0 8px;font-size:27px;line-height:1.08;letter-spacing:-.025em}.result[data-state="danger"] h2{color:#f07b8d}.result[data-state="safe"] h2{color:#6bd0b9}.result[data-state="warning"] h2{color:#f2c675}.result-summary{margin:0;color:var(--muted);font-size:13px}.result-body{padding:20px 24px 24px}.reasons-title{margin:0 0 8px;color:var(--text);font-size:13px}.result-explanation{margin:0;color:var(--muted);font-size:13px;line-height:1.7}.result-meta{margin:17px 0 0;padding-top:14px;border-top:1px solid var(--line);color:var(--soft);font-size:10px}
+.section{padding-top:48px}.section-head{margin-bottom:19px}.section-head h2{margin:0;font-size:clamp(26px,3.5vw,36px);line-height:1.08;letter-spacing:-.035em}.section-head p{max-width:700px;margin:8px 0 0;color:var(--muted)}.text-columns{display:grid;grid-template-columns:1fr 1fr;gap:34px;padding:23px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.text-columns article+article{padding-left:34px;border-left:1px solid var(--line)}.text-columns h3,.lore-prose h3{margin:0 0 8px;font-size:18px}.text-columns p,.lore-prose p{margin:0;color:var(--muted);line-height:1.75}.text-columns p+p,.lore-prose p+p{margin-top:11px}.plain-note{margin:18px 0 0;padding:14px 0 14px 16px;border-left:2px solid var(--red);color:var(--muted)}.plain-note strong{display:block;margin-bottom:4px;color:#f07b8d}
+.lore-image{width:100%;height:280px;object-fit:cover;object-position:center 44%;display:block;border:1px solid var(--line);border-radius:var(--radius);opacity:.8}.lore-prose{max-width:860px;padding:24px 0 4px}.lore-prose h3:not(:first-child){margin-top:24px}
+.cases-details{margin-top:16px;border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);overflow:hidden}.cases-details summary{cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:17px 19px;color:var(--text);font-weight:750}.cases-details summary::after{content:"+";font-size:20px;color:var(--moon)}.cases-details[open] summary::after{content:"−"}.cases-wrap{padding:0 19px 19px}.cases{width:100%;border-collapse:collapse}.cases th,.cases td{padding:12px 13px;border-top:1px solid var(--line);text-align:left;vertical-align:top}.cases th{color:var(--soft);font-size:10px;letter-spacing:.11em;text-transform:uppercase}.cases td{color:var(--muted);font-size:12px}.cases td:first-child{color:var(--text);font-weight:700}.sources{display:flex;gap:8px;flex-wrap:wrap;margin-top:17px}.source{padding:9px 11px;border:1px solid var(--line);border-radius:8px;color:var(--muted);font-size:11px;text-decoration:none}.source:hover{color:var(--text);border-color:var(--moon)}.footnote{margin-top:18px;color:var(--soft);font-size:11px}
+@media(max-width:920px){.calculator{grid-template-columns:1fr}.result{position:static}.text-columns{grid-template-columns:1fr;gap:20px}.text-columns article+article{padding:20px 0 0;border-left:0;border-top:1px solid var(--line)}}
+@media(max-width:660px){.page{width:min(100% - 24px,1160px);padding-top:10px}.compact-head{display:block;padding-top:7px}.compact-head h1{font-size:30px}.anchor-nav{justify-content:flex-start;margin-top:12px}.controls{padding:16px}.control-head{display:block}.mode-switch{width:max-content;margin-top:12px}.two-fields,.advanced-grid{grid-template-columns:1fr}.place-grid{grid-template-columns:1fr}.toggle-grid{grid-template-columns:1fr}.location-head{display:block}.location-head span{display:block;margin-top:3px}.clarifier{align-items:flex-start;flex-direction:column;gap:8px}.lore-image{height:210px}.cases-wrap{overflow-x:auto}.cases{min-width:650px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+</style>
+</head>
+<body>
+<main class="page">
+  <header class="compact-head">
+    <h1>Умови освітлення для дроу</h1>
+    <nav class="anchor-nav" aria-label="Розділи матеріалу"><a href="#calculator">Калькулятор</a><a href="#info">Пояснення</a><a href="#lore">Легенда</a></nav>
+  </header>
+
+  <section class="calculator" id="calculator">
+    <form class="panel controls" id="scene-form">
+      <div class="control-head"><h2>Що відбувається?</h2><div class="mode-switch" aria-label="Режим форми"><button type="button" data-mode="simple" aria-pressed="true">Простий</button><button type="button" data-mode="advanced" aria-pressed="false">Розширений</button></div></div>
+
+      <div class="block">
+        <span class="label">Тип дії</span>
+        <div class="action-grid">
+          <div class="choice"><input type="radio" name="action" id="action-attack" value="attack" checked><label for="action-attack"><span class="choice-icon">⚔</span><span><strong>Атака</strong><small>Будь-який attack roll</small></span></label></div>
+          <div class="choice"><input type="radio" name="action" id="action-perception" value="perception"><label for="action-perception"><span class="choice-icon">◉</span><span><strong>Зорова Увага</strong><small>Wisdom (Perception)</small></span></label></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="two-fields">
+          <label class="field"><span>Час доби</span><select id="time"><option value="day">День</option><option value="horizon">Схід або захід — сонце видно</option><option value="twilight">Сутінки — сонця вже не видно</option><option value="night">Ніч</option></select></label>
+          <label class="field"><span>Погода</span><select id="weather"><option value="clear">Ясно</option><option value="mostly-clear">Переважно ясно</option><option value="partly">Мінлива хмарність</option><option value="cloudy">Хмарно</option><option value="overcast">Суцільна хмарність</option><option value="fog">Туман</option><option value="heavy-fog">Густий туман</option><option value="drizzle">Мряка</option><option value="rain">Дощ</option><option value="heavy-rain">Сильний дощ</option><option value="thunderstorm">Гроза</option><option value="storm">Шторм</option><option value="light-snow">Слабкий сніг</option><option value="snow">Сніг</option><option value="heavy-snow">Сильний сніг</option><option value="blizzard">Хуртовина</option><option value="sleet">Мокрий сніг</option><option value="sandstorm">Піщана буря</option></select></label>
+        </div>
+        <div class="conditional-fields" id="weather-question"><div class="clarifier"><span>Сонце зараз відкрите між хмарами?</span><div class="answers"><div class="answer"><input type="radio" name="weather-ray" id="weather-ray-no" value="no" checked><label for="weather-ray-no">Ні</label></div><div class="answer"><input type="radio" name="weather-ray" id="weather-ray-yes" value="yes"><label for="weather-ray-yes">Так</label></div></div></div></div>
+      </div>
+
+      <div class="block">
+        <div class="location-group">
+          <div class="location-head"><strong>Де перебуває дроу?</strong><span>Що локально перекриває сонце</span></div>
+          <div class="place-grid" data-picker="drow">
+            <div class="place"><input type="radio" name="drow-place" id="drow-open" value="open" checked><label for="drow-open"><span class="place-icon">☀</span><span class="place-copy"><strong>Відкрите місце</strong><small>Ніщо не закриває небо</small></span></label></div>
+            <div class="place"><input type="radio" name="drow-place" id="drow-partial" value="partial"><label for="drow-partial"><span class="place-icon">◑</span><span class="place-copy"><strong>Часткове перекриття</strong><small>Листя, ґрати або отвори</small></span></label></div>
+            <div class="place"><input type="radio" name="drow-place" id="drow-blocked" value="blocked"><label for="drow-blocked"><span class="place-icon">⌂</span><span class="place-copy"><strong>Повне перекриття</strong><small>Стіна, дах або густа крона</small></span></label></div>
+          </div>
+          <div class="conditional-fields" id="drow-question"><div class="clarifier"><span>Прямий промінь зараз потрапляє на дроу?</span><div class="answers"><div class="answer"><input type="radio" name="drow-ray" id="drow-ray-no" value="no" checked><label for="drow-ray-no">Ні</label></div><div class="answer"><input type="radio" name="drow-ray" id="drow-ray-yes" value="yes"><label for="drow-ray-yes">Так</label></div></div></div></div>
+        </div>
+        <div class="location-group">
+          <div class="location-head"><strong>Де перебуває ціль?</strong><span>Ціль перевіряється окремо від дроу</span></div>
+          <div class="place-grid" data-picker="target">
+            <div class="place"><input type="radio" name="target-place" id="target-open" value="open" checked><label for="target-open"><span class="place-icon">☀</span><span class="place-copy"><strong>Відкрите місце</strong><small>Ніщо не закриває небо</small></span></label></div>
+            <div class="place"><input type="radio" name="target-place" id="target-partial" value="partial"><label for="target-partial"><span class="place-icon">◑</span><span class="place-copy"><strong>Часткове перекриття</strong><small>Листя, ґрати або отвори</small></span></label></div>
+            <div class="place"><input type="radio" name="target-place" id="target-blocked" value="blocked"><label for="target-blocked"><span class="place-icon">⌂</span><span class="place-copy"><strong>Повне перекриття</strong><small>Стіна, дах або густа крона</small></span></label></div>
+          </div>
+          <div class="conditional-fields" id="target-question"><div class="clarifier"><span>Прямий промінь зараз потрапляє на ціль?</span><div class="answers"><div class="answer"><input type="radio" name="target-ray" id="target-ray-no" value="no" checked><label for="target-ray-no">Ні</label></div><div class="answer"><input type="radio" name="target-ray" id="target-ray-yes" value="yes"><label for="target-ray-yes">Так</label></div></div></div></div>
+        </div>
+        <label class="check glare-check"><input id="sun-glare" type="checkbox"><span>Сонце світить дроу в очі<small>Калькулятор пояснить засліплення окремо від прокляття.</small></span></label>
+      </div>
+
+      <div class="advanced" id="advanced-fields">
+        <div class="advanced-grid">
+          <label class="field"><span>Джерело світла</span><select id="light-source"><option value="natural">Природне сонце</option><option value="moon">Місяць або зорі</option><option value="artificial">Штучне світло</option><option value="daylight-spell">Закляття Daylight (2014)</option><option value="sunlight-magic">Магія прямо створює sunlight</option><option value="none">Світла немає</option></select></label>
+          <label class="field"><span>Стан сонця</span><select id="sun-state"><option value="direct">Пряме</option><option value="intermittent">З’являється між хмарами</option><option value="diffuse">Розсіяне</option><option value="blocked">Повністю закрите</option><option value="below">За горизонтом</option></select></label>
+          <label class="field"><span>Видимість</span><select id="visibility"><option value="clear">Чиста</option><option value="light">Слабко заслонена</option><option value="heavy">Сильно заслонена</option><option value="target-unseen">Дроу не бачить ціль</option><option value="attacker-unseen">Ціль не бачить дроу</option><option value="both-unseen">Обидва не бачать одне одного</option></select></label>
+          <label class="field"><span>Відстань, футів</span><input id="distance" type="number" value="60" min="0" max="2000" step="5"></label>
+          <label class="field"><span>Захист очей</span><select id="eye-protection"><option value="none">Немає</option><option value="hood">Каптур</option><option value="sunglasses">Темні окуляри</option><option value="blindfold">Пов’язка на очах</option></select></label>
+          <label class="field"><span>Дим</span><select id="smoke"><option value="none">Немає</option><option value="light">Легкий</option><option value="dense">Густий</option></select></label>
+          <label class="field"><span>Blindsight, футів</span><input id="blindsight-range" type="number" value="30" min="0" max="1000" step="5"></label>
+        </div>
+        <div class="toggle-grid">
+          <label class="check"><input id="sun-above" type="checkbox" checked>Сонце над горизонтом</label>
+          <label class="check"><input id="heavy-precipitation" type="checkbox">Сильні опади</label>
+          <label class="check"><input id="moderate-foliage" type="checkbox">Помірне листя</label>
+          <label class="check"><input id="dense-foliage" type="checkbox">Щільна завіса листя</label>
+          <label class="check"><input id="reflected-light" type="checkbox">Лише відбите світло</label>
+          <label class="check"><input id="ordinary-darkness" type="checkbox">Звичайна темрява</label>
+          <label class="check"><input id="magical-darkness" type="checkbox">Магічна темрява</label>
+          <label class="check"><input id="devils-sight" type="checkbox">Devil’s Sight</label>
+          <label class="check"><input id="blindsight" type="checkbox">Є Blindsight</label>
+          <label class="check"><input id="manual-sun" type="checkbox">Майстер підтверджує прямий промінь</label>
+        </div>
+      </div>
+      <div class="actions"><button class="button" type="reset">Скинути умови</button></div>
+    </form>
+
+    <aside class="panel result" id="result-card" data-state="danger" aria-live="polite">
+      <div class="result-top"><span class="result-label">Висновок</span><div class="result-symbol" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M5 32s10-15 27-15 27 15 27 15-10 15-27 15S5 32 5 32Z"/><circle cx="32" cy="32" r="7"/><path class="state-mark danger" d="M12 10l40 44"/><path class="state-mark warning" d="M32 22v13M32 43h.01"/></svg></div><h2 id="result-title">Є перешкода</h2><p class="result-summary" id="result-summary">Пряме сонце активує прокляття Кореллона.</p></div>
+      <div class="result-body"><h3 class="reasons-title">Чому</h3><p class="result-explanation" id="result-explanation">Дроу або його ціль перебуває під прямим сонячним промінням.</p><p class="result-meta" id="result-meta">Прокляття активне · видимість чиста</p></div>
+    </aside>
+  </section>
+
+  <section class="section" id="info">
+    <div class="section-head"><h2>Що перевіряє калькулятор</h2><p>Прокляття й видимість рахуються окремо. Погана погода може заважати всім, навіть коли прямого сонця немає.</p></div>
+    <div class="text-columns"><article><h3>Прокляття</h3><p>Sunlight Sensitivity діє лише на кидки атаки та Wisdom (Perception), що покладається на зір. Тригер — пряме сонце над самим дроу, ціллю атаки або об’єктом спостереження.</p></article><article><h3>Видимість</h3><p>Туман, сильні опади, дим, листя й темрява створюють окремі проблеми. Вони не є проявом прокляття і однаково впливають на інших істот.</p></article></div>
+    <p class="plain-note"><strong>Офіційне правило RAW 2014</strong>Дроу має перешкоду на кидок атаки та на Wisdom (Perception), що покладається на зір, коли він, ціль атаки або об’єкт спостереження перебуває під прямим сонячним світлом. Саме перебування на поверхні цього ефекту не створює.</p>
+  </section>
+
+  <section class="section" id="lore">
+    <div class="section-head"><h2>Прокляття Кореллона</h2><p>У Forgotten Realms це спадок давнього вигнання, а не звичайна чутливість очей.</p></div>
+    <img class="lore-image" src="/images/drow-sunlight.webp" alt="Загін дроу в печерах Підмороку">
+    <article class="lore-prose"><h3>Походження</h3><p>Предки дроу були темними ельфами південного Фаеруну. Вони мали власні держави, культи та політичні союзи задовго до появи знайомих підземних міст. Під час Війн Корон частина іллітіїрі вдалася до руйнівної магії та дедалі тісніше пов’язувала себе з Лолт.</p><p>У канонічній легенді переломним моментом став Descent: сила Кореллона змінила темних ельфів і вигнала їх із поверхні до Підмороку. Тому чутливість до сонця сприймається як слід божественного покарання, а не як звичайна фізіологічна вада очей. Каптур або затемнені окуляри можуть полегшити дискомфорт, але не скасовують расову рису.</p><p>Водночас дроу не є єдиною культурою. Окрім лолтійських міст на кшталт Мензоберранзана, існують вигнанці, незалежні громади та послідовники Ейлістрей. Персонаж може носити наслідок прокляття, не поділяючи віру чи цінності Лолт.</p><h3>Як це працює у грі</h3><p>Калькулятор поєднує лор Forgotten Realms із буквальним RAW 2014. Спочатку він перевіряє, чи сонце взагалі видно над горизонтом. Потім погода визначає, чи може прямий промінь досягати сцени, а положення дроу та цілі показує, чи перекритий він локально.</p><p>Прокляття впливає тільки на атаки та зоровий Wisdom (Perception). Туман, сильний дощ, снігова завіса або піщана буря рахуються окремо як перешкоди видимості. Саме тому похмурий день може вимкнути Sunlight Sensitivity, але густий туман усе одно зробить зорову перевірку неможливою.</p><p>За розсіяного денного світла рольові прояви залишаються: дроу мружиться, очі сльозяться, з’являється головний біль і бажання триматися тіні. Це підтримує відчуття давнього прокляття без постійного механічного покарання. Звичайний <em>Remove Curse</em> не має прописаної дії на расову рису; повне звільнення краще лишити окремою сюжетною подією.</p></article>
+
+    <details class="cases-details"><summary>Спірні ситуації та швидкі рішення</summary><div class="cases-wrap"><table class="cases"><thead><tr><th>Ситуація</th><th>Рішення</th><th>Чому</th></tr></thead><tbody><tr><td>Ясний день, відкрите місце</td><td>Прокляття діє</td><td>Погода й місце пропускають прямий промінь.</td></tr><tr><td>Мінлива хмарність</td><td>Уточнити момент</td><td>Потрібно лише визначити, чи сонце зараз відкрите.</td></tr><tr><td>Хмарно або суцільні хмари</td><td>Прокляття не діє</td><td>Світло денне, але прямого променя немає.</td></tr><tr><td>Часткове перекриття</td><td>Уточнити клітинку</td><td>Крізь листя, ґрати або отвори промінь може проходити лише місцями.</td></tr><tr><td>Дах, стіна, будівля або густа крона</td><td>Прокляття не діє</td><td>Сонце фізично не може досягти дроу чи цілі.</td></tr><tr><td>Схід або захід, диск видно</td><td>Прокляття діє</td><td>Низький кут сонця не перестає бути прямим сонячним світлом.</td></tr><tr><td>Сутінки або ніч</td><td>Прокляття не діє</td><td>Сонячного диска над горизонтом немає.</td></tr><tr><td>Туман або сильний дощ</td><td>Перешкода зору</td><td>Прокляття неактивне, але зоровий Perception ускладнений погодою.</td></tr><tr><td>Густий туман, хуртовина або піщана буря</td><td>Об’єкт може бути не видно</td><td>Сильне заслонення блокує зорове сприйняття.</td></tr><tr><td>Прозоре скло</td><td>Пряме сонце</td><td>Звичайна прозора шибка не розсіює промінь.</td></tr><tr><td>Сонце світить у очі</td><td>Опис без окремого штрафу</td><td>RAW перевіряє пряме сонце на дроу або цілі, а не напрямок погляду.</td></tr><tr><td>Каптур або темні окуляри</td><td>Не скасовують</td><td>Вони дають комфорт, але не знімають божественне прокляття.</td></tr><tr><td>Daylight (2014)</td><td>Не sunlight</td><td>Закляття створює bright light, але не називає його сонячним.</td></tr></tbody></table></div></details>
+    <div class="sources"><a class="source" href="https://www.dndbeyond.com/sources/dnd/basic-rules-2014" target="_blank" rel="noreferrer">Basic Rules 2014</a><a class="source" href="https://www.dndbeyond.com/posts/323-a-light-in-the-darkness-playing-a-drow-character" target="_blank" rel="noreferrer">Playing a Drow</a><a class="source" href="https://www.dndbeyond.com/posts/134-the-origin-of-elves-in-dungeons-dragons" target="_blank" rel="noreferrer">Origin of Elves</a><a class="source" href="https://www.dndbeyond.com/posts/174-learn-more-about-the-drow-in-d-ds-mordenkainens" target="_blank" rel="noreferrer">Mordenkainen’s: Drow</a></div>
+    <p class="footnote">Фактична геометрія променя, властивості магічного світла й винятки пригоди залишаються рішенням майстра.</p>
+  </section>
+</main>
+<script>
+(() => {
+  const $=id=>document.getElementById(id), form=$('scene-form');
+  const weatherDefaults={clear:{sun:'direct',visibility:'clear',precip:false},'mostly-clear':{sun:'direct',visibility:'clear',precip:false},partly:{sun:'intermittent',visibility:'clear',precip:false},cloudy:{sun:'blocked',visibility:'clear',precip:false},overcast:{sun:'blocked',visibility:'clear',precip:false},fog:{sun:'blocked',visibility:'light',precip:false},'heavy-fog':{sun:'blocked',visibility:'heavy',precip:false},drizzle:{sun:'blocked',visibility:'clear',precip:false},rain:{sun:'blocked',visibility:'clear',precip:false},'heavy-rain':{sun:'blocked',visibility:'light',precip:true},thunderstorm:{sun:'blocked',visibility:'light',precip:true},storm:{sun:'blocked',visibility:'light',precip:true},'light-snow':{sun:'blocked',visibility:'clear',precip:false},snow:{sun:'blocked',visibility:'clear',precip:false},'heavy-snow':{sun:'blocked',visibility:'light',precip:true},blizzard:{sun:'blocked',visibility:'heavy',precip:true},sleet:{sun:'blocked',visibility:'clear',precip:false},sandstorm:{sun:'blocked',visibility:'heavy',precip:false}};
+  const value=id=>$(id).value, checked=id=>$(id).checked, radio=name=>form.querySelector(`input[name="${name}"]:checked`).value;
+  const aboveHorizon=time=>['day','horizon'].includes(time);
+  function state(){return{action:radio('action'),time:value('time'),weather:value('weather'),weatherRay:radio('weather-ray')==='yes',drowPlace:radio('drow-place'),targetPlace:radio('target-place'),drowRay:radio('drow-ray')==='yes',targetRay:radio('target-ray')==='yes',sunGlare:checked('sun-glare'),lightSource:value('light-source'),sunState:value('sun-state'),sunAbove:checked('sun-above'),visibility:value('visibility'),distance:Number(value('distance')||0),eyeProtection:value('eye-protection'),smoke:value('smoke'),blindsightRange:Number(value('blindsight-range')||0),heavyPrecipitation:checked('heavy-precipitation'),moderateFoliage:checked('moderate-foliage'),denseFoliage:checked('dense-foliage'),reflectedLight:checked('reflected-light'),ordinaryDarkness:checked('ordinary-darkness'),magicalDarkness:checked('magical-darkness'),devilsSight:checked('devils-sight'),blindsight:checked('blindsight'),manualSun:checked('manual-sun')}}
+  function compute(s){
+    const reasons=[],advantages=[],disadvantages=[];let automaticFailure=false;
+    const natural=s.lightSource==='natural'&&s.sunAbove, explicit=s.lightSource==='sunlight-magic';
+    const weatherAllows=natural&&(s.sunState==='direct'||(s.sunState==='intermittent'&&s.weatherRay));
+    const directAvailable=(weatherAllows||explicit||s.manualSun)&&!s.reflectedLight;
+    const placeExposed=(place,ray)=>place==='open'||(place==='partial'&&ray);
+    const drowExposed=placeExposed(s.drowPlace,s.drowRay),targetExposed=placeExposed(s.targetPlace,s.targetRay);
+    const curse=directAvailable&&(drowExposed||targetExposed)?'active':'inactive';
+    if(curse==='active'){
+      disadvantages.push('Прокляття Кореллона');
+      const exposed=drowExposed&&targetExposed?'дроу та ціль':drowExposed?'дроу':'ціль';
+      reasons.push(`Пряме сонце потрапляє на ${exposed}, тому Sunlight Sensitivity активна.`);
+    }else if(!s.sunAbove&&s.lightSource==='natural')reasons.push('Сонячний диск не видно над горизонтом, тому прокляття неактивне.');
+    else if(s.lightSource==='natural'&&!weatherAllows)reasons.push('Поточна погода перекриває пряме сонце, тому прокляття неактивне.');
+    else reasons.push('Прямий промінь не потрапляє ні на дроу, ні на ціль.');
+    if(['hood','sunglasses'].includes(s.eyeProtection))reasons.push('Каптур або окуляри дають комфорт, але не знімають божественне прокляття.');
+    if(s.reflectedLight)reasons.push('Відбите світло може бути неприємним, але не є прямим сонячним променем.');
+    if(s.sunGlare)reasons.push('Сонце в полі зору засліплює дроу описово, але за RAW 2014 не створює окремої перешкоди без прямого сонця на дроу або цілі.');
+    if(s.lightSource==='daylight-spell')reasons.push('Daylight у правилах 2014 створює bright light, але не sunlight.');
+
+    let visibility=s.visibility;
+    if((s.heavyPrecipitation||s.moderateFoliage||s.smoke==='light')&&visibility==='clear')visibility='light';
+    if(s.denseFoliage||s.smoke==='dense')visibility='heavy';
+    if(visibility==='light'&&s.action==='perception'){disadvantages.push('Слабко заслонена місцевість');reasons.push('Туман, опади або інша завіса дають перешкоду зоровій Увазі.');}
+    if(visibility==='heavy'){
+      if(s.action==='perception'){automaticFailure=true;reasons.push('Сильно заслонена область блокує зорове сприйняття.');}
+      if(s.action==='attack'){disadvantages.push('Дроу не бачить ціль');advantages.push('Ціль не бачить дроу');reasons.push('У сильному заслоненні обидві сторони не бачать одна одну, тому перевага й перешкода взаємно скасовуються.');}
+    }
+    if(visibility==='target-unseen'&&s.action==='attack'){disadvantages.push('Дроу не бачить ціль');reasons.push('Ціль не видима для дроу.');}
+    if(visibility==='attacker-unseen'&&s.action==='attack'){advantages.push('Ціль не бачить дроу');reasons.push('Ціль не бачить нападника.');}
+    if(visibility==='both-unseen'&&s.action==='attack'){disadvantages.push('Дроу не бачить ціль');advantages.push('Ціль не бачить дроу');reasons.push('Обидві сторони не бачать одна одну, тому модифікатори взаємно скасовуються.');}
+    const blindsightReaches=s.blindsight&&s.distance<=s.blindsightRange;
+    if(s.magicalDarkness&&!s.devilsSight&&!blindsightReaches){if(s.action==='perception')automaticFailure=true;if(s.action==='attack')disadvantages.push('Ціль не видно в магічній темряві');reasons.push('Звичайний темний зір не бачить крізь магічну темряву.');}
+    if(s.ordinaryDarkness&&!blindsightReaches){if(s.distance<=120){if(s.action==='perception')disadvantages.push('Темний зір сприймає темряву як тьмяне світло');reasons.push('Superior Darkvision працює до 120 футів, але темрява сприймається як тьмяне світло.');}else{if(s.action==='perception')automaticFailure=true;if(s.action==='attack')disadvantages.push('Ціль поза темним зором');reasons.push('Відстань перевищує 120 футів Superior Darkvision.');}}
+    if(s.eyeProtection==='blindfold'&&!blindsightReaches){if(s.action==='perception')automaticFailure=true;if(s.action==='attack')disadvantages.push('Пов’язка закриває зір');reasons.push('Пов’язка не скасовує прокляття й не дозволяє бачити ціль.');}
+    let outcome='normal';
+    if(automaticFailure)outcome='not-visible';else if(advantages.length&&disadvantages.length)outcome='cancelled';else if(disadvantages.length)outcome='disadvantage';
+    return{curse,visibility,outcome,reasons,advantages,disadvantages};
+  }
+  function syncQuestions(){
+    $('weather-question').classList.toggle('open',value('weather')==='partly');
+    $('drow-question').classList.toggle('open',radio('drow-place')==='partial');
+    $('target-question').classList.toggle('open',radio('target-place')==='partial');
+  }
+  function render(){
+    syncQuestions();
+    const r=compute(state()),card=$('result-card');let mode='safe',title='Перешкоди немає',summary='Можна робити звичайний кидок.';
+    if(r.outcome==='disadvantage'){mode='danger';title='Є перешкода';summary='Кидай два d20 та використай менший результат.';}
+    if(r.outcome==='not-visible'){mode='danger';title='Об’єкт не видно';summary='Зорова перевірка не може успішно сприйняти прихований об’єкт.';}
+    if(r.outcome==='cancelled'){mode='safe';title='Модифікатори скасувалися';summary='Перевага й перешкода взаємно скасувалися: роби звичайний кидок.';}
+    card.dataset.state=mode;$('result-title').textContent=title;$('result-summary').textContent=summary;
+    const curseText=r.curse==='active'?'Прокляття активне':'Прокляття неактивне';
+    const visibilityText=r.visibility==='clear'?'видимість чиста':r.visibility==='light'?'слабке заслонення':r.visibility==='heavy'?'сильне заслонення':'особлива видимість';
+    $('result-explanation').textContent=r.reasons.join(' ');$('result-meta').textContent=`${curseText} · ${visibilityText}`;
+  }
+  function applyWeather(){const p=weatherDefaults[value('weather')];$('sun-state').value=aboveHorizon(value('time'))?p.sun:'below';$('visibility').value=p.visibility;$('heavy-precipitation').checked=p.precip;render();}
+  function applyTime(){$('sun-above').checked=aboveHorizon(value('time'));$('sun-state').value=checked('sun-above')?weatherDefaults[value('weather')].sun:'below';render();}
+  document.querySelectorAll('[data-mode]').forEach(button=>button.addEventListener('click',()=>{const open=button.dataset.mode==='advanced';$('advanced-fields').classList.toggle('open',open);document.querySelectorAll('[data-mode]').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));}));
+  $('weather').addEventListener('change',applyWeather);$('time').addEventListener('change',applyTime);form.addEventListener('input',render);form.addEventListener('change',render);form.addEventListener('reset',()=>setTimeout(()=>{applyWeather();render();},0));applyWeather();
+})();
+</script>
+</body>
+</html>

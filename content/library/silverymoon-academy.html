@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Конклав Сільвермуна — довідник вступника</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,500&family=Spectral:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#070911;--bg2:#0b0f1c;--panel:#121627;--panel2:#161b2e;
+    --line:#242c46;--line2:#2f3a5c;--ink:#cbd4ec;--ink-dim:#8b96b8;--mute:#616c8f;
+    --silver:#aebbdd;--silver-hi:#dbe4fa;--moon:#83c9d6;--gold-hi:#e3c473;--radius:3px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+  body{margin:0;background:
+      radial-gradient(1200px 600px at 75% -10%, #141a30 0%, transparent 60%),
+      radial-gradient(900px 500px at 10% 110%, #10162a 0%, transparent 55%), var(--bg);
+    color:var(--ink);font-family:"Spectral",Georgia,serif;line-height:1.6;font-size:16px;-webkit-font-smoothing:antialiased}
+  a{color:var(--moon);text-decoration:none}a:hover{text-decoration:underline}
+
+  .wrap{display:grid;grid-template-columns:250px minmax(0,1fr);min-height:100vh}
+  nav.side{position:sticky;top:0;align-self:start;height:100vh;overflow:auto;
+    border-right:1px solid var(--line);background:linear-gradient(180deg,#0a0e1a,#070911);padding:26px 18px 40px}
+  .brandmark{font-family:"Cormorant Garamond",serif;font-weight:700;font-size:23px;line-height:1.05;color:var(--silver-hi)}
+  .brandmark small{display:block;font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--mute);margin-top:9px}
+  .moon-rune{width:34px;height:34px;border-radius:50%;margin-bottom:14px;
+    background:radial-gradient(circle at 35% 32%, #eef3ff 0%, #b9c6ea 32%, #4a558a 33%, transparent 34%),
+      radial-gradient(circle at 62% 60%, #0b0f1c 0 30%, transparent 31%), linear-gradient(135deg,#c8d3f2,#7f8cc0);
+    box-shadow:0 0 18px rgba(160,180,230,.35), inset 0 0 8px rgba(0,0,0,.4)}
+  .navlist{list-style:none;margin:22px 0 0;padding:0}
+  .navlist li{margin:1px 0}
+  .navlist button{width:100%;text-align:left;background:none;border:0;cursor:pointer;color:var(--ink-dim);
+    font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.05em;padding:9px 11px;border-radius:var(--radius);
+    display:flex;gap:10px;align-items:baseline;border-left:2px solid transparent;transition:all .15s}
+  .navlist button .n{color:var(--mute);font-size:10.5px;min-width:16px}
+  .navlist button:hover{color:var(--silver-hi);background:rgba(120,140,200,.06)}
+  .navlist button[aria-current="true"]{color:var(--silver-hi);border-left-color:var(--moon);background:linear-gradient(90deg,rgba(131,201,214,.10),transparent)}
+  .welcome{margin-top:26px;padding:13px;border:1px solid var(--line);border-radius:var(--radius);background:rgba(131,201,214,.04);font-size:12px;color:var(--ink-dim);line-height:1.5}
+
+  main{min-width:0}
+  section.view{display:none;padding:54px 52px 90px;animation:fade .35s ease}
+  section.view.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--moon);margin:0 0 14px}
+  h1{font-family:"Cormorant Garamond",serif;font-weight:700;font-size:clamp(34px,5vw,54px);line-height:1.02;margin:0 0 18px;color:var(--silver-hi)}
+  h2{font-family:"Cormorant Garamond",serif;font-weight:700;font-size:30px;color:var(--silver-hi);margin:46px 0 6px}
+  h3{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:22px;color:var(--silver);margin:0 0 4px}
+  .lede{font-size:19px;color:var(--silver);font-weight:300;max-width:66ch;margin:0 0 20px}
+  p{max-width:74ch}.muted{color:var(--ink-dim)}
+
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin:26px 0 8px}
+  .facts div{background:var(--panel);padding:16px 15px}
+  .facts .k{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--mute);margin-bottom:6px}
+  .facts .v{font-family:"Cormorant Garamond",serif;font-size:23px;color:var(--silver-hi);line-height:1.1}
+  .facts .v small{font-size:12px;color:var(--ink-dim);font-family:"Spectral",serif}
+
+  .whocards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:18px 0 8px}
+  .whocard{border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);padding:15px 16px}
+  .whocard .wn{font-family:"Cormorant Garamond",serif;font-size:20px;color:var(--silver-hi)}
+  .whocard .wr{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--moon);margin:3px 0 9px}
+  .whocard .wi{font-size:13.5px;color:var(--ink-dim);margin:0}
+
+  .crest{width:34px;height:34px;border-radius:7px;display:grid;place-items:center;border:1px solid var(--line2);background:rgba(131,201,214,.06);color:var(--moon);margin-bottom:9px}
+  .ic{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+
+  .org{margin:16px 0 6px}
+  .tier-label{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);text-align:left;margin:0 0 10px;padding-left:2px}
+  .org-root{display:flex;justify-content:flex-start}
+  .stem{width:1px;height:26px;background:var(--line2);margin:0 0 0 34px}
+  .org-row{display:flex;justify-content:flex-start;flex-wrap:nowrap;gap:12px;overflow-x:auto;padding:13px 4px 12px;position:relative;width:max-content;max-width:100%}
+  .org-row::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:var(--line2)}
+  .node{position:relative;flex:0 0 auto;width:184px;white-space:normal;border:1px solid var(--line);border-radius:6px;background:linear-gradient(160deg,var(--panel),var(--bg2));padding:14px 15px}
+  .org-row>.node::before{content:'';position:absolute;top:-13px;left:50%;width:1px;height:13px;background:var(--line2)}
+  .node .nrole{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--moon);margin-bottom:4px}
+  .node .nname{font-family:"Cormorant Garamond",serif;font-size:19px;color:var(--silver-hi);line-height:1.08}
+  .node .ndesc{font-size:13px;color:var(--ink-dim);margin-top:6px;line-height:1.45}
+  .node.root{width:auto;min-width:250px;max-width:340px;background:linear-gradient(150deg,#161d33,#0c1120);border-color:var(--line2)}
+
+  .fig-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:16px 0}
+  .fig{border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);padding:15px 16px;display:flex;gap:13px}
+  .fig .fportrait{width:56px;height:56px;flex:none;border-radius:6px;border:1px solid var(--line2);background:radial-gradient(circle at 50% 36%, #2a3350, #131a2c);display:grid;place-items:center;color:var(--mute);font-family:"IBM Plex Mono",monospace;font-size:14px}
+  .fig .fbody{min-width:0}
+  .fig .fn{font-family:"Cormorant Garamond",serif;font-size:19px;color:var(--silver-hi);line-height:1.1}
+  .fig .fr{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--moon);margin:4px 0 8px}
+  .fig p{font-size:13px;color:var(--ink-dim);margin:0;line-height:1.5}
+
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+  th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);font-weight:500}
+  td .art{font-family:"Cormorant Garamond",serif;font-size:16px;color:var(--silver-hi)}
+  tbody tr:hover{background:rgba(120,140,200,.04)}
+  .cost-num{font-family:"IBM Plex Mono",monospace;color:var(--silver-hi);font-size:14px;white-space:nowrap}
+
+  details.inst{border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);margin:10px 0;overflow:hidden}
+  details.inst>summary{list-style:none;cursor:pointer;padding:15px 18px;display:flex;justify-content:space-between;align-items:center;gap:14px}
+  details.inst>summary::-webkit-details-marker{display:none}
+  details.inst>summary .st{font-family:"IBM Plex Mono",monospace;font-size:20px;color:var(--mute);transition:.2s}
+  details.inst[open]>summary .st{transform:rotate(45deg);color:var(--moon)}
+  details.inst>summary h3{margin:0;font-size:19px}
+  details.inst>summary .role{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--moon);display:block;margin-bottom:4px}
+  .inst-body{padding:2px 20px 20px;border-top:1px solid var(--line)}
+  .inst-body p{font-size:14px}
+
+  .steps{counter-reset:s;margin:22px 0;padding:0;list-style:none}
+  .steps li{position:relative;padding:2px 0 22px 52px;border-left:1px solid var(--line);margin-left:16px}
+  .steps li:last-child{border-left-color:transparent}
+  .steps li::before{counter-increment:s;content:counter(s);position:absolute;left:-16px;top:-2px;width:32px;height:32px;border-radius:50%;background:var(--panel);border:1px solid var(--line2);color:var(--moon);font-family:"IBM Plex Mono",monospace;font-size:13px;display:grid;place-items:center}
+  .steps h3{font-size:18px;margin-bottom:4px}.steps p{font-size:13.5px;color:var(--ink-dim);margin:0}
+
+  .tl{margin:24px 0;padding:0;list-style:none}
+  .tl li{display:grid;grid-template-columns:130px 1fr;gap:18px;padding:14px 0;border-bottom:1px solid var(--line)}
+  .tl .yr{font-family:"IBM Plex Mono",monospace;color:var(--gold-hi);font-size:13px;padding-top:2px}
+  .tl .ev{font-size:14px}
+  .tl .ev strong{color:var(--silver-hi);font-family:"Cormorant Garamond",serif;font-size:17px}
+
+  .note{border-left:2px solid var(--moon);padding:10px 0 10px 16px;margin:20px 0;color:var(--ink-dim);font-size:13.5px;background:linear-gradient(90deg,rgba(131,201,214,.05),transparent)}
+  .rules{margin:16px 0;padding:0;list-style:none}
+  .rules li{padding:12px 0;border-bottom:1px solid var(--line);font-size:14px}
+  .rules li strong{color:var(--silver-hi);font-family:"Cormorant Garamond",serif;font-size:16px;display:block;margin-bottom:3px}
+
+  footer{padding:30px 52px 60px;border-top:1px solid var(--line);color:var(--mute);font-size:12px;font-family:"IBM Plex Mono",monospace;line-height:1.7}
+
+  @media(max-width:860px){
+    .wrap{grid-template-columns:1fr}
+    nav.side{position:fixed;z-index:40;height:auto;bottom:0;left:0;right:0;top:auto;display:flex;gap:6px;overflow-x:auto;padding:10px 12px;border-right:0;border-top:1px solid var(--line);background:rgba(7,9,17,.96);backdrop-filter:blur(8px)}
+    .brandmark,.moon-rune,.welcome{display:none}
+    .navlist{display:flex;margin:0;gap:4px}
+    .navlist button{white-space:nowrap;border-left:0;border-bottom:2px solid transparent;padding:8px 12px}
+    .navlist button[aria-current="true"]{border-left:0;border-bottom-color:var(--moon);background:none}
+    section.view{padding:34px 20px 120px}
+    footer{padding:26px 20px 120px}
+    .facts,.whocards,.fig-grid{grid-template-columns:1fr}
+    .tl li{grid-template-columns:78px 1fr;gap:12px}
+    .org-row{flex-wrap:wrap;overflow:visible;padding-top:0;width:auto}
+    .org-row::before{display:none}
+    .node{flex:1 1 100%;width:auto}
+    .org-row>.node::before{display:none}
+  }
+  :focus-visible{outline:2px solid var(--moon);outline-offset:2px;border-radius:2px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="side">
+    <div class="moon-rune" aria-hidden="true"></div>
+    <div class="brandmark">Конклав Сільвермуна<small>Довідник вступника</small></div>
+    <ul class="navlist" role="tablist">
+      <li><button data-view="overview" aria-current="true"><span class="n">01</span>Огляд</button></li>
+      <li><button data-view="structure"><span class="n">02</span>Структура</button></li>
+      <li><button data-view="faculty"><span class="n">03</span>Викладачі</button></li>
+      <li><button data-view="societies"><span class="n">04</span>Товариства й ради</button></li>
+      <li><button data-view="life"><span class="n">05</span>Життя студентів</button></li>
+      <li><button data-view="rules"><span class="n">06</span>Правила</button></li>
+      <li><button data-view="tuition"><span class="n">07</span>Вартість</button></li>
+      <li><button data-view="admission"><span class="n">08</span>Вступ</button></li>
+      <li><button data-view="history"><span class="n">09</span>Історія</button></li>
+    </ul>
+    <div class="welcome">Ласкаво просимо, майбутній студенте. Тут — усе, що варто знати перед вступом до Конклаву.</div>
+  </nav>
+
+  <main>
+
+  <!-- OVERVIEW -->
+  <section class="view active" id="overview">
+    <p class="eyebrow">Університет магії · Перлина Півночі</p>
+    <h1>Конклав Сільвермуна</h1>
+    <p class="lede">Один з найстаріших і найшанованіших університетів магії в усьому Фаеруні. Заснований Верховною Магою Алустріель Сільверханд, він об'єднав розрізнені школи міста під однією парасолькою знання — і донині лишається серцем ученості Срібних Марок.</p>
+    <div class="facts">
+      <div><div class="k">Засновано</div><div class="v">~1069 ЛД <small>Алустріель Сільверханд</small></div></div>
+      <div><div class="k">Місто</div><div class="v">Сільвермун <small>Перлина Півночі</small></div></div>
+      <div><div class="k">Інституцій</div><div class="v">8 <small>+ дрібні школи</small></div></div>
+      <div><div class="k">Бібліотека</div><div class="v">Vault <small>of the Sages</small></div></div>
+    </div>
+    <p>Конклав — не одна будівля, а ціла мережа шкіл по обидва береги річки Раувін, з головним Південнобережним кампусом. Тут викладають усі школи магії — від чаклунства до сорсерства, — а також бардівське мистецтво, музику, історію магії та картографію. Випускник Конклаву — це не лише вправний маг, а й освічений учений, чиє ім'я відчиняє двері по всій Півночі.</p>
+
+    <h2>Чим славиться</h2>
+    <div class="whocards">
+      <div class="whocard"><div class="wn">Vault of the Sages</div><div class="wr">Бібліотека</div><p class="wi">Одна з найбільших збірок знання в усьому Фаеруні — гордість міста.</p></div>
+      <div class="whocard"><div class="wn">Хартія Алустріель</div><div class="wr">Принцип</div><p class="wi">«Відкрито всім, хто гідний Мистецтва» — Конклав бере студентів, а не слуг.</p></div>
+      <div class="whocard"><div class="wn">Колоквіум Леді</div><div class="wr">Щорічна подія</div><p class="wi">Огляд, де старші студенти захищають власні Трактати. Перемога вписує твоє ім'я в архів міста.</p></div>
+      <div class="whocard"><div class="wn">Spellguard</div><div class="wr">Магічна гвардія</div><p class="wi">Багато випускників вступають у гвардію, що боронить місто, — і отримують знижку на навчання.</p></div>
+    </div>
+  </section>
+
+  <!-- STRUCTURE -->
+  <section class="view" id="structure">
+    <p class="eyebrow">Що в що входить</p>
+    <h1>Структура Конклаву</h1>
+    <p class="lede muted">Університет об'єднує вісім головних інституцій. Серце Конклаву — Lady's College, факультет чаклунства, поділений на кафедри восьми шкіл магії.</p>
+
+    <div class="org">
+      <div class="tier-label">Університет</div>
+      <div class="org-root">
+        <div class="node root"><div class="crest"><svg viewBox="0 0 24 24" class="ic"><path d="M12 6c-2-1.4-5-1.4-7 0v11c2-1.4 5-1.4 7 0 2-1.4 5-1.4 7 0V6c-2-1.4-5-1.4-7 0z"/><path d="M12 6v11"/></svg></div><div class="nrole">Університет магії</div><div class="nname">Конклав Сільвермуна</div><div class="ndesc" style="margin-top:6px">Мережа з 8 інституцій. Головний кампус — Південнобережний.</div></div>
+      </div>
+      <div class="stem"></div>
+      <div class="tier-label">Інституції</div>
+      <div class="org-row">
+        <div class="node"><div class="crest"><svg viewBox="0 0 24 24" class="ic"><path d="M12 6c-2-1.4-5-1.4-7 0v11c2-1.4 5-1.4 7 0 2-1.4 5-1.4 7 0V6c-2-1.4-5-1.4-7 0z"/><path d="M12 6v11"/></svg></div><div class="nrole">Чаклунство · серце</div><div class="nname">Lady's College</div><div class="ndesc">Факультет магії. 8 кафедр.</div></div>
+        <div class="node"><div class="crest"><svg viewBox="0 0 24 24" class="ic"><path d="M16 4a8 8 0 100 16 6 6 0 010-16z"/></svg></div><div class="nrole">Ельфійський лорхаус</div><div class="nname">Everdusk Hall</div><div class="ndesc">Високе Мистецтво ельфів.</div></div>
+        <div class="node"><div class="crest"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg></div><div class="nrole">Сорсерство</div><div class="nname">Arkhen's Invocatorium</div><div class="ndesc">Вроджена магія.</div></div>
+        <div class="node"><div class="crest"><svg viewBox="0 0 24 24" class="ic"><circle cx="9" cy="9" r="3"/><path d="M11 11l6 6M15 15l2-2"/></svg></div><div class="nrole">Вступна оцінка</div><div class="nname">Miresk's School</div><div class="ndesc">Оцінка кожного вступника.</div></div>
+        <div class="node"><div class="crest"><svg viewBox="0 0 24 24" class="ic"><path d="M6 4c8 0 12 4 12 15M6 4v15M6 8h9M6 12h11"/></svg></div><div class="nrole">Барди</div><div class="nname">House of the Harp / Fochlucan</div><div class="ndesc">Бардівський коледж.</div></div>
+        <div class="node"><div class="crest"><svg viewBox="0 0 24 24" class="ic"><circle cx="8" cy="18" r="2.3"/><path d="M10.3 18V6l7-2v9"/><circle cx="15" cy="15" r="2.3"/></svg></div><div class="nrole">Музика</div><div class="nname">Utrumm's Conservatory</div><div class="ndesc">Консерваторія.</div></div>
+        <div class="node"><div class="crest"><svg viewBox="0 0 24 24" class="ic"><circle cx="12" cy="12" r="8"/><path d="M15 9l-2 4-4 2 2-4z"/></svg></div><div class="nrole">Мапи</div><div class="nname">The Map House</div><div class="ndesc">Географія й картографія.</div></div>
+        <div class="node"><div class="crest"><svg viewBox="0 0 24 24" class="ic"><path d="M5 5h5v14H5zM11 5h3v14h-3zM16 7l3 .8-2.6 11-3-.8z"/></svg></div><div class="nrole">Бібліотека</div><div class="nname">Vault of the Sages</div><div class="ndesc">Головна бібліотека міста.</div></div>
+      </div>
+    </div>
+
+    <h2>Всередині Lady's College → 8 шкіл магії</h2>
+    <p class="muted" style="margin:0 0 4px">Чаклунство поділене на кафедри восьми класичних шкіл + катедру історії магії. Кожну очолює майстер із титулом <em>Magus [школа]</em>.</p>
+    <div class="org">
+      <div class="org-root">
+        <div class="node root"><div class="crest"><svg viewBox="0 0 24 24" class="ic"><path d="M12 6c-2-1.4-5-1.4-7 0v11c2-1.4 5-1.4 7 0 2-1.4 5-1.4 7 0V6c-2-1.4-5-1.4-7 0z"/><path d="M12 6v11"/></svg></div><div class="nrole">Факультет чаклунства</div><div class="nname">Lady's College</div></div>
+      </div>
+      <div class="stem"></div>
+      <div class="tier-label">Кафедри шкіл магії</div>
+      <div class="org-row">
+        <div class="node"><div class="crest"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3l7 3v5c0 4-3 7-7 9-4-2-7-5-7-9V6z"/></svg></div><div class="nname">Абджурація</div><div class="ndesc">Захисні чари й варти.</div></div>
+        <div class="node"><div class="crest"><svg viewBox="0 0 24 24" class="ic"><path d="M13 3L5 13h5l-1 8 8-11h-5z"/></svg></div><div class="nname">Евокація</div><div class="ndesc">Титул «Magus Invoker».</div></div>
+        <div class="node"><div class="crest"><svg viewBox="0 0 24 24" class="ic"><path d="M5 9a7 7 0 0111-3M19 15a7 7 0 01-11 3"/><path d="M16 4v3h-3M8 20v-3h3"/></svg></div><div class="nname">Трансмутація</div><div class="ndesc">Перетворення матерії.</div></div>
+        <div class="node"><div class="crest"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3l7 4v10l-7 4-7-4V7z"/></svg></div><div class="nname">Конджурація</div><div class="ndesc">Прикликання й порохи.</div></div>
+        <div class="node"><div class="crest"><svg viewBox="0 0 24 24" class="ic"><path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6S2 12 2 12z"/><circle cx="12" cy="12" r="2.4"/></svg></div><div class="nname">Дивінація</div><div class="ndesc">Віщування й пошук.</div></div>
+        <div class="node"><div class="crest"><svg viewBox="0 0 24 24" class="ic"><path d="M12 20a4 4 0 01-4-4 6 6 0 016-6 3 3 0 013 3 2 2 0 01-2 2"/></svg></div><div class="nname">Енчантмент</div><div class="ndesc">Чари впливу.</div></div>
+        <div class="node"><div class="crest"><svg viewBox="0 0 24 24" class="ic"><circle cx="9" cy="12" r="6"/><circle cx="15" cy="12" r="6"/></svg></div><div class="nname">Ілюзія</div><div class="ndesc">Мана й оманні образи.</div></div>
+        <div class="node"><div class="crest"><svg viewBox="0 0 24 24" class="ic"><path d="M6 4h9l3 3v13H6zM9 9h6M9 13h6"/></svg></div><div class="nname">Некромантія</div><div class="ndesc">Викладається під суворим наглядом.</div></div>
+        <div class="node"><div class="crest"><svg viewBox="0 0 24 24" class="ic"><path d="M6 4h9l3 3v13H6zM9 9h6M9 13h6"/></svg></div><div class="nname">Історія магії</div><div class="ndesc">Окрема катедра.</div></div>
+      </div>
+    </div>
+
+    <h2>Детально про кожну інституцію</h2>
+    <details class="inst"><summary><div><span class="role">Чаклунство · серце Конклаву</span><h3>Lady's College</h3></div><span class="st">+</span></summary><div class="inst-body">
+      <p>Перша відкрита школа магів Сільвермуна — старша за сам Конклав. Саме тут уперше почали брати студентів, а не слуг; згодом ця модель стала стандартом усього міста. Викладає чаклунство та історію магії. Вважається серцем Конклаву.</p></div></details>
+    <details class="inst"><summary><div><span class="role">Ельфійський храм і лорхаус</span><h3>Everdusk Hall</h3></div><span class="st">+</span></summary><div class="inst-body">
+      <p>Осередок ельфійського знання й храм Селдаріну. Тут вивчають Високе Мистецтво ельфів — рідкісну й давню традицію, доступну лише ельфам. Одне з найпрестижніших місць Конклаву.</p></div></details>
+    <details class="inst"><summary><div><span class="role">Сорсерство</span><h3>Arkhen's Invocatorium</h3></div><span class="st">+</span></summary><div class="inst-body">
+      <p>Одна з небагатьох шкіл вродженої магії в усьому Фаеруні. Тут навчають приборкувати дар, а не вичитувати його з книг.</p></div></details>
+    <details class="inst"><summary><div><span class="role">Вступ · бібліотека · барди · мапи</span><h3>Miresk's · Vault of the Sages · House of the Harp · Map House · Utrumm's</h3></div><span class="st">+</span></summary><div class="inst-body">
+      <p><strong>Miresk's School of Thaumaturgy</strong> — де оцінюють кожного вступника. <strong>Vault of the Sages</strong> — головна бібліотека міста. <strong>House of the Harp / Fochlucan</strong> — бардівський коледж. <strong>Map House</strong> — картографія й географічне знання. <strong>Utrumm's Conservatory</strong> — музична консерваторія.</p></div></details>
+  </section>
+
+  <!-- FACULTY -->
+  <section class="view" id="faculty">
+    <p class="eyebrow">Хто тут викладає</p>
+    <h1>Викладачі та керівництво</h1>
+    <p class="lede muted">Конклав очолює Магус Сеніор (ректор); кожну інституцію веде свій голова, а кожну кафедру Lady's College — свій Магус. Нижче — головні постаті, з якими ти зустрінешся.</p>
+    <div class="fig-grid">
+      <div class="fig"><div class="fportrait" aria-hidden="true"><span>ІА</span></div><div class="fbody"><div class="fn">Ілфіріон Авалантар</div><div class="fr">Magus Senior · ректор · сонячний ельф</div><p>Уславлений абджурер і знавець Високого Мистецтва, один з найглибших учених Півночі. За його правління Конклав повернувся до класичної глибини й суворих стандартів. Стриманий, вимогливий, глибоко шанований.</p></div></div>
+      <div class="fig"><div class="fportrait" aria-hidden="true"><span>ІБ</span></div><div class="fbody"><div class="fn">Ітіла Брайтмантл</div><div class="fr">Декан Lady's College · напівельфійка</div><p>Майстриня бойової евокації й хранителька хартії Алустріель. Її курс з теорії Плетива — найпопулярніший у коледжі. Улюблена викладачка студентів.</p></div></div>
+      <div class="fig"><div class="fportrait" aria-hidden="true"><span>ТГ</span></div><div class="fbody"><div class="fn">Т'сарран Голсандар</div><div class="fr">Глава Everdusk Hall · сонячний ельф</div><p>Лормайстер і хранитель найдавнішого ельфійського знання. Живий архів традицій Високого Мистецтва.</p></div></div>
+      <div class="fig"><div class="fportrait" aria-hidden="true"><span>ЗЕ</span></div><div class="fbody"><div class="fn">Заерія Емберлін</div><div class="fr">Глава Arkhen's Invocatorium · сорсерка</div><p>Одна з небагатьох у Фаеруні, хто вчить приборкувати вроджений дар. Незалежна, гостра на язик, віддана своїм студентам.</p></div></div>
+      <div class="fig"><div class="fportrait" aria-hidden="true"><span>СВ</span></div><div class="fbody"><div class="fn">Семіра Вонт</div><div class="fr">Хранителька Vault of the Sages · гном</div><p>Лормайстриня й берегиня найбільшої бібліотеки міста. Прискіплива, віддана книгам понад усе — до неї варто бути ввічливим.</p></div></div>
+      <div class="fig"><div class="fportrait" aria-hidden="true"><span>КГ</span></div><div class="fbody"><div class="fn">Корвін Гейл</div><div class="fr">Провост Miresk's · людина</div><p>Через нього проходить кожен вступник: він веде оцінку кандидатів і розподіл. Перше офіційне обличчя, яке ти побачиш в академії.</p></div></div>
+    </div>
+    <p class="note">Кожну з восьми шкіл магії Lady's College очолює свій Магус — до них ти потрапиш, коли обереш спеціалізацію.</p>
+  </section>
+
+  <!-- SOCIETIES -->
+  <section class="view" id="societies">
+    <p class="eyebrow">Позанавчальне життя</p>
+    <h1>Товариства й ради</h1>
+    <p class="lede muted">Крім навчання, у Конклаві багато спільнот — від елітних дослідницьких орденів до студентських рад. Ось найвідоміші.</p>
+
+    <h2>Вояжери</h2>
+    <p>Найпрестижніший експедиційний орден Конклаву. Наскрізна структура, що витягає найкращих старших студентів із будь-якої школи в поле — досліджувати руїни, рятувати загублене знання й повертати його в бібліотеку. Вступають лише просунуті студенти, що заслужили <strong>польовий чартер</strong>; такі можуть іти в експедицію замість занять. Своїх упізнають за фірмовим <strong>похідним коміром</strong> — єдиним вбранням, дозволеним крім плащів. Очолює орден Веймайстерка Ілдра Вент. Стати Вояжером — мрія багатьох студентів.</p>
+
+    <h2>Вечоровий Семінар</h2>
+    <p>Закрите елітне товариство при Everdusk Hall, присвячене поглибленому вивченню Високого Мистецтва ельфів. Членство — лише за запрошенням і лише для тих, хто допущений до High Art. Одне з найпрестижніших кіл Конклаву; потрапити туди — велика честь.</p>
+
+    <h2>Студентські ради</h2>
+    <p>Кожна інституція має власну студентську раду, що представляє студентів перед викладачами, організовує свята, диспути й щорічний <strong>Колоквіум Леді</strong>. Ради — головний спосіб для новачка вплинути на життя кампусу й познайомитися зі старшими. Вибори щороку; будь-хто може висунутися.</p>
+
+    <div class="note">Порада вступнику: почни зі студентської ради свого коледжу — це найпростіший спосіб знайти друзів і зрозуміти, як усе влаштовано. А от Вояжери й Вечоровий Семінар — це вже для тих, хто себе проявив.</div>
+  </section>
+
+  <!-- LIFE -->
+  <section class="view" id="life">
+    <p class="eyebrow">Побут</p>
+    <h1>Життя студентів</h1>
+    <p class="lede muted">Де ти житимеш, як харчуватимешся й де відпочиватимеш.</p>
+
+    <h2>Проживання</h2>
+    <table>
+      <thead><tr><th style="width:26%">Пункт</th><th></th></tr></thead>
+      <tbody>
+        <tr><td>Житло</td><td>Коледж дає кімнати у своїх житлових залах і харч у спільному рефекторії. Кампус один (Південнобережний), тож зали при коледжі, а не при факультеті.</td></tr>
+        <tr><td>Поза кампусом</td><td>Хто селиться в місті — сам оплачує житло й харч.</td></tr>
+        <tr><td>Стипендія</td><td>Стипендія Алустріель покриває житло й навчання для найперспективніших студентів.</td></tr>
+        <tr><td>Спеціалізанти</td><td>З 2-го року, обравши школу, декотрі перебираються ближче до профільної інституції.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Ключові простори</h2>
+    <table>
+      <thead><tr><th style="width:26%">Простір</th><th></th></tr></thead>
+      <tbody>
+        <tr><td>Атріум кампусу</td><td>Серце Південнобережжя: білий мармуровий атріум із фонтаном богинь Майлікки та Луруе — дар дворфів Underhome. Тут призначають зустрічі й святкують.</td></tr>
+        <tr><td>Рефекторій</td><td>Спільна трапезна коледжу; тепле, гамірне місце, де знайомляться найлегше.</td></tr>
+        <tr><td>Vault of the Sages</td><td>Бібліотека, куди студенти ходять за абонементом. Тиша, книги, і найкраще місце для навчання в місті.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Де відпочивають</h2>
+    <div class="whocards">
+      <div class="whocard"><div class="wn">The Golden Oak</div><div class="wr">Північнобережжя · затишний</div><p class="wi">Розкішний заклад із живим дубом крізь дах, при храмі Шіаллії. Тихо, гарно; улюблене місце ельфів і друїдів.</p></div>
+      <div class="whocard"><div class="wn">The Dancing Goat</div><div class="wr">Мунвей · галасливий</div><p class="wi">Жвава розважальна таверна з музикою. Дешевше й веселіше — сюди валить студентство.</p></div>
+      <div class="whocard"><div class="wn">A Handful of Stars</div><div class="wr">лігво Вояжерів</div><p class="wi">Мапи на стінах, трофеї з руїн і байки про давні цивілізації. Місце шукачів пригод і мрійників.</p></div>
+    </div>
+  </section>
+
+  <!-- RULES -->
+  <section class="view" id="rules">
+    <p class="eyebrow">Загальні правила</p>
+    <h1>Правила Конклаву</h1>
+    <p class="lede muted">Кілька засад, за якими живе академія. Дотримуйся їх — і навчання буде легким.</p>
+    <ul class="rules">
+      <li><strong>Відкритість</strong>Конклав приймає всіх, хто гідний Мистецтва, незалежно від походження. Головне — здібності й старання.</li>
+      <li><strong>Оцінка при вступі</strong>Кожен кандидат проходить оцінку в Miresk's School of Thaumaturgy — там визначають твій рівень і кафедру.</li>
+      <li><strong>Повага до джерел</strong>Рідкісні й небезпечні тексти видають лише з дозволу; обмежені матеріали (зокрема Високе Мистецтво) зберігаються у профільних інституціях.</li>
+      <li><strong>Мова першоджерел</strong>Для роботи зі старими текстами радять знати архаїчну ельфійську (Espruar). Це не обов'язково при вступі, але знадобиться далі.</li>
+      <li><strong>Порядок і варти</strong>Місто й кампус захищені мітальними вартами. Не твори бойових чарів у залах і не чіпай варт — це серйозне порушення.</li>
+      <li><strong>Стипендії</strong>Найперспективнішим студентам Конклав покриває навчання й житло. Рекрути Spellguard отримують знижку.</li>
+    </ul>
+  </section>
+
+  <!-- TUITION -->
+  <section class="view" id="tuition">
+    <p class="eyebrow">Скільки коштує навчання</p>
+    <h1>Вартість</h1>
+    <p class="lede muted">Орієнтовні витрати студента Lady's College за рік.</p>
+    <table>
+      <thead><tr><th style="width:60%">Позиція</th><th>Вартість</th></tr></thead>
+      <tbody>
+        <tr><td>Навчання — стандартний курс чаклунства</td><td class="cost-num">~400 зм / рік</td></tr>
+        <tr><td>Стипендія Алустріель (навчання + житло, перспективним)</td><td class="cost-num">0 зм</td></tr>
+        <tr><td>Знижка для рекрутів Spellguard</td><td class="cost-num">−частина</td></tr>
+        <tr><td>Переписування закляття у книгу</td><td class="cost-num">50 зм / рівень</td></tr>
+        <tr><td>Проживання — скромне</td><td class="cost-num">~365 зм / рік</td></tr>
+        <tr><td>Проживання — комфортне</td><td class="cost-num">~730 зм / рік</td></tr>
+        <tr><td>Оцінка / вступний внесок у Miresk's</td><td class="cost-num">~10–25 зм</td></tr>
+        <tr><td>Абонемент до Vault of the Sages</td><td class="cost-num">~5–20 зм / рік</td></tr>
+      </tbody>
+    </table>
+    <p class="note">Порада: якщо твої здібності помітять, більшу частину витрат може покрити стипендія. А половину навчання скидають тим, хто погоджується послужити у Spellguard.</p>
+  </section>
+
+  <!-- ADMISSION -->
+  <section class="view" id="admission">
+    <p class="eyebrow">Як вступити й скільки вчитися</p>
+    <h1>Вступ і щаблі</h1>
+    <p class="lede muted">Шлях від вступника до повноправного мага.</p>
+    <ol class="steps">
+      <li><h3>Оцінка в Miresk's</h3><p>Кожен кандидат оцінюється тут — на здібності й розподіл на кафедру.</p></li>
+      <li><h3>Зарахування</h3><p>Після оцінки тебе зараховують і селять у житлові зали коледжу.</p></li>
+      <li><h3>Новіцій</h3><p>Перші, найпростіші закляття й основи. Тут цінують не силу, а вправність: знавець дрібних чарів вартий більше за шибайголову з fireball.</p></li>
+      <li><h3>Підмайстер</h3><p>Прикріплення до кафедри обраної школи; переписування першої власної книги заклять.</p></li>
+      <li><h3>Студент-адепт</h3><p>Поглиблення у школі, доступ до Vault of the Sages, перші самостійні дослідження.</p></li>
+      <li><h3>Повноправний маг</h3><p>Визнання Конклаву. Далі — усе життя вдосконалення (або власний Трактат на Колоквіумі).</p></li>
+    </ol>
+    <h2>Скільки триває</h2>
+    <p class="muted" style="margin:0 0 4px">Тривалість залежить від темпу життя раси, а не від «здібностей». Ельф не вчиться повільніше — він просто не поспішає.</p>
+    <table>
+      <thead><tr><th>Раса</th><th>До звання мага</th></tr></thead>
+      <tbody>
+        <tr><td>Людина · тифлінг · напіворк · драконороджений</td><td class="cost-num">~8–12 років</td></tr>
+        <tr><td>Дворф</td><td class="cost-num">~12–18 років</td></tr>
+        <tr><td>Напівельф</td><td class="cost-num">~12–20 років</td></tr>
+        <tr><td>Гном</td><td class="cost-num">~15–25 років</td></tr>
+        <tr><td>Ельф</td><td class="cost-num">30–60 років</td></tr>
+      </tbody>
+    </table>
+    <p class="note">Сорсери в Arkhen's Invocatorium вчаться інакше: коротший, інтенсивніший шлях приборкання вродженого дару.</p>
+  </section>
+
+  <!-- HISTORY -->
+  <section class="view" id="history">
+    <p class="eyebrow">Історична зводка</p>
+    <h1>Історія Конклаву</h1>
+    <p class="lede muted">Від першої відкритої школи магів до однієї з найшанованіших академій Фаеруну.</p>
+    <ul class="tl">
+      <li><div class="yr">давнина</div><div class="ev"><strong>Екамане Трусілвер</strong> закладає традицію знання Сільвермуна, прибувши з Міт Дранн. Місто стає осередком ученості Півночі.</div></li>
+      <li><div class="yr">до ~1069 ЛД</div><div class="ev"><strong>Lady's College</strong> — перша відкрита школа магів. Бере студентів, а не слуг.</div></li>
+      <li><div class="yr">~1069 ЛД</div><div class="ev"><strong>Заснування Конклаву.</strong> Алустріель Сільверханд об'єднує незалежні школи в єдиний університет. Перший ректор — Елтро Міреск.</div></li>
+      <li><div class="yr">згодом</div><div class="ev"><strong>Студентська модель стає стандартом</strong> усього міста, витіснивши стару систему «майстер-слуга».</div></li>
+      <li><div class="yr">1488 ЛД<br><span class="muted" style="font-size:11px">нині</span></div><div class="ev">Конклав процвітає під керівництвом Магуса Сеніора <strong>Ілфіріона Авалантара</strong>, повернувшись до класичної глибини знання.</div></li>
+    </ul>
+
+    <h2>Знамениті постаті</h2>
+    <div class="fig-grid">
+      <div class="fig"><div class="fportrait" aria-hidden="true"><span>ЕТ</span></div><div class="fbody"><div class="fn">Екамане Трусілвер</div><div class="fr">ельф-архімаг · праотець</div><p>Прибув з Міт Дранн і заклав саму традицію знання Сільвермуна за століття до Конклаву.</p></div></div>
+      <div class="fig"><div class="fportrait" aria-hidden="true"><span>АС</span></div><div class="fbody"><div class="fn">Алустріель Сільверханд</div><div class="fr">Обраниця Містри · засновниця</div><p>Верховна Мага 150+ років, одна з Сімох Сестер, могутня чарівниця й воїн. Заснувала Конклав.</p></div></div>
+      <div class="fig"><div class="fportrait" aria-hidden="true"><span>ТГ</span></div><div class="fbody"><div class="fn">Таерн «Громобій» Горнблейд</div><div class="fr">евокер · засновник Spellguard</div><p>Наступник Алустріель як Верховний Маг, засновник магічної гвардії міста, давній Арфіст.</p></div></div>
+      <div class="fig"><div class="fportrait" aria-hidden="true"><span>О</span></div><div class="fbody"><div class="fn">Орджалун</div><div class="fr">архімаг · колишній Верховний Маг</div><p>Могутній архімаг з давнього списку правителів-магів Сільвермуна; наставник багатьох.</p></div></div>
+    </div>
+    <p class="note">Сьогодні містом править Верховний Маршал Метраммар Ейрасуме, син Алустріель. Конклав живить кадрами Spellguard — магічну гвардію, що боронить Сільвермун.</p>
+  </section>
+
+  <footer>
+    Конклав Сільвермуна · довідник вступника<br>
+    «Відкрито всім, хто гідний Мистецтва» — хартія Верховної Маги Алустріель Сільверханд
+  </footer>
+
+  </main>
+</div>
+
+<script>
+  var btns=document.querySelectorAll('.navlist button');
+  var views=document.querySelectorAll('section.view');
+  function show(id){
+    for(var i=0;i<views.length;i++){views[i].classList.toggle('active',views[i].id===id);}
+    for(var j=0;j<btns.length;j++){btns[j].setAttribute('aria-current',btns[j].dataset.view===id?'true':'false');}
+    window.scrollTo(0,0);
+  }
+  for(var k=0;k<btns.length;k++){btns[k].addEventListener('click',function(){show(this.dataset.view);});}
+</script>
+</body>
+</html>

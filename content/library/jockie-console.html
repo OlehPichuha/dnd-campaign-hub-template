@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jockie · Консоль команд</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#1b1411;
+    --panel:#241a17;
+    --panel-2:#2c201c;
+    --panel-3:#362824;
+    --edge:#43312c;
+    --edge-soft:#33251f;
+    --text:#f1e8e3;
+    --muted:#a89890;
+    --maroon:#b93b4a;
+    --maroon-soft:#8f2f3b;
+    --teal:#1fa79b;
+    --pink:#e0327f;
+    --orange:#e0843c;
+    --good:#2bb39d;
+    --font: "Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{font-size:16px}
+  body{
+    background:
+      radial-gradient(45rem 25rem at 15% -4%, rgba(185,59,74,.10) 0%, rgba(185,59,74,0) 60%),
+      radial-gradient(40rem 22rem at 88% 8%, rgba(224,132,60,.07) 0%, rgba(224,132,60,0) 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:var(--font);
+    min-height:100vh;
+    padding:1.5rem 1.75rem 3rem;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.4;
+  }
+  .wrap{max-width:78rem;margin:0 auto}
+
+  /* ---- compact header ---- */
+  header{
+    display:flex;align-items:center;gap:.75rem;
+    padding-bottom:.9rem;margin-bottom:1.5rem;
+    border-bottom:.0625rem solid var(--edge);
+  }
+  .brand{
+    font-weight:800;font-size:1.05rem;letter-spacing:.02em;
+    text-transform:uppercase;color:var(--text);
+  }
+  .brand span{color:var(--maroon)}
+  .tag{
+    font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--muted);border:.0625rem solid var(--edge);border-radius:1rem;
+    padding:.2rem .6rem;
+  }
+  .dots{margin-left:auto;display:flex;gap:.35rem}
+  .dots i{width:.5rem;height:.5rem;border-radius:50%}
+  .dots i:nth-child(1){background:var(--maroon)}
+  .dots i:nth-child(2){background:var(--teal)}
+  .dots i:nth-child(3){background:var(--pink)}
+  .dots i:nth-child(4){background:var(--orange)}
+
+  /* ---- layout ---- */
+  .grid{
+    display:grid;
+    grid-template-columns:22rem 1fr;
+    gap:1.5rem;
+    align-items:start;
+  }
+
+  /* ---- LEFT quick panel ---- */
+  .quick{
+    background:linear-gradient(180deg, var(--panel-2), var(--panel));
+    border:.0625rem solid var(--maroon-soft);
+    border-radius:1rem;
+    padding:1.35rem;
+    box-shadow:0 0 0 .0625rem rgba(185,59,74,.10), 0 1.5rem 3rem -1.5rem rgba(185,59,74,.4);
+    position:sticky;top:1.5rem;
+  }
+  .quick-title{
+    display:flex;align-items:center;gap:.5rem;
+    font-size:.9rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+    color:var(--maroon);margin-bottom:1.1rem;
+  }
+  .quick-title::before{content:"";width:.5rem;height:.5rem;border-radius:50%;background:var(--maroon);box-shadow:0 0 .6rem var(--maroon)}
+
+  .field-label{font-size:.78rem;color:var(--muted);margin-bottom:.45rem}
+  .field{display:flex;gap:.5rem}
+  .field input{
+    flex:1;min-width:0;
+    background:#140f0d;
+    border:.0625rem solid var(--edge);
+    border-radius:.55rem;
+    color:var(--text);font-family:var(--mono);font-size:.8rem;
+    padding:.65rem .7rem;outline:none;
+    transition:border-color .15s ease;
+  }
+  .field input:focus{border-color:var(--maroon)}
+  .field input::placeholder{color:#6b5a53}
+  .ok-btn{
+    flex:none;background:var(--maroon);color:#fff;
+    border:none;border-radius:.55rem;
+    font-family:var(--font);font-weight:700;font-size:.85rem;
+    padding:0 1.1rem;cursor:pointer;
+    transition:background .15s ease,transform .08s ease;
+  }
+  .ok-btn:hover{background:#c9414f}
+  .ok-btn:active{transform:translateY(.0625rem)}
+
+  .active-chip{
+    display:none;align-items:center;gap:.5rem;margin-top:.75rem;
+    background:rgba(185,59,74,.12);border:.0625rem solid var(--maroon-soft);
+    border-radius:.55rem;padding:.55rem .65rem;font-size:.75rem;
+  }
+  .active-chip.on{display:flex}
+  .active-chip .dot{width:.4rem;height:.4rem;border-radius:50%;background:var(--good);flex:none;box-shadow:0 0 .5rem var(--good)}
+  .active-chip .link{font-family:var(--mono);color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .active-chip .clear{flex:none;background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.1rem;line-height:1;padding:0 .15rem}
+  .active-chip .clear:hover{color:var(--maroon)}
+
+  .empty-note{margin-top:.6rem;font-size:.72rem;color:var(--muted)}
+  .empty-note b{color:var(--orange);font-weight:600}
+
+  .quick-divider{height:.0625rem;background:var(--edge-soft);margin:1.2rem 0 1rem}
+
+  .action{
+    width:100%;display:flex;align-items:center;gap:.75rem;
+    background:var(--panel-3);border:.0625rem solid var(--edge);
+    border-left:.1875rem solid transparent;border-radius:.65rem;
+    padding:.8rem .85rem;margin-bottom:.6rem;
+    color:inherit;font-family:inherit;text-align:left;cursor:pointer;
+    transition:background .15s ease,border-color .15s ease,transform .08s ease;
+    position:relative;
+  }
+  .action:hover{background:#3f302b;border-left-color:var(--maroon)}
+  .action:active{transform:translateY(.0625rem)}
+  .action:focus-visible{outline:.125rem solid var(--teal);outline-offset:.125rem}
+  .action .code{font-family:var(--mono);font-size:.88rem;font-weight:600;color:var(--orange);flex:none;min-width:5rem}
+  .action .lbl{flex:1;font-size:.85rem;color:var(--text)}
+  .action.play-btn{border-left-color:var(--maroon);background:linear-gradient(90deg,#3a211e,#2e1c19)}
+  .action.play-btn:hover{background:linear-gradient(90deg,#45251f,#341f1b)}
+  .action.play-btn .code{color:#ff8a99}
+
+  /* ---- RIGHT commands ---- */
+  .cmds{display:flex;flex-direction:column;gap:1.5rem}
+  .group-head{display:flex;align-items:baseline;gap:.6rem;margin-bottom:.75rem}
+  .group-num{
+    font-family:var(--mono);font-size:.7rem;border-radius:.25rem;
+    padding:.12rem .4rem;flex:none;letter-spacing:.04em;
+    border:.0625rem solid currentColor;
+  }
+  .g1 .group-num{color:var(--maroon)}
+  .g2 .group-num{color:var(--teal)}
+  .g3 .group-num{color:var(--pink)}
+  .g4 .group-num{color:var(--orange)}
+  .group-title{font-size:.95rem;font-weight:600}
+  .group-note{margin-left:auto;font-size:.75rem;color:var(--muted)}
+
+  .cmd-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(15rem,1fr));gap:.55rem}
+
+  .cmd{
+    display:flex;align-items:center;gap:.6rem;
+    background:var(--panel);border:.0625rem solid var(--edge-soft);
+    border-left:.125rem solid transparent;border-radius:.55rem;
+    padding:.65rem .75rem;
+    color:inherit;font-family:inherit;text-align:left;cursor:pointer;
+    transition:background .15s ease,border-color .15s ease,transform .08s ease;
+    position:relative;
+  }
+  .cmd:hover{background:var(--panel-2)}
+  .cmd:active{transform:translateY(.0625rem)}
+  .cmd:focus-visible{outline:.125rem solid var(--teal);outline-offset:.125rem}
+  .g1 .cmd:hover{border-left-color:var(--maroon)}
+  .g2 .cmd:hover{border-left-color:var(--teal)}
+  .g3 .cmd:hover{border-left-color:var(--pink)}
+  .g4 .cmd:hover{border-left-color:var(--orange)}
+  .cmd .code{
+    font-family:var(--mono);font-size:.82rem;font-weight:500;color:var(--orange);
+    background:#140f0d;border:.0625rem solid var(--edge-soft);border-radius:.35rem;
+    padding:.3rem .48rem;flex:none;white-space:nowrap;
+  }
+  .cmd .desc{flex:1;font-size:.8rem;color:var(--muted);line-height:1.3}
+  .cmd .arg{
+    display:inline-block;font-family:var(--mono);font-size:.62rem;color:var(--pink);
+    border:.0625rem solid #5a2c40;border-radius:.2rem;padding:.05rem .3rem;margin-left:.35rem;white-space:nowrap;
+  }
+  .cmd.star .code{box-shadow:0 0 0 .0625rem rgba(224,132,60,.35)}
+
+  .flash{
+    position:absolute;right:.75rem;top:50%;transform:translateY(-50%) translateX(.25rem);
+    font-family:var(--mono);font-size:.68rem;letter-spacing:.04em;color:var(--good);
+    background:var(--panel);padding:.15rem .4rem;border-radius:.35rem;
+    opacity:0;pointer-events:none;transition:opacity .16s ease,transform .16s ease;
+  }
+  .copied .flash{opacity:1;transform:translateY(-50%) translateX(0)}
+  .copied{border-left-color:var(--good)!important}
+  .copied .code{color:var(--good)!important;box-shadow:0 0 0 .0625rem rgba(43,179,157,.35)!important}
+
+  /* ---- under-panel help ---- */
+  footer{
+    margin-top:2.5rem;padding-top:1.25rem;border-top:.0625rem solid var(--edge-soft);
+    color:var(--muted);font-size:.78rem;line-height:1.7;
+  }
+  footer code{font-family:var(--mono);color:var(--orange);font-size:.82rem}
+  footer .sep{color:var(--edge);margin:0 .5rem}
+
+  @media (max-width:52rem){
+    .grid{grid-template-columns:1fr}
+    .quick{position:static;top:auto}
+  }
+  @media (max-width:40rem){
+    .brand{white-space:nowrap;font-size:.95rem}
+    header .tag{display:none}
+    .wrap{padding-top:16px}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="brand">Jockie <span>Music</span></div>
+    <div class="tag">консоль команд</div>
+    <div class="dots"><i></i><i></i><i></i><i></i></div>
+  </header>
+
+  <div class="grid">
+
+    <!-- LEFT -->
+    <aside class="quick">
+      <div class="quick-title">Швидка панель</div>
+
+      <div class="field-label">Посилання на плейлист / трек</div>
+      <div class="field">
+        <input id="linkInput" type="text" placeholder="встав посилання…" autocomplete="off" spellcheck="false">
+        <button class="ok-btn" id="okBtn">OK</button>
+      </div>
+
+      <div class="active-chip" id="activeChip">
+        <span class="dot"></span>
+        <span class="link" id="activeLink"></span>
+        <button class="clear" id="clearLink" title="Прибрати">×</button>
+      </div>
+      <p class="empty-note" id="emptyNote">Поки посилання нема — <b>m!play</b> скопіюється порожнім.</p>
+
+      <div class="quick-divider"></div>
+
+      <button class="action play-btn" data-role="play">
+        <span class="code">m!play ▶</span>
+        <span class="lbl">Запустити активне посилання</span>
+        <span class="flash">Скопійовано ✓</span>
+      </button>
+      <button class="action" data-copy="m!leave">
+        <span class="code">m!leave</span>
+        <span class="lbl">Обнулити все й вигнати бота</span>
+        <span class="flash">Скопійовано ✓</span>
+      </button>
+      <button class="action" data-copy="m!clear">
+        <span class="code">m!clear</span>
+        <span class="lbl">Очистити чергу</span>
+        <span class="flash">Скопійовано ✓</span>
+      </button>
+    </aside>
+
+    <!-- RIGHT -->
+    <main class="cmds">
+
+      <section class="g1">
+        <div class="group-head">
+          <span class="group-num">01</span>
+          <span class="group-title">Основне керування</span>
+          <span class="group-note">найчастіше</span>
+        </div>
+        <div class="cmd-grid">
+          <button class="cmd star" data-copy="m!skip"><span class="code">m!skip</span><span class="desc">Наступний трек</span><span class="flash">✓</span></button>
+          <button class="cmd star" data-copy="m!q"><span class="code">m!q</span><span class="desc">Черга з номерами</span><span class="flash">✓</span></button>
+          <button class="cmd star" data-copy="m!loop"><span class="code">m!loop</span><span class="desc">Повторювати цей трек</span><span class="flash">✓</span></button>
+          <button class="cmd star" data-copy="m!back"><span class="code">m!back</span><span class="desc">Попередній трек</span><span class="flash">✓</span></button>
+          <button class="cmd" data-copy="m!skipto "><span class="code">m!skipto</span><span class="desc">На трек за номером<span class="arg">+ №</span></span><span class="flash">✓</span></button>
+          <button class="cmd" data-copy="m!nowplaying"><span class="code">m!nowplaying</span><span class="desc">Що грає зараз</span><span class="flash">✓</span></button>
+        </div>
+      </section>
+
+      <section class="g2">
+        <div class="group-head">
+          <span class="group-num">02</span>
+          <span class="group-title">Пауза й перемотка</span>
+        </div>
+        <div class="cmd-grid">
+          <button class="cmd" data-copy="m!pause"><span class="code">m!pause</span><span class="desc">Пауза</span><span class="flash">✓</span></button>
+          <button class="cmd" data-copy="m!resume"><span class="code">m!resume</span><span class="desc">Продовжити</span><span class="flash">✓</span></button>
+          <button class="cmd" data-copy="m!seek "><span class="code">m!seek</span><span class="desc">Перемотати на час<span class="arg">+ 2:30</span></span><span class="flash">✓</span></button>
+          <button class="cmd" data-copy="m!forward "><span class="code">m!forward</span><span class="desc">Вперед на сек.<span class="arg">+ №</span></span><span class="flash">✓</span></button>
+          <button class="cmd" data-copy="m!rewind "><span class="code">m!rewind</span><span class="desc">Назад на сек.<span class="arg">+ №</span></span><span class="flash">✓</span></button>
+        </div>
+      </section>
+
+      <section class="g3">
+        <div class="group-head">
+          <span class="group-num">03</span>
+          <span class="group-title">Порядок і чистка</span>
+        </div>
+        <div class="cmd-grid">
+          <button class="cmd" data-copy="m!shuffle"><span class="code">m!shuffle</span><span class="desc">Перемішати чергу</span><span class="flash">✓</span></button>
+          <button class="cmd" data-copy="m!remove "><span class="code">m!remove</span><span class="desc">Прибрати трек<span class="arg">+ №</span></span><span class="flash">✓</span></button>
+          <button class="cmd" data-copy="m!volume "><span class="code">m!volume</span><span class="desc">Гучність 0–100<span class="arg">+ №</span></span><span class="flash">✓</span></button>
+          <button class="cmd" data-copy="m!loopqueue"><span class="code">m!loopqueue</span><span class="desc">Повтор усього плейлиста</span><span class="flash">✓</span></button>
+        </div>
+      </section>
+
+      <section class="g4">
+        <div class="group-head">
+          <span class="group-num">04</span>
+          <span class="group-title">Якщо щось не так</span>
+        </div>
+        <div class="cmd-grid">
+          <button class="cmd" data-copy="m!help"><span class="code">m!help</span><span class="desc">Повний список команд</span><span class="flash">✓</span></button>
+          <button class="cmd" data-copy="m!search "><span class="code">m!search</span><span class="desc">Пошук з вибором<span class="arg">+ назва</span></span><span class="flash">✓</span></button>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer>
+    Спершу зайди в голосовий канал, інакше бот мовчить.
+    <span class="sep">·</span>
+    Команди з міткою <code>+ №</code> копіюються з пробілом у кінці — допиши значення.
+    <span class="sep">·</span>
+    Новий плейлист: <code>m!leave</code> → встав посилання + OK → <code>m!play ▶</code>.
+  </footer>
+
+</div>
+
+<script>
+  let activeLink="";
+  const input=document.getElementById('linkInput');
+  const okBtn=document.getElementById('okBtn');
+  const chip=document.getElementById('activeChip');
+  const chipLink=document.getElementById('activeLink');
+  const clearBtn=document.getElementById('clearLink');
+  const emptyNote=document.getElementById('emptyNote');
+
+  function setActive(){
+    const v=input.value.trim();
+    if(!v)return;
+    activeLink=v;chipLink.textContent=v;chip.classList.add('on');
+    emptyNote.style.display='none';input.value='';
+  }
+  okBtn.addEventListener('click',setActive);
+  input.addEventListener('keydown',e=>{if(e.key==='Enter')setActive();});
+  clearBtn.addEventListener('click',()=>{activeLink='';chip.classList.remove('on');emptyNote.style.display='block';});
+
+  function copyText(t){
+    if(navigator.clipboard&&navigator.clipboard.writeText)return navigator.clipboard.writeText(t);
+    return new Promise((res,rej)=>{const ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');res();}catch(e){rej(e);}finally{document.body.removeChild(ta);}});
+  }
+  const timers=new WeakMap();
+  function feedback(el){el.classList.add('copied');clearTimeout(timers.get(el));timers.set(el,setTimeout(()=>el.classList.remove('copied'),1300));}
+
+  document.querySelectorAll('[data-copy]').forEach(el=>{el.addEventListener('click',()=>{copyText(el.getAttribute('data-copy')).then(()=>feedback(el));});});
+  document.querySelector('[data-role="play"]').addEventListener('click',function(){const t=activeLink?('m!play '+activeLink):'m!play ';copyText(t).then(()=>feedback(this));});
+</script>
+</body>
+</html>

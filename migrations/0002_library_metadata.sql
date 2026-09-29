@@ -1,0 +1,3 @@
+UPDATE resources SET title='Консоль Jockie', description='Команди, шаблони та швидка робота з консоллю бота.', category='Майстерня', icon='terminal', visibility='dm', kind='html', version=version+1 WHERE id='dm-notes';
+UPDATE resources SET title='Foundry VTT v13', description='Макроси, модулі та готові рішення для майстра.', category='Майстерня', icon='tools', visibility='dm', kind='html', version=version+1 WHERE id='foundry';
+UPDATE resources SET title='Академія Сільвермуна', description='Довідник вступника до магічного конклаву.', category='Для гравців', icon='book', visibility='group', kind='html', version=version+1 WHERE id='academy';

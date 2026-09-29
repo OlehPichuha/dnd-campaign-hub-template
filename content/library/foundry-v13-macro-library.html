@@ -1,0 +1,2422 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#303133">
+<title>Foundry VTT v13 — Macro Library</title>
+<style>
+:root {
+  --canvas: #d8d6cc;
+  --canvas-deep: #cbc8bd;
+  --paper: #f4f1e8;
+  --paper-strong: #fbf8ef;
+  --paper-muted: #e8e5db;
+  --ink: #2e2f2d;
+  --muted: #696861;
+  --line: #aaa69b;
+  --line-strong: #7f7c73;
+  --titlebar: #303133;
+  --titlebar-2: #3b3c3e;
+  --ember: #944218;
+  --orange: #e28a2b;
+  --gold: #c89138;
+  --wine: #6f2335;
+  --success: #49714e;
+  --code: #232527;
+  --code-top: #303336;
+  --code-text: #f2ead9;
+  --shadow: 0 12px 30px rgba(39, 36, 30, .17), 0 2px 5px rgba(39, 36, 30, .15);
+  --small-shadow: 0 3px 10px rgba(39, 36, 30, .13);
+  --radius: 7px;
+  --display: Georgia, "Times New Roman", serif;
+  --ui: "Segoe UI", Tahoma, Arial, sans-serif;
+  --mono: Consolas, "Courier New", monospace;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  min-width: 300px;
+  min-height: 100vh;
+  color: var(--ink);
+  font: 15px/1.55 var(--ui);
+  background-color: var(--canvas);
+  background-image:
+    radial-gradient(circle at 16% 18%, rgba(255,255,255,.36) 0 1px, transparent 2px),
+    radial-gradient(circle at 78% 62%, rgba(107,91,62,.09) 0 1px, transparent 2px),
+    linear-gradient(115deg, rgba(255,255,255,.12), transparent 33%, rgba(91,78,56,.05) 67%, transparent);
+  background-size: 31px 29px, 43px 41px, 100% 100%;
+}
+
+button, a { font: inherit; }
+button { color: inherit; }
+a { color: inherit; }
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+summary:focus-visible {
+  outline: 2px solid #fff3d3;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 5px #7d3214;
+}
+
+.svg-sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.icon {
+  width: 1.15em;
+  height: 1.15em;
+  display: inline-block;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vertical-align: -.18em;
+}
+
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  color: #f5f0e5;
+  background: linear-gradient(#37383a, #2c2d2f);
+  border-top: 2px solid var(--orange);
+  border-bottom: 1px solid #171819;
+  box-shadow: 0 3px 12px rgba(0,0,0,.28);
+}
+
+.topbar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 1px;
+  background: rgba(255,255,255,.17);
+}
+
+.topbar-inner {
+  width: min(1180px, calc(100% - 32px));
+  min-height: 58px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.brand {
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.brand-mark {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  color: #171819;
+  background: linear-gradient(#f4b35e, #d77d23);
+  border: 1px solid #f1bd73;
+  border-radius: 5px;
+  box-shadow: inset 0 0 0 1px rgba(74,38,7,.32), 0 1px 2px rgba(0,0,0,.45);
+}
+
+.brand-mark .icon { width: 20px; height: 20px; stroke-width: 2; }
+
+.brand-copy { min-width: 0; line-height: 1.1; }
+.brand-copy strong {
+  display: block;
+  font: 700 17px/1.1 var(--display);
+  letter-spacing: .01em;
+  white-space: nowrap;
+}
+.brand-copy small {
+  display: block;
+  margin-top: 3px;
+  color: #c7c2b6;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+
+.topnav {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.topnav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 10px;
+  color: #e9e4d9;
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.topnav a:hover,
+.topnav a[aria-current="page"] {
+  color: #fff;
+  background: rgba(255,255,255,.08);
+  border-color: rgba(255,255,255,.16);
+}
+
+.version-stamp {
+  padding: 4px 8px;
+  color: #2d2112;
+  background: #e9a54d;
+  border: 1px solid #f0bd78;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  box-shadow: inset 0 0 0 1px rgba(95,55,10,.2);
+}
+
+.page-shell {
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 28px 0 34px;
+}
+
+.view[hidden] { display: none !important; }
+
+#catalog,
+#about,
+#modules { scroll-margin-top: 76px; }
+
+.eyebrow {
+  margin: 0 0 9px;
+  color: var(--ember);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+h1, h2, h3, p { overflow-wrap: anywhere; }
+
+.library-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 20px;
+  margin: 0 0 14px;
+}
+
+.library-heading h1,
+.library-heading h2 {
+  margin: 0;
+  font: 700 28px/1.1 var(--display);
+}
+
+.library-heading p { margin: 5px 0 0; color: var(--muted); }
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.filter-btn {
+  min-height: 34px;
+  padding: 6px 11px;
+  color: #4d4c47;
+  background: rgba(246, 243, 234, .66);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.filter-btn:hover { border-color: var(--ember); }
+.filter-btn[aria-pressed="true"] {
+  color: #fff9ed;
+  background: linear-gradient(#924318, #743316);
+  border-color: #61280f;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.14);
+}
+
+.macro-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.macro-card {
+  position: relative;
+  min-height: 215px;
+  display: flex;
+  flex-direction: column;
+  padding: 18px;
+  color: var(--ink);
+  text-decoration: none;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.52), transparent 45%),
+    var(--paper);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  box-shadow: var(--small-shadow);
+  transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+}
+
+.macro-card::after {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  pointer-events: none;
+  border: 1px solid rgba(126, 121, 109, .24);
+  border-radius: 3px;
+}
+
+.macro-card:hover {
+  transform: translateY(-3px);
+  border-color: #985223;
+  box-shadow: 0 12px 24px rgba(51,44,33,.18), 0 0 0 2px rgba(226,138,43,.18);
+}
+
+.macro-card[hidden] { display: none; }
+
+.card-top {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.card-icon {
+  width: 47px;
+  height: 47px;
+  display: grid;
+  place-items: center;
+  color: #fff3df;
+  background: linear-gradient(145deg, #3b3d3f, #27282a);
+  border: 1px solid #171819;
+  border-radius: 5px;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.12), 0 2px 4px rgba(0,0,0,.2);
+}
+
+.card-icon .icon { width: 27px; height: 27px; color: #e8a04b; }
+
+.card-badge {
+  padding: 3px 7px;
+  color: #695333;
+  background: #efe0c3;
+  border: 1px solid #c6aa78;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.macro-card h2,
+.macro-card h3 {
+  position: relative;
+  z-index: 1;
+  margin: 19px 0 6px;
+  font: 700 21px/1.13 var(--display);
+}
+
+.macro-card p {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.card-action {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 17px;
+  color: var(--ember);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.card-action .icon { transition: transform .16s ease; }
+.macro-card:hover .card-action .icon { transform: translateX(3px); }
+
+
+.back-row { margin: 0 0 10px; }
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #514f49;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.back-link:hover { color: var(--ember); }
+
+.foundry-window {
+  overflow: hidden;
+  background: var(--paper);
+  border: 1px solid #66665f;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.window-titlebar {
+  min-height: 54px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px 8px 13px;
+  color: #f6f2e9;
+  background: linear-gradient(#3a3b3d, #2e2f31);
+  border-bottom: 2px solid var(--orange);
+}
+
+.window-title-icon {
+  width: 35px;
+  height: 35px;
+  display: grid;
+  place-items: center;
+  color: #e9a653;
+  background: rgba(0,0,0,.18);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 4px;
+}
+
+.window-title-icon .icon { width: 22px; height: 22px; }
+.window-title-copy { min-width: 0; }
+.window-title-copy p {
+  margin: 0 0 1px;
+  color: #c7c2b7;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+.window-title-copy h1,
+.window-title-copy h3 {
+  margin: 0;
+  font: 700 clamp(17px, 2.2vw, 22px)/1.15 var(--display);
+}
+
+.window-tools {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.window-chip {
+  padding: 3px 7px;
+  color: #f7ddb6;
+  background: rgba(226,138,43,.12);
+  border: 1px solid rgba(237,172,89,.45);
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.window-close {
+  width: 31px;
+  height: 31px;
+  display: grid;
+  place-items: center;
+  color: #e8e4db;
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.window-close:hover { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.15); }
+
+.window-body {
+  min-height: 580px;
+  background:
+    radial-gradient(circle at 20% 13%, rgba(255,255,255,.6), transparent 38%),
+    var(--paper);
+}
+
+.section-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  padding: 10px 10px 0;
+  background: #dddcd5;
+  border-bottom: 1px solid var(--line-strong);
+}
+
+.section-tab {
+  position: relative;
+  min-height: 47px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 14px;
+  color: #575650;
+  background: transparent;
+  border: 1px solid transparent;
+  border-bottom: 0;
+  border-radius: 5px 5px 0 0;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.section-tab:hover { color: #2f2f2c; background: rgba(255,255,255,.28); }
+.section-tab[aria-selected="true"] {
+  color: #2d2e2c;
+  background: var(--paper);
+  border-color: var(--line-strong);
+  box-shadow: inset 0 3px 0 var(--orange);
+}
+
+.tab-panel {
+  padding: clamp(20px, 4vw, 38px);
+}
+
+.tab-panel[hidden] { display: none; }
+
+.content-heading {
+  max-width: 820px;
+  margin-bottom: 22px;
+}
+
+.content-heading h2 {
+  margin: 0 0 7px;
+  font: 700 clamp(25px, 4vw, 35px)/1.06 var(--display);
+}
+
+.content-heading p { margin: 0; color: var(--muted); font-size: 16px; }
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.feature {
+  min-height: 122px;
+  padding: 14px;
+  background: rgba(231, 228, 218, .72);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+}
+
+.feature .icon { width: 22px; height: 22px; color: var(--ember); }
+.feature h3 { margin: 9px 0 4px; font: 700 16px/1.2 var(--display); }
+.feature p { margin: 0; color: var(--muted); font-size: 13px; }
+
+.callout {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  margin: 17px 0 0;
+  padding: 13px 15px;
+  background: #ede2ce;
+  border: 1px solid #c5a97b;
+  border-left: 4px solid var(--orange);
+  border-radius: 4px;
+}
+
+.callout .icon { width: 21px; height: 21px; margin-top: 1px; color: #8b451d; }
+.callout p { margin: 0; }
+.callout code { font-size: .92em; }
+
+.callout.warning {
+  background: #ece0dc;
+  border-color: #bd9990;
+  border-left-color: var(--wine);
+}
+.callout.warning .icon { color: var(--wine); }
+
+.setup-steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: setup;
+}
+
+.setup-steps li {
+  counter-increment: setup;
+  position: relative;
+  min-height: 40px;
+  margin: 0 0 10px;
+  padding: 9px 12px 9px 50px;
+  background: rgba(232,229,219,.72);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+}
+
+.setup-steps li::before {
+  content: counter(setup);
+  position: absolute;
+  left: 10px;
+  top: 8px;
+  width: 27px;
+  height: 27px;
+  display: grid;
+  place-items: center;
+  color: #fff6e6;
+  background: #9b5425;
+  border-radius: 50%;
+  font-weight: 800;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.22);
+}
+
+.subheading {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 26px 0 10px;
+  font: 700 19px/1.25 var(--display);
+}
+
+.subheading::after {
+  content: "";
+  flex: 1 1 auto;
+  height: 1px;
+  margin-left: 5px;
+  background: var(--line);
+}
+
+.subheading .icon { color: var(--ember); }
+
+.settings-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--line-strong);
+  border-radius: 5px;
+  box-shadow: 0 1px 2px rgba(0,0,0,.08);
+}
+
+.settings-table {
+  width: 100%;
+  min-width: 690px;
+  border-collapse: collapse;
+  background: rgba(250,248,241,.72);
+}
+
+.settings-table th {
+  padding: 9px 11px;
+  color: #e9e5dc;
+  background: #444547;
+  border-right: 1px solid #5f6062;
+  text-align: left;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.settings-table th:last-child { border-right: 0; }
+.settings-table td {
+  position: relative;
+  padding: 9px 42px 9px 11px;
+  border-top: 1px solid #c5c2b9;
+  border-right: 1px solid #d0cdc4;
+  vertical-align: middle;
+}
+.settings-table td:last-child { border-right: 0; }
+.settings-table tbody tr:first-child td { border-top: 0; }
+.settings-table tbody tr:nth-child(even) td { background: rgba(221,218,209,.45); }
+.settings-table code { font: 13px/1.35 var(--mono); color: #343532; }
+
+[data-copyable] { position: relative; }
+
+.copy-mini {
+  position: absolute;
+  top: 50%;
+  right: 7px;
+  width: 27px;
+  height: 27px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  color: #5a5954;
+  background: rgba(255,255,255,.42);
+  border: 1px solid #aaa79d;
+  border-radius: 4px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.copy-mini:hover { color: #7d3e19; border-color: var(--ember); background: #fffaf0; }
+.copy-mini .icon { width: 14px; height: 14px; }
+
+.inline-copy-value {
+  display: inline-flex;
+  align-items: center;
+  min-height: 31px;
+  padding: 2px 34px 2px 6px;
+  background: rgba(218, 214, 203, .58);
+  border: 1px solid rgba(142, 137, 126, .58);
+  border-radius: 4px;
+  vertical-align: -.28em;
+}
+
+.inline-copy-value code { font: .9em/1.2 var(--mono); }
+.inline-copy-value .copy-mini {
+  right: 2px;
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border-color: transparent;
+}
+.inline-copy-value .copy-mini:hover { border-color: var(--ember); }
+.inline-copy-value .copy-mini .icon { width: 12px; height: 12px; }
+
+.quick-copy-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.quick-copy {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 11px;
+  color: #343532;
+  background: #e4e1d7;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.quick-copy:hover { border-color: var(--ember); background: #eee9de; }
+.quick-copy code { min-width: 0; overflow-wrap: anywhere; font: 13px/1.35 var(--mono); }
+.quick-copy .icon { color: var(--ember); }
+
+.setting-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.setting-pill {
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 43px 7px 10px;
+  background: #e6e3da;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+}
+
+.setting-pill strong { font-size: 11px; letter-spacing: .05em; text-transform: uppercase; }
+.setting-pill .copy-payload { font-family: var(--mono); font-size: 13px; }
+
+.code-window {
+  overflow: hidden;
+  border: 1px solid #151617;
+  border-radius: 5px;
+  background: var(--code);
+  box-shadow: 0 4px 12px rgba(0,0,0,.18);
+}
+
+.code-toolbar {
+  min-height: 45px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 8px 7px 12px;
+  color: #e9e4d9;
+  background: linear-gradient(#393c3f, #2c2f31);
+  border-bottom: 1px solid #151617;
+}
+
+.code-title {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+}
+
+.code-title span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.code-title .icon { color: #e6a04c; }
+.code-title small { color: #aaa79d; font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+
+.copy-code {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 9px;
+  color: #f4eee1;
+  background: #45484b;
+  border: 1px solid #6b6d6f;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.copy-code:hover { color: #fff; border-color: #e4a151; background: #505356; }
+
+pre {
+  max-height: 510px;
+  margin: 0;
+  padding: 18px;
+  overflow: auto;
+  color: var(--code-text);
+  background:
+    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px) 0 0 / 3.2em 100%,
+    var(--code);
+  white-space: pre;
+  tab-size: 2;
+  scrollbar-color: #65686b #282a2c;
+}
+
+pre code { font: 13px/1.55 var(--mono); }
+
+.requirements {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.requirement {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 11px 12px;
+  background: rgba(230,227,218,.75);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+}
+
+.requirement > .icon { width: 20px; height: 20px; margin-top: 1px; color: var(--ember); }
+.requirement strong { display: block; }
+.requirement p { margin: 2px 0 0; color: var(--muted); font-size: 13px; }
+
+.build-section {
+  margin-top: 38px;
+  padding-top: 30px;
+  border-top: 1px solid var(--line-strong);
+}
+
+.build-heading {
+  margin: 0 0 16px;
+}
+
+.build-heading h2 {
+  margin: 0;
+  font: 700 28px/1.1 var(--display);
+}
+
+.build-heading p { max-width: 760px; margin: 5px 0 0; color: var(--muted); }
+
+.build-overview {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(280px, .75fr);
+  column-gap: 32px;
+  row-gap: 18px;
+  padding: 18px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.build-intro h3,
+.build-guide h3 {
+  margin: 0 0 7px;
+  font: 700 20px/1.2 var(--display);
+}
+
+.build-intro > p { max-width: 690px; margin: 0; color: #55544f; }
+
+.build-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  margin: 16px 0 0;
+  padding: 10px 0;
+  border-top: 1px solid #c4c0b6;
+  border-bottom: 1px solid #c4c0b6;
+}
+
+.build-meta > div {
+  min-width: 132px;
+  padding: 0 16px;
+  border-left: 1px solid #c4c0b6;
+}
+
+.build-meta > div:first-child { padding-left: 0; border-left: 0; }
+.build-meta dt { color: var(--muted); font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.build-meta dd { margin: 2px 0 0; font-size: 13px; font-weight: 800; }
+
+.build-guide {
+  padding-left: 30px;
+  border-left: 1px solid var(--line);
+}
+
+.build-guide ol { margin: 0; padding-left: 20px; }
+.build-guide li { margin: 5px 0; }
+
+.build-note {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  margin: 0;
+  padding-top: 13px;
+  color: var(--muted);
+  border-top: 1px solid #c4c0b6;
+  font-size: 13px;
+}
+
+.build-note .icon { width: 18px; height: 18px; margin-top: 1px; color: var(--ember); }
+.build-note strong { color: var(--ink); }
+
+.module-catalog {
+  margin-top: 36px;
+  padding-top: 28px;
+  border-top: 1px solid var(--line-strong);
+}
+
+.module-library-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 360px);
+  gap: 18px;
+  align-items: end;
+  margin-bottom: 12px;
+}
+
+.module-library-head h2 { margin: 0; font: 700 26px/1.12 var(--display); }
+.module-library-head p { margin: 5px 0 0; color: var(--muted); }
+
+.module-search {
+  position: relative;
+  display: block;
+}
+
+.module-search .icon {
+  position: absolute;
+  left: 11px;
+  top: 50%;
+  width: 17px;
+  height: 17px;
+  color: var(--muted);
+  transform: translateY(-50%);
+}
+
+.module-search input {
+  width: 100%;
+  height: 40px;
+  padding: 8px 12px 8px 37px;
+  color: var(--ink);
+  background: rgba(250,248,241,.76);
+  border: 1px solid var(--line-strong);
+  border-radius: 3px;
+  font: 14px var(--ui);
+}
+
+.module-search input::placeholder { color: #77746c; }
+
+.module-install-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  margin: 0 0 13px;
+  padding: 3px 0 3px 10px;
+  color: #5d5b55;
+  border-left: 3px solid var(--orange);
+  font-size: 13px;
+}
+
+.module-install-note .icon { width: 18px; height: 18px; margin-top: 1px; color: var(--ember); }
+.module-install-note p { margin: 0; }
+.module-install-note code { white-space: nowrap; }
+
+.module-table-wrap {
+  overflow-x: auto;
+  background: rgba(248,245,237,.62);
+  border-top: 2px solid var(--titlebar);
+  border-bottom: 1px solid var(--line-strong);
+  scrollbar-color: #8c887e #d8d5cc;
+}
+
+.module-table-wrap:focus-visible {
+  outline: 2px solid #fff3d3;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 5px #7d3214;
+}
+
+.module-table {
+  width: 100%;
+  min-width: 860px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 13px;
+}
+
+.module-col-name { width: 42%; }
+.module-col-version { width: 11%; }
+.module-col-notes { width: 27%; }
+.module-col-actions { width: 20%; }
+
+.module-table thead th {
+  padding: 9px 11px;
+  color: #eee9df;
+  background: var(--titlebar-2);
+  border-right: 1px solid #55575a;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.module-table thead th:last-child { border-right: 0; }
+.module-group[hidden],
+.module-row[hidden] { display: none; }
+
+.module-group-row th {
+  padding: 9px 11px;
+  background: #dedbd2;
+  border-top: 1px solid var(--line-strong);
+  border-bottom: 1px solid var(--line);
+  box-shadow: inset 4px 0 0 var(--orange);
+  text-align: left;
+}
+
+.module-group:first-of-type .module-group-row th { border-top: 0; }
+
+.module-group-heading {
+  display: grid;
+  grid-template-columns: minmax(230px, .7fr) minmax(0, 1.3fr);
+  gap: 18px;
+  align-items: baseline;
+}
+
+.module-group-name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.module-group-badge {
+  color: var(--ember);
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+
+.module-group-name h4 { margin: 0; font: 700 17px/1.2 var(--display); }
+.module-group-heading > p { margin: 0; color: #5c5a54; font-size: 12px; font-weight: 400; }
+
+.module-row > th,
+.module-row > td {
+  padding: 10px 11px;
+  vertical-align: top;
+  border-bottom: 1px solid #c5c1b7;
+  text-align: left;
+}
+
+.module-row > th { font-weight: 400; }
+.module-row:nth-child(odd) { background: rgba(255,255,255,.24); }
+.module-row:hover { background: rgba(226,138,43,.075); }
+
+.module-name-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+}
+
+.module-name-line h5 { margin: 0; font: 700 15px/1.2 var(--display); }
+.module-name-line h5 a { text-decoration: none; }
+.module-name-line h5 a:hover { color: var(--ember); text-decoration: underline; }
+
+.module-order {
+  min-width: 24px;
+  height: 24px;
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  color: #fff9ed;
+  background: var(--ember);
+  border-radius: 50%;
+  font: 800 9px/1 var(--ui);
+}
+
+.module-id {
+  display: block;
+  margin-top: 2px;
+  color: #77746c;
+  font: 10px/1.25 var(--mono);
+}
+
+.module-description { margin: 5px 0 0; color: var(--muted); font-size: 12px; line-height: 1.4; }
+
+.module-version {
+  color: #503d25;
+  font: 800 11px/1.35 var(--mono);
+  white-space: nowrap;
+}
+
+.module-compat {
+  display: block;
+  color: #4f4e49;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.module-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+  margin-top: 5px;
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.module-note.relation { color: #31583a; }
+.module-note.caution { color: #732d37; }
+.module-note .icon { width: 12px; height: 12px; margin-top: 1px; }
+
+.module-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.module-action {
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 6px 8px;
+  color: #4f4e49;
+  background: transparent;
+  border: 1px solid #aaa69b;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.module-action:hover { color: #722f13; background: #f0eadf; border-color: var(--ember); }
+.module-action.primary { color: #773411; background: #efe2ce; border-color: #bf8d55; }
+.module-action.primary:hover { color: #fff; background: #713010; border-color: #713010; }
+.module-action .icon { width: 14px; height: 14px; }
+
+.module-empty {
+  margin: 14px 0 0;
+  padding: 15px 0;
+  color: var(--muted);
+  border-top: 1px dashed var(--line-strong);
+  border-bottom: 1px dashed var(--line-strong);
+  text-align: center;
+}
+
+.module-empty[hidden] { display: none; }
+
+.site-footer {
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 0 0 28px;
+  color: #65635d;
+  font-size: 12px;
+  text-align: center;
+}
+
+.site-footer::before {
+  content: "";
+  display: block;
+  height: 1px;
+  margin-bottom: 16px;
+  background: linear-gradient(90deg, transparent, #9c988d 18%, #9c988d 82%, transparent);
+}
+
+.toast {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 100;
+  max-width: min(330px, calc(100% - 36px));
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 13px;
+  color: #f6f1e7;
+  background: #353739;
+  border: 1px solid #151617;
+  border-left: 4px solid var(--orange);
+  border-radius: 5px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.28);
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity .16s ease, transform .16s ease;
+}
+
+.toast.show { opacity: 1; transform: translateY(0); }
+.toast .icon { color: #e9aa58; }
+.toast.error { border-left-color: var(--wine); }
+.toast.error .icon { color: #d59a9f; }
+
+@media (max-width: 900px) {
+  .macro-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .feature-grid { grid-template-columns: 1fr; }
+  .build-overview { grid-template-columns: 1fr; }
+  .build-guide { padding: 17px 0 0; border-top: 1px solid var(--line); border-left: 0; }
+  .module-library-head { grid-template-columns: 1fr; align-items: stretch; }
+  .module-search { max-width: 520px; }
+}
+
+@media (max-width: 650px) {
+  .topbar-inner { width: min(100% - 20px, 1180px); min-height: 52px; gap: 9px; }
+  .brand-copy small { display: none; }
+  .brand-copy strong { font-size: 15px; }
+  .brand-mark { width: 31px; height: 31px; }
+  .topnav a { width: 34px; height: 34px; justify-content: center; padding: 0; }
+  .topnav a span { display: none; }
+  .version-stamp { display: none; }
+  .page-shell { width: min(100% - 20px, 1180px); padding-top: 15px; }
+  .library-heading { align-items: stretch; flex-direction: column; }
+  .filters { justify-content: flex-start; }
+  .macro-grid { grid-template-columns: 1fr; }
+  .macro-card { min-height: 190px; }
+  .window-titlebar { gap: 8px; }
+  .window-title-icon { width: 31px; height: 31px; }
+  .window-chip { display: none; }
+  .section-tabs { padding: 7px 7px 0; }
+  .section-tab { min-width: 0; padding: 8px 5px; font-size: 12px; }
+  .section-tab .icon { display: none; }
+  .tab-panel { padding: 19px 15px 24px; }
+  .quick-copy-grid, .requirements { grid-template-columns: 1fr; }
+  .build-meta > div { min-width: 50%; margin: 5px 0; }
+  .build-meta > div:nth-child(odd) { padding-left: 0; border-left: 0; }
+  .module-search { max-width: none; }
+  .module-action { min-height: 44px; }
+  .code-title small { display: none; }
+  .copy-code span { display: none; }
+  pre { max-height: 440px; padding: 14px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+}
+
+@media print {
+  .topbar, .filters, .back-row, .window-close, .copy-mini, .copy-code, .toast { display: none !important; }
+  body { background: #fff; }
+  .page-shell { width: 100%; padding: 0; }
+  .view[hidden], .tab-panel[hidden] { display: block !important; }
+  .macro-card, .foundry-window { box-shadow: none; }
+  .module-table-wrap { overflow: visible; }
+  .module-table { min-width: 0; font-size: 10px; }
+  pre { max-height: none; white-space: pre-wrap; }
+}
+</style>
+</head>
+<body>
+<svg class="svg-sprite" aria-hidden="true" focusable="false">
+  <symbol id="icon-tools" viewBox="0 0 24 24"><path d="m14.6 6.4 3-3 3 3-3 3M13.2 7.8l6.4 6.4a2 2 0 0 1-2.8 2.8l-6.4-6.4M4.4 3.5l4.7 4.7-3 3L1.4 6.5l.2-3.2 2.8.2ZM6.7 12.8 3 16.5a2.1 2.1 0 0 0 3 3l3.7-3.7"/></symbol>
+  <symbol id="icon-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol>
+  <symbol id="icon-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 10v6M12 7h.01"/></symbol>
+  <symbol id="icon-rage" viewBox="0 0 24 24"><path d="m13 2-2 6H6l3.8 3.2L8 17l4-2.7 4 2.7-1.3-5.2L19 8h-4l-2-6Z"/><path d="M5 17.5 3 21M19 17.5l2 3.5M12 17v5"/></symbol>
+  <symbol id="icon-enlarge" viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5M9 9l-6-6M15 9l6-6M9 15l-6 6M15 15l6 6"/></symbol>
+  <symbol id="icon-torch" viewBox="0 0 24 24"><path d="M12 2c2.7 3.1 4.3 5.2 4.3 8A4.3 4.3 0 0 1 12 14.3 4.3 4.3 0 0 1 7.7 10c0-1.8.8-3.5 2.5-5.4.1 2 1 3 1.8 3.7.9-1.7.9-3.4 0-6.3Z"/><path d="M9.5 14.5h5l-.8 7h-3.4l-.8-7ZM8.7 18h6.6"/></symbol>
+  <symbol id="icon-light" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0-3.7 10.7c.8.7 1.2 1.4 1.2 2.3h5c0-.9.4-1.6 1.2-2.3A6 6 0 0 0 12 3Z"/><path d="M9.7 19h4.6M10.5 22h3M4.2 5.3 2.8 4M19.8 5.3 21.2 4M3 11H1M21 11h2M12 1V0"/></symbol>
+  <symbol id="icon-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-6 10-6 10 6 10 6-3.6 6-10 6S2 12 2 12Z"/><circle cx="12" cy="12" r="2.8"/></symbol>
+  <symbol id="icon-arrow" viewBox="0 0 24 24"><path d="M5 12h14M14 7l5 5-5 5"/></symbol>
+  <symbol id="icon-back" viewBox="0 0 24 24"><path d="M19 12H5M10 7l-5 5 5 5"/></symbol>
+  <symbol id="icon-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+  <symbol id="icon-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="11" height="11" rx="1.5"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></symbol>
+  <symbol id="icon-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+  <symbol id="icon-code" viewBox="0 0 24 24"><path d="m8 9-4 3 4 3M16 9l4 3-4 3M14 5l-4 14"/></symbol>
+  <symbol id="icon-settings" viewBox="0 0 24 24"><path d="M4 6h10M18 6h2M4 12h2M10 12h10M4 18h7M15 18h5"/><circle cx="16" cy="6" r="2"/><circle cx="8" cy="12" r="2"/><circle cx="13" cy="18" r="2"/></symbol>
+  <symbol id="icon-alert" viewBox="0 0 24 24"><path d="M12 3 2.7 20h18.6L12 3Z"/><path d="M12 9v5M12 17h.01"/></symbol>
+  <symbol id="icon-token" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8.5 14.5c.8-1.2 2-2 3.5-2s2.7.8 3.5 2M12 7.5a2.3 2.3 0 1 1 0 4.6 2.3 2.3 0 0 1 0-4.6Z"/></symbol>
+  <symbol id="icon-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="icon-shield" viewBox="0 0 24 24"><path d="M12 3 4.5 6v5.5c0 4.5 3.2 7.8 7.5 9.5 4.3-1.7 7.5-5 7.5-9.5V6L12 3Z"/><path d="m9 12 2 2 4-5"/></symbol>
+  <symbol id="icon-map" viewBox="0 0 24 24"><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6Z"/><path d="M9 3v15M15 6v15"/></symbol>
+  <symbol id="icon-cursor" viewBox="0 0 24 24"><path d="m5 3 13 9-6 1-3 6L5 3Z"/></symbol>
+  <symbol id="icon-book" viewBox="0 0 24 24"><path d="M4 4.5A3.5 3.5 0 0 1 7.5 1H20v17H7.5A3.5 3.5 0 0 0 4 21.5v-17Z"/><path d="M4 21.5A3.5 3.5 0 0 1 7.5 18H20M8 6h8M8 10h8"/></symbol>
+  <symbol id="icon-link" viewBox="0 0 24 24"><path d="M9.5 14.5 14.5 9"/><path d="M7.7 16.3 5.9 18.1a3.7 3.7 0 0 1-5.2-5.2l3.1-3.1A3.7 3.7 0 0 1 9 9.7"/><path d="m16.3 7.7 1.8-1.8a3.7 3.7 0 1 1 5.2 5.2l-3.1 3.1a3.7 3.7 0 0 1-5.2.1"/></symbol>
+  <symbol id="icon-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></symbol>
+</svg>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="#catalog" aria-label="Відкрити каталог макросів">
+      <span class="brand-mark"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-tools"></use></svg></span>
+      <span class="brand-copy"><strong>Macro Library</strong><small>Foundry VTT</small></span>
+    </a>
+    <nav class="topnav" aria-label="Головна навігація">
+      <a href="#catalog" data-anchor-link="catalog" aria-label="Каталог макросів"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-grid"></use></svg><span>Каталог</span></a>
+      <a href="#about" data-anchor-link="about" aria-label="Про збірку"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-info"></use></svg><span>Про збірку</span></a>
+    </nav>
+    <span class="version-stamp">V13</span>
+  </div>
+</header>
+
+<main class="page-shell" id="main-content">
+  <section class="view" id="home" data-view="home">
+    <section class="catalog-section" id="catalog" aria-labelledby="catalog-title">
+      <div class="library-heading">
+        <div>
+          <h1 id="catalog-title">Каталог макросів</h1>
+          <p>Кожен розділ відкривається окремо.</p>
+        </div>
+        <div class="filters" role="toolbar" aria-label="Фільтр категорій">
+          <button class="filter-btn" type="button" data-filter="all" aria-pressed="true">Усі</button>
+          <button class="filter-btn" type="button" data-filter="character" aria-pressed="false">Персонаж</button>
+          <button class="filter-btn" type="button" data-filter="light" aria-pressed="false">Світло</button>
+          <button class="filter-btn" type="button" data-filter="vision" aria-pressed="false">Зір</button>
+        </div>
+      </div>
+
+    <div class="macro-grid" id="macro-grid">
+      <a class="macro-card" href="#rage" data-category="character" data-route-link="rage">
+        <span class="card-top"><span class="card-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-rage"></use></svg></span><span class="card-badge">Toggle</span></span>
+        <h2>Path of the Giant — Rage</h2>
+        <p>Rage ON/OFF, витрати використань, Active Effect і збільшення токена.</p>
+        <span class="card-action">Відкрити розділ <svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-arrow"></use></svg></span>
+      </a>
+      <a class="macro-card" href="#enlarge" data-category="character" data-route-link="enlarge">
+        <span class="card-top"><span class="card-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-enlarge"></use></svg></span><span class="card-badge">Effect</span></span>
+        <h2>Magical Enlarge</h2>
+        <p>Окремий toggle збільшення, який коректно складається з Giant’s Rage.</p>
+        <span class="card-action">Відкрити розділ <svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-arrow"></use></svg></span>
+      </a>
+      <a class="macro-card" href="#torch-token" data-category="light" data-route-link="torch-token">
+        <span class="card-top"><span class="card-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-torch"></use></svg></span><span class="card-badge">Token</span></span>
+        <h2>Torch on Token</h2>
+        <p>Факел на вибраних токенах із безпечним відновленням попереднього світла.</p>
+        <span class="card-action">Відкрити розділ <svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-arrow"></use></svg></span>
+      </a>
+      <a class="macro-card" href="#torch-point" data-category="light" data-route-link="torch-point">
+        <span class="card-top"><span class="card-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-light"></use></svg></span><span class="card-badge">GM</span></span>
+        <h2>Ambient Light Placement</h2>
+        <p>Клік по canvas створює стандартне джерело світла; ESC скасовує розміщення.</p>
+        <span class="card-action">Відкрити розділ <svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-arrow"></use></svg></span>
+      </a>
+      <a class="macro-card" href="#vision60" data-category="vision" data-route-link="vision60">
+        <span class="card-top"><span class="card-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-eye"></use></svg></span><span class="card-badge">60 ft</span></span>
+        <h2>Vision 60 ft</h2>
+        <p>Піднімає зір токена й Prototype Token щонайменше до 60 футів.</p>
+        <span class="card-action">Відкрити розділ <svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-arrow"></use></svg></span>
+      </a>
+      <a class="macro-card" href="#vision120" data-category="vision" data-route-link="vision120">
+        <span class="card-top"><span class="card-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-eye"></use></svg></span><span class="card-badge">120 ft</span></span>
+        <h2>Vision 120 ft</h2>
+        <p>Та сама безпечна логіка, але мінімальна дальність зору становить 120 футів.</p>
+        <span class="card-action">Відкрити розділ <svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-arrow"></use></svg></span>
+      </a>
+    </div>
+    </section>
+
+    <section class="build-section" id="about" aria-labelledby="about-title">
+      <div class="build-heading">
+        <p class="eyebrow">Локальна довідка</p>
+        <h2 id="about-title">Про збірку</h2>
+        <p>Версії та короткі правила користування файлом.</p>
+      </div>
+
+      <div class="build-overview">
+        <div class="build-intro">
+          <h3>Локальна бібліотека макросів</h3>
+          <p>Зберігає перевірені сценарії для персонажа, освітлення та зору в одному зафіксованому середовищі.</p>
+          <dl class="build-meta">
+            <div><dt>Foundry</dt><dd>13.351</dd></div>
+            <div><dt>Система</dt><dd>D&amp;D5e 5.2.5</dd></div>
+            <div><dt>Бібліотека</dt><dd>6 макросів</dd></div>
+            <div><dt>Формат</dt><dd>Автономний HTML</dd></div>
+          </dl>
+        </div>
+        <div class="build-guide">
+          <h3>Як користуватися</h3>
+          <ol><li>Відкрий потрібну картку в каталозі.</li><li>Спочатку звір вкладку <strong>«Налаштування»</strong>.</li><li>Скопіюй окремі ключі або весь макрос.</li><li>Після оновлення Foundry, системи чи модулів протестуй на копії Actor.</li></ol>
+        </div>
+        <p class="build-note"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-info"></use></svg><span><strong>Файл можна відкривати локально подвійним кліком.</strong> Сам HTML не підтягує зовнішні CSS, JS або шрифти. Новий макрос можна додати, скопіювавши готовий <code>&lt;section&gt;...&lt;/section&gt;</code> блок і створивши картку в каталозі.</span></p>
+      </div>
+    </section>
+
+    <section class="module-catalog" id="modules" aria-labelledby="modules-title">
+      <div class="module-library-head">
+        <div>
+          <h2 id="modules-title">Модулі збірки</h2>
+          <p role="status" aria-live="polite" aria-atomic="true">Показано <strong id="module-count">29</strong> із 29.</p>
+        </div>
+        <label class="module-search" for="module-search"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-search"></use></svg><span class="sr-only">Фільтр модулів</span><input id="module-search" type="search" placeholder="Фільтр модулів" autocomplete="off"></label>
+      </div>
+      <div class="module-install-note"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-info"></use></svg><p><strong>Встановлення:</strong> Foundry Setup → Add-on Modules → Install Module → вставити <code>Manifest URL</code>. Назва модуля відкриває сторінку проєкту; кнопки <strong>JSON</strong> і <strong>«Копіювати URL»</strong> працюють із manifest.</p></div>
+
+      <div class="module-table-wrap" role="region" aria-label="Таблиця модулів збірки" tabindex="0">
+    <table class="module-table">
+      <caption class="sr-only">29 встановлених модулів Foundry VTT v13 із версіями, залежностями та JSON manifest</caption>
+      <colgroup><col class="module-col-name"><col class="module-col-version"><col class="module-col-notes"><col class="module-col-actions"></colgroup>
+      <thead><tr><th scope="col">Модуль</th><th scope="col">Версія</th><th scope="col">Сумісність і зв’язки</th><th scope="col">Manifest</th></tr></thead>
+      <tbody class="module-group module-bundle-group" data-module-container>
+      <tr class="module-group-row"><th colspan="4" scope="rowgroup"><div class="module-group-heading"><div class="module-group-name"><span class="module-group-badge">Спільна основа</span><h4>libWrapper і залежні модулі</h4></div><p>Спочатку встановіть libWrapper один раз. Babele, Plutonium і Token Magic FX потребують його, але між собою не залежать.</p></div></th></tr>
+      <tr class="module-row" id="module-lib-wrapper" data-module-row data-search="libwrapper lib-wrapper 1.13.5.1 сумісний із foundry 13 службова бібліотека для безпечного розширення функцій foundry іншими модулями. встановити першим ">
+      <th class="module-name-cell" scope="row">
+        <div class="module-name-line"><span class="module-order" aria-label="Крок встановлення 1">1</span><div><h5><a href="https://foundryvtt.com/packages/lib-wrapper" target="_blank" rel="noopener noreferrer">libWrapper</a></h5><span class="module-id">lib-wrapper</span></div></div>
+        <p class="module-description">Службова бібліотека для безпечного розширення функцій Foundry іншими модулями.</p>
+      </th>
+      <td class="module-version-cell"><span class="module-version">1.13.5.1</span></td>
+      <td class="module-notes-cell"><span class="module-compat">Сумісний із Foundry 13</span><span class="module-note relation"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-link"></use></svg>Встановити першим</span></td>
+      <td class="module-actions-cell"><div class="module-actions">
+        <a class="module-action primary" href="https://github.com/ruipin/fvtt-lib-wrapper/releases/download/v1.13.5.1/module.json" target="_blank" rel="noopener noreferrer" data-manifest-link aria-label="Відкрити JSON manifest для libWrapper"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg>JSON</a>
+        <button class="module-action" type="button" data-copy-text="https://github.com/ruipin/fvtt-lib-wrapper/releases/download/v1.13.5.1/module.json" aria-label="Копіювати JSON URL для libWrapper"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg>Копіювати URL</button>
+      </div></td>
+    </tr>
+<tr class="module-row" id="module-babele" data-module-row data-search="babele babele 2.9.1 foundry 13+ фреймворк локалізації compendium-паків і контенту foundry. потребує libwrapper ">
+      <th class="module-name-cell" scope="row">
+        <div class="module-name-line"><span class="module-order" aria-label="Крок встановлення 2">2</span><div><h5><a href="https://foundryvtt.com/packages/babele" target="_blank" rel="noopener noreferrer">Babele</a></h5><span class="module-id">babele</span></div></div>
+        <p class="module-description">Фреймворк локалізації compendium-паків і контенту Foundry.</p>
+      </th>
+      <td class="module-version-cell"><span class="module-version">2.9.1</span></td>
+      <td class="module-notes-cell"><span class="module-compat">Foundry 13+</span><span class="module-note relation"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-link"></use></svg>Потребує libWrapper</span></td>
+      <td class="module-actions-cell"><div class="module-actions">
+        <a class="module-action primary" href="https://gitlab.com/riccisi/foundryvtt-babele/-/jobs/artifacts/2.9.1/raw/module/module.json?job=build" target="_blank" rel="noopener noreferrer" data-manifest-link aria-label="Відкрити JSON manifest для Babele"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg>JSON</a>
+        <button class="module-action" type="button" data-copy-text="https://gitlab.com/riccisi/foundryvtt-babele/-/jobs/artifacts/2.9.1/raw/module/module.json?job=build" aria-label="Копіювати JSON URL для Babele"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg>Копіювати URL</button>
+      </div></td>
+    </tr>
+<tr class="module-row" id="module-plutonium" data-module-row data-search="plutonium plutonium 2.14.3 foundry 13 · d&amp;d5e 5.1–5.2 імпорт і керування d&amp;d5e-контентом; backend є окремим опціональним компонентом. потребує libwrapper ≥1.13.0.0 ">
+      <th class="module-name-cell" scope="row">
+        <div class="module-name-line"><span class="module-order" aria-label="Крок встановлення 2">2</span><div><h5><a href="https://github.com/TheGiddyLimit/plutonium-next" target="_blank" rel="noopener noreferrer">Plutonium</a></h5><span class="module-id">plutonium</span></div></div>
+        <p class="module-description">Імпорт і керування D&amp;D5e-контентом; backend є окремим опціональним компонентом.</p>
+      </th>
+      <td class="module-version-cell"><span class="module-version">2.14.3</span></td>
+      <td class="module-notes-cell"><span class="module-compat">Foundry 13 · D&amp;D5e 5.1–5.2</span><span class="module-note relation"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-link"></use></svg>Потребує libWrapper ≥1.13.0.0</span></td>
+      <td class="module-actions-cell"><div class="module-actions">
+        <a class="module-action primary" href="https://github.com/TheGiddyLimit/plutonium-next/releases/download/v2.14.3/module-foundry13.json" target="_blank" rel="noopener noreferrer" data-manifest-link aria-label="Відкрити JSON manifest для Plutonium"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg>JSON</a>
+        <button class="module-action" type="button" data-copy-text="https://github.com/TheGiddyLimit/plutonium-next/releases/download/v2.14.3/module-foundry13.json" aria-label="Копіювати JSON URL для Plutonium"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg>Копіювати URL</button>
+      </div></td>
+    </tr>
+<tr class="module-row" id="module-tokenmagic" data-module-row data-search="token magic fx tokenmagic 0.7.6.3 foundry 13 шейдери та візуальні фільтри для tokens, tiles і canvas-об’єктів. потребує libwrapper ">
+      <th class="module-name-cell" scope="row">
+        <div class="module-name-line"><span class="module-order" aria-label="Крок встановлення 2">2</span><div><h5><a href="https://foundryvtt.com/packages/tokenmagic/" target="_blank" rel="noopener noreferrer">Token Magic FX</a></h5><span class="module-id">tokenmagic</span></div></div>
+        <p class="module-description">Шейдери та візуальні фільтри для tokens, tiles і canvas-об’єктів.</p>
+      </th>
+      <td class="module-version-cell"><span class="module-version">0.7.6.3</span></td>
+      <td class="module-notes-cell"><span class="module-compat">Foundry 13</span><span class="module-note relation"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-link"></use></svg>Потребує libWrapper</span></td>
+      <td class="module-actions-cell"><div class="module-actions">
+        <a class="module-action primary" href="https://github.com/Feu-Secret/Tokenmagic/releases/download/0.7.6.3/module.json" target="_blank" rel="noopener noreferrer" data-manifest-link aria-label="Відкрити JSON manifest для Token Magic FX"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg>JSON</a>
+        <button class="module-action" type="button" data-copy-text="https://github.com/Feu-Secret/Tokenmagic/releases/download/0.7.6.3/module.json" aria-label="Копіювати JSON URL для Token Magic FX"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg>Копіювати URL</button>
+      </div></td>
+    </tr>
+    </tbody><tbody class="module-group module-bundle-group" data-module-container>
+      <tr class="module-group-row"><th colspan="4" scope="rowgroup"><div class="module-group-heading"><div class="module-group-name"><span class="module-group-badge">Встановлювати по черзі</span><h4>Token Action HUD для D&amp;D5e</h4></div><p>Порядок встановлення: socketlib → Token Action HUD Core → Token Action HUD D&amp;D 5e.</p></div></th></tr>
+      <tr class="module-row" id="module-socketlib" data-module-row data-search="socketlib socketlib v1.1.4 foundry 11+ службова socket-бібліотека для безпечних gm/client викликів між користувачами. встановити першим ">
+      <th class="module-name-cell" scope="row">
+        <div class="module-name-line"><span class="module-order" aria-label="Крок встановлення 1">1</span><div><h5><a href="https://foundryvtt.com/packages/socketlib" target="_blank" rel="noopener noreferrer">socketlib</a></h5><span class="module-id">socketlib</span></div></div>
+        <p class="module-description">Службова socket-бібліотека для безпечних GM/client викликів між користувачами.</p>
+      </th>
+      <td class="module-version-cell"><span class="module-version">v1.1.4</span></td>
+      <td class="module-notes-cell"><span class="module-compat">Foundry 11+</span><span class="module-note relation"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-link"></use></svg>Встановити першим</span></td>
+      <td class="module-actions-cell"><div class="module-actions">
+        <a class="module-action primary" href="https://github.com/farling42/foundryvtt-socketlib/releases/download/v1.1.4/module.json" target="_blank" rel="noopener noreferrer" data-manifest-link aria-label="Відкрити JSON manifest для socketlib"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg>JSON</a>
+        <button class="module-action" type="button" data-copy-text="https://github.com/farling42/foundryvtt-socketlib/releases/download/v1.1.4/module.json" aria-label="Копіювати JSON URL для socketlib"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg>Копіювати URL</button>
+      </div></td>
+    </tr>
+<tr class="module-row" id="module-token-action-hud-core" data-module-row data-search="token action hud core token-action-hud-core 2.0.16 foundry 12–13 core-інтерфейс token action hud; системні дії додаються окремим модулем. потребує socketlib ">
+      <th class="module-name-cell" scope="row">
+        <div class="module-name-line"><span class="module-order" aria-label="Крок встановлення 2">2</span><div><h5><a href="https://foundryvtt.com/packages/token-action-hud-core" target="_blank" rel="noopener noreferrer">Token Action HUD Core</a></h5><span class="module-id">token-action-hud-core</span></div></div>
+        <p class="module-description">Core-інтерфейс Token Action HUD; системні дії додаються окремим модулем.</p>
+      </th>
+      <td class="module-version-cell"><span class="module-version">2.0.16</span></td>
+      <td class="module-notes-cell"><span class="module-compat">Foundry 12–13</span><span class="module-note relation"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-link"></use></svg>Потребує socketlib</span></td>
+      <td class="module-actions-cell"><div class="module-actions">
+        <a class="module-action primary" href="https://github.com/Larkinabout/fvtt-token-action-hud-core/releases/download/2.0.16/module.json" target="_blank" rel="noopener noreferrer" data-manifest-link aria-label="Відкрити JSON manifest для Token Action HUD Core"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg>JSON</a>
+        <button class="module-action" type="button" data-copy-text="https://github.com/Larkinabout/fvtt-token-action-hud-core/releases/download/2.0.16/module.json" aria-label="Копіювати JSON URL для Token Action HUD Core"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg>Копіювати URL</button>
+      </div></td>
+    </tr>
+<tr class="module-row" id="module-token-action-hud-dnd5e" data-module-row data-search="token action hud d&amp;d 5e token-action-hud-dnd5e 2.0.7 foundry 12–13 · d&amp;d5e 5.x додає дії d&amp;d5e до панелі token action hud. потребує token action hud core ">
+      <th class="module-name-cell" scope="row">
+        <div class="module-name-line"><span class="module-order" aria-label="Крок встановлення 3">3</span><div><h5><a href="https://foundryvtt.com/packages/token-action-hud-dnd5e" target="_blank" rel="noopener noreferrer">Token Action HUD D&amp;D 5e</a></h5><span class="module-id">token-action-hud-dnd5e</span></div></div>
+        <p class="module-description">Додає дії D&amp;D5e до панелі Token Action HUD.</p>
+      </th>
+      <td class="module-version-cell"><span class="module-version">2.0.7</span></td>
+      <td class="module-notes-cell"><span class="module-compat">Foundry 12–13 · D&amp;D5e 5.x</span><span class="module-note relation"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-link"></use></svg>Потребує Token Action HUD Core</span></td>
+      <td class="module-actions-cell"><div class="module-actions">
+        <a class="module-action primary" href="https://github.com/Larkinabout/fvtt-token-action-hud-dnd5e/releases/download/2.0.7/module.json" target="_blank" rel="noopener noreferrer" data-manifest-link aria-label="Відкрити JSON manifest для Token Action HUD D&amp;D 5e"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg>JSON</a>
+        <button class="module-action" type="button" data-copy-text="https://github.com/Larkinabout/fvtt-token-action-hud-dnd5e/releases/download/2.0.7/module.json" aria-label="Копіювати JSON URL для Token Action HUD D&amp;D 5e"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg>Копіювати URL</button>
+      </div></td>
+    </tr>
+    </tbody><tbody class="module-group module-bundle-group" data-module-container>
+      <tr class="module-group-row"><th colspan="4" scope="rowgroup"><div class="module-group-heading"><div class="module-group-name"><span class="module-group-badge">Core + доповнення</span><h4>Seasons &amp; Stars</h4></div><p>Спочатку встановіть core. Calendar Builder і Fantasy Calendar Pack є окремими доповненнями та обидва потребують Seasons &amp; Stars.</p></div></th></tr>
+      <tr class="module-row" id="module-seasons-and-stars" data-module-row data-search="seasons &amp; stars seasons-and-stars 0.26.0 foundry 13 core-модуль календаря, світового часу, сезонів і нотаток кампанії. встановити першим ">
+      <th class="module-name-cell" scope="row">
+        <div class="module-name-line"><span class="module-order" aria-label="Крок встановлення 1">1</span><div><h5><a href="https://foundryvtt.com/packages/seasons-and-stars" target="_blank" rel="noopener noreferrer">Seasons &amp; Stars</a></h5><span class="module-id">seasons-and-stars</span></div></div>
+        <p class="module-description">Core-модуль календаря, світового часу, сезонів і нотаток кампанії.</p>
+      </th>
+      <td class="module-version-cell"><span class="module-version">0.26.0</span></td>
+      <td class="module-notes-cell"><span class="module-compat">Foundry 13</span><span class="module-note relation"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-link"></use></svg>Встановити першим</span></td>
+      <td class="module-actions-cell"><div class="module-actions">
+        <a class="module-action primary" href="https://github.com/rayners/fvtt-seasons-and-stars/releases/download/seasons-and-stars-v0.26.0/module.json" target="_blank" rel="noopener noreferrer" data-manifest-link aria-label="Відкрити JSON manifest для Seasons &amp; Stars"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg>JSON</a>
+        <button class="module-action" type="button" data-copy-text="https://github.com/rayners/fvtt-seasons-and-stars/releases/download/seasons-and-stars-v0.26.0/module.json" aria-label="Копіювати JSON URL для Seasons &amp; Stars"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg>Копіювати URL</button>
+      </div></td>
+    </tr>
+<tr class="module-row" id="module-seasons-and-stars-calendar-builder" data-module-row data-search="seasons &amp; stars - calendar builder seasons-and-stars-calendar-builder 0.5.0 foundry 13 візуальний редактор і валідатор власних календарів seasons &amp; stars. потребує seasons &amp; stars ">
+      <th class="module-name-cell" scope="row">
+        <div class="module-name-line"><span class="module-order" aria-label="Крок встановлення 2A">2A</span><div><h5><a href="https://foundryvtt.com/packages/seasons-and-stars-calendar-builder" target="_blank" rel="noopener noreferrer">Seasons &amp; Stars - Calendar Builder</a></h5><span class="module-id">seasons-and-stars-calendar-builder</span></div></div>
+        <p class="module-description">Візуальний редактор і валідатор власних календарів Seasons &amp; Stars.</p>
+      </th>
+      <td class="module-version-cell"><span class="module-version">0.5.0</span></td>
+      <td class="module-notes-cell"><span class="module-compat">Foundry 13</span><span class="module-note relation"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-link"></use></svg>Потребує Seasons &amp; Stars</span></td>
+      <td class="module-actions-cell"><div class="module-actions">
+        <a class="module-action primary" href="https://github.com/rayners/fvtt-seasons-and-stars/releases/download/seasons-and-stars-calendar-builder-v0.5.0/module.json" target="_blank" rel="noopener noreferrer" data-manifest-link aria-label="Відкрити JSON manifest для Seasons &amp; Stars - Calendar Builder"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg>JSON</a>
+        <button class="module-action" type="button" data-copy-text="https://github.com/rayners/fvtt-seasons-and-stars/releases/download/seasons-and-stars-calendar-builder-v0.5.0/module.json" aria-label="Копіювати JSON URL для Seasons &amp; Stars - Calendar Builder"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg>Копіювати URL</button>
+      </div></td>
+    </tr>
+<tr class="module-row" id="module-seasons-and-stars-fantasy" data-module-row data-search="seasons &amp; stars - fantasy calendar pack seasons-and-stars-fantasy 0.10.0 foundry 13 набір фентезійних календарів для d&amp;d, critical role та інших сетингів. потребує seasons &amp; stars ">
+      <th class="module-name-cell" scope="row">
+        <div class="module-name-line"><span class="module-order" aria-label="Крок встановлення 2B">2B</span><div><h5><a href="https://foundryvtt.com/packages/seasons-and-stars-fantasy" target="_blank" rel="noopener noreferrer">Seasons &amp; Stars - Fantasy Calendar Pack</a></h5><span class="module-id">seasons-and-stars-fantasy</span></div></div>
+        <p class="module-description">Набір фентезійних календарів для D&amp;D, Critical Role та інших сетингів.</p>
+      </th>
+      <td class="module-version-cell"><span class="module-version">0.10.0</span></td>
+      <td class="module-notes-cell"><span class="module-compat">Foundry 13</span><span class="module-note relation"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-link"></use></svg>Потребує Seasons &amp; Stars</span></td>
+      <td class="module-actions-cell"><div class="module-actions">
+        <a class="module-action primary" href="https://github.com/rayners/fvtt-seasons-and-stars/releases/download/seasons-and-stars-fantasy-v0.10.0/module.json" target="_blank" rel="noopener noreferrer" data-manifest-link aria-label="Відкрити JSON manifest для Seasons &amp; Stars - Fantasy Calendar Pack"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg>JSON</a>
+        <button class="module-action" type="button" data-copy-text="https://github.com/rayners/fvtt-seasons-and-stars/releases/download/seasons-and-stars-fantasy-v0.10.0/module.json" aria-label="Копіювати JSON URL для Seasons &amp; Stars - Fantasy Calendar Pack"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg>Копіювати URL</button>
+      </div></td>
+    </tr>
+    </tbody><tbody class="module-group module-bundle-group" data-module-container>
+      <tr class="module-group-row"><th colspan="4" scope="rowgroup"><div class="module-group-heading"><div class="module-group-name"><span class="module-group-badge">Рекомендована пара</span><h4>Українська локалізація</h4></div><p>Для повної локалізації встановіть переклад Core та переклад D&amp;D5e. Формальної залежності між ними немає.</p></div></th></tr>
+      <tr class="module-row" id="module-lang-uk" data-module-row data-search="translation: ukrainian [core] lang-uk 13.351 foundry 13–14 український переклад інтерфейсу foundry vtt core. базова локалізація інтерфейсу ">
+      <th class="module-name-cell" scope="row">
+        <div class="module-name-line"><div><h5><a href="https://foundryvtt.com/packages/lang-uk" target="_blank" rel="noopener noreferrer">Translation: Ukrainian [Core]</a></h5><span class="module-id">lang-uk</span></div></div>
+        <p class="module-description">Український переклад інтерфейсу Foundry VTT Core.</p>
+      </th>
+      <td class="module-version-cell"><span class="module-version">13.351</span></td>
+      <td class="module-notes-cell"><span class="module-compat">Foundry 13–14</span><span class="module-note relation"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-link"></use></svg>Базова локалізація інтерфейсу</span></td>
+      <td class="module-actions-cell"><div class="module-actions">
+        <a class="module-action primary" href="https://raw.githubusercontent.com/GMonlineua/foundryvtt-uk/v13.351/module.json" target="_blank" rel="noopener noreferrer" data-manifest-link aria-label="Відкрити JSON manifest для Translation: Ukrainian [Core]"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg>JSON</a>
+        <button class="module-action" type="button" data-copy-text="https://raw.githubusercontent.com/GMonlineua/foundryvtt-uk/v13.351/module.json" aria-label="Копіювати JSON URL для Translation: Ukrainian [Core]"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg>Копіювати URL</button>
+      </div></td>
+    </tr>
+<tr class="module-row" id="module-lang-uk-dnd5e" data-module-row data-search="translation: ukrainian [dnd 5e] lang-uk-dnd5e 0.14.1 foundry 10–14 · d&amp;d5e український переклад системи d&amp;d5e. встановити разом із core-перекладом manifest не задає межі версії d&amp;d5e; у цій збірці модуль встановлено з d&amp;d5e 5.2.5.">
+      <th class="module-name-cell" scope="row">
+        <div class="module-name-line"><div><h5><a href="https://foundryvtt.com/packages/lang-uk-dnd5e" target="_blank" rel="noopener noreferrer">Translation: Ukrainian [DnD 5e]</a></h5><span class="module-id">lang-uk-dnd5e</span></div></div>
+        <p class="module-description">Український переклад системи D&amp;D5e.</p>
+      </th>
+      <td class="module-version-cell"><span class="module-version">0.14.1</span></td>
+      <td class="module-notes-cell"><span class="module-compat">Foundry 10–14 · D&amp;D5e</span><span class="module-note relation"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-link"></use></svg>Встановити разом із Core-перекладом</span><span class="module-note caution"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-alert"></use></svg>Manifest не задає межі версії D&amp;D5e; у цій збірці модуль встановлено з D&amp;D5e 5.2.5.</span></td>
+      <td class="module-actions-cell"><div class="module-actions">
+        <a class="module-action primary" href="https://github.com/share-and-dont-care/Foundry-ua-dnd5e/releases/download/0.14.1/module.json" target="_blank" rel="noopener noreferrer" data-manifest-link aria-label="Відкрити JSON manifest для Translation: Ukrainian [DnD 5e]"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg>JSON</a>
+        <button class="module-action" type="button" data-copy-text="https://github.com/share-and-dont-care/Foundry-ua-dnd5e/releases/download/0.14.1/module.json" aria-label="Копіювати JSON URL для Translation: Ukrainian [DnD 5e]"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg>Копіювати URL</button>
+      </div></td>
+    </tr>
+    </tbody>
+      <tbody class="module-group module-standalone-group" data-module-container>
+        <tr class="module-group-row"><th colspan="4" scope="rowgroup"><div class="module-group-heading"><div class="module-group-name"><span class="module-group-badge">Окремо</span><h4>Інші модулі</h4></div><p>Решта встановленої збірки без обов’язкового порядку встановлення.</p></div></th></tr>
+        <tr class="module-row" id="module-ATL" data-module-row data-search="active token effects atl v1.1.1 foundry 13 дозволяє active effect змінювати розмір, світло, зір та інші дані токена через ключі atl.  ">
+      <th class="module-name-cell" scope="row">
+        <div class="module-name-line"><div><h5><a href="https://foundryvtt.com/packages/ATL" target="_blank" rel="noopener noreferrer">Active Token Effects</a></h5><span class="module-id">ATL</span></div></div>
+        <p class="module-description">Дозволяє Active Effect змінювати розмір, світло, зір та інші дані токена через ключі ATL.</p>
+      </th>
+      <td class="module-version-cell"><span class="module-version">v1.1.1</span></td>
+      <td class="module-notes-cell"><span class="module-compat">Foundry 13</span></td>
+      <td class="module-actions-cell"><div class="module-actions">
+        <a class="module-action primary" href="https://github.com/kandashi/Active-Token-Lighting/releases/download/v1.1.1/module.json" target="_blank" rel="noopener noreferrer" data-manifest-link aria-label="Відкрити JSON manifest для Active Token Effects"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg>JSON</a>
+        <button class="module-action" type="button" data-copy-text="https://github.com/kandashi/Active-Token-Lighting/releases/download/v1.1.1/module.json" aria-label="Копіювати JSON URL для Active Token Effects"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg>Копіювати URL</button>
+      </div></td>
+    </tr>
+<tr class="module-row" id="module-betterrolls-swade2" data-module-row data-search="better rolls 2 for savage worlds betterrolls-swade2 4.39 foundry 13 · swade розширені roll-картки та керування кидками для savage worlds adventure edition.  лише swade; конфліктує зі swade-tools. dice tray — опціональна інтеграція.">
+      <th class="module-name-cell" scope="row">
+        <div class="module-name-line"><div><h5><a href="https://foundryvtt.com/packages/betterrolls-swade2" target="_blank" rel="noopener noreferrer">Better Rolls 2 for Savage Worlds</a></h5><span class="module-id">betterrolls-swade2</span></div></div>
+        <p class="module-description">Розширені roll-картки та керування кидками для Savage Worlds Adventure Edition.</p>
+      </th>
+      <td class="module-version-cell"><span class="module-version">4.39</span></td>
+      <td class="module-notes-cell"><span class="module-compat">Foundry 13 · SWADE</span><span class="module-note caution"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-alert"></use></svg>Лише SWADE; конфліктує зі swade-tools. Dice Tray — опціональна інтеграція.</span></td>
+      <td class="module-actions-cell"><div class="module-actions">
+        <a class="module-action primary" href="https://github.com/ddbrown30/betterroll-swade/releases/download/4.39/module.json" target="_blank" rel="noopener noreferrer" data-manifest-link aria-label="Відкрити JSON manifest для Better Rolls 2 for Savage Worlds"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg>JSON</a>
+        <button class="module-action" type="button" data-copy-text="https://github.com/ddbrown30/betterroll-swade/releases/download/4.39/module.json" aria-label="Копіювати JSON URL для Better Rolls 2 for Savage Worlds"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg>Копіювати URL</button>
+      </div></td>
+    </tr>
+<tr class="module-row" id="module-combatbooster" data-module-row data-search="combat booster: turn marker, recent actions and more combatbooster 5.0.2 foundry 13 маркер поточного ходу, останні дії та додаткові інструменти combat tracker.  ">
+      <th class="module-name-cell" scope="row">
+        <div class="module-name-line"><div><h5><a href="https://foundryvtt.com/packages/combatbooster" target="_blank" rel="noopener noreferrer">Combat Booster: Turn Marker, Recent Actions and more</a></h5><span class="module-id">combatbooster</span></div></div>
+        <p class="module-description">Маркер поточного ходу, останні дії та додаткові інструменти Combat Tracker.</p>
+      </th>
+      <td class="module-version-cell"><span class="module-version">5.0.2</span></td>
+      <td class="module-notes-cell"><span class="module-compat">Foundry 13</span></td>
+      <td class="module-actions-cell"><div class="module-actions">
+        <a class="module-action primary" href="https://github.com/theripper93/Combat-Booster/releases/download/5.0.2/module.json" target="_blank" rel="noopener noreferrer" data-manifest-link aria-label="Відкрити JSON manifest для Combat Booster: Turn Marker, Recent Actions and more"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg>JSON</a>
+        <button class="module-action" type="button" data-copy-text="https://github.com/theripper93/Combat-Booster/releases/download/5.0.2/module.json" aria-label="Копіювати JSON URL для Combat Booster: Turn Marker, Recent Actions and more"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg>Копіювати URL</button>
+      </div></td>
+    </tr>
+<tr class="module-row" id="module-dice-calculator" data-module-row data-search="dice tray dice-calculator 3.5.5 foundry 13 панель швидких кидків кубів біля чату без ручного введення /roll. опціонально інтегрується з better rolls 2 ">
+      <th class="module-name-cell" scope="row">
+        <div class="module-name-line"><div><h5><a href="https://foundryvtt.com/packages/dice-calculator" target="_blank" rel="noopener noreferrer">Dice Tray</a></h5><span class="module-id">dice-calculator</span></div></div>
+        <p class="module-description">Панель швидких кидків кубів біля чату без ручного введення /roll.</p>
+      </th>
+      <td class="module-version-cell"><span class="module-version">3.5.5</span></td>
+      <td class="module-notes-cell"><span class="module-compat">Foundry 13</span><span class="module-note relation"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-link"></use></svg>Опціонально інтегрується з Better Rolls 2</span></td>
+      <td class="module-actions-cell"><div class="module-actions">
+        <a class="module-action primary" href="https://github.com/mclemente/fvtt-dice-tray/releases/download/3.5.5/module.json" target="_blank" rel="noopener noreferrer" data-manifest-link aria-label="Відкрити JSON manifest для Dice Tray"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg>JSON</a>
+        <button class="module-action" type="button" data-copy-text="https://github.com/mclemente/fvtt-dice-tray/releases/download/3.5.5/module.json" aria-label="Копіювати JSON URL для Dice Tray"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg>Копіювати URL</button>
+      </div></td>
+    </tr>
+<tr class="module-row" id="module-fxmaster" data-module-row data-search="gambit’s fxmaster fxmaster 8.3.5 foundry 13–14 погодні та атмосферні canvas-ефекти: дощ, сніг, туман, попіл та інше.  ">
+      <th class="module-name-cell" scope="row">
+        <div class="module-name-line"><div><h5><a href="https://foundryvtt.com/packages/fxmaster/" target="_blank" rel="noopener noreferrer">Gambit’s FXMaster</a></h5><span class="module-id">fxmaster</span></div></div>
+        <p class="module-description">Погодні та атмосферні canvas-ефекти: дощ, сніг, туман, попіл та інше.</p>
+      </th>
+      <td class="module-version-cell"><span class="module-version">8.3.5</span></td>
+      <td class="module-notes-cell"><span class="module-compat">Foundry 13–14</span></td>
+      <td class="module-actions-cell"><div class="module-actions">
+        <a class="module-action primary" href="https://github.com/gambit07/fxmaster/releases/download/v8.3.5/module.json" target="_blank" rel="noopener noreferrer" data-manifest-link aria-label="Відкрити JSON manifest для Gambit’s FXMaster"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg>JSON</a>
+        <button class="module-action" type="button" data-copy-text="https://github.com/gambit07/fxmaster/releases/download/v8.3.5/module.json" aria-label="Копіювати JSON URL для Gambit’s FXMaster"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg>Копіювати URL</button>
+      </div></td>
+    </tr>
+<tr class="module-row" id="module-hasterolls5e" data-module-row data-search="haste rolls 5e hasterolls5e 1.1.0 foundry 12+ · d&amp;d5e пропускає стандартні діалоги кидків d&amp;d5e для швидшої гри.  ">
+      <th class="module-name-cell" scope="row">
+        <div class="module-name-line"><div><h5><a href="https://foundryvtt.com/packages/hasterolls5e" target="_blank" rel="noopener noreferrer">Haste Rolls 5e</a></h5><span class="module-id">hasterolls5e</span></div></div>
+        <p class="module-description">Пропускає стандартні діалоги кидків D&amp;D5e для швидшої гри.</p>
+      </th>
+      <td class="module-version-cell"><span class="module-version">1.1.0</span></td>
+      <td class="module-notes-cell"><span class="module-compat">Foundry 12+ · D&amp;D5e</span></td>
+      <td class="module-actions-cell"><div class="module-actions">
+        <a class="module-action primary" href="https://github.com/kaelad02/hasterolls5e/releases/download/v1.1.0/module.json" target="_blank" rel="noopener noreferrer" data-manifest-link aria-label="Відкрити JSON manifest для Haste Rolls 5e"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg>JSON</a>
+        <button class="module-action" type="button" data-copy-text="https://github.com/kaelad02/hasterolls5e/releases/download/v1.1.0/module.json" aria-label="Копіювати JSON URL для Haste Rolls 5e"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg>Копіювати URL</button>
+      </div></td>
+    </tr>
+<tr class="module-row" id="module-image-hover" data-module-row data-search="image hover image-hover 3.1 foundry 13 показує збільшені зображення actor, item та інших сутностей при наведенні.  ">
+      <th class="module-name-cell" scope="row">
+        <div class="module-name-line"><div><h5><a href="https://foundryvtt.com/packages/image-hover/" target="_blank" rel="noopener noreferrer">Image Hover</a></h5><span class="module-id">image-hover</span></div></div>
+        <p class="module-description">Показує збільшені зображення Actor, Item та інших сутностей при наведенні.</p>
+      </th>
+      <td class="module-version-cell"><span class="module-version">3.1</span></td>
+      <td class="module-notes-cell"><span class="module-compat">Foundry 13</span></td>
+      <td class="module-actions-cell"><div class="module-actions">
+        <a class="module-action primary" href="https://github.com/Eriku33/Foundry-VTT-Image-Hover/releases/download/3.1/module.json" target="_blank" rel="noopener noreferrer" data-manifest-link aria-label="Відкрити JSON manifest для Image Hover"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg>JSON</a>
+        <button class="module-action" type="button" data-copy-text="https://github.com/Eriku33/Foundry-VTT-Image-Hover/releases/download/3.1/module.json" aria-label="Копіювати JSON URL для Image Hover"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg>Копіювати URL</button>
+      </div></td>
+    </tr>
+<tr class="module-row" id="module-monks-active-tiles" data-module-row data-search="monk’s active tile triggers monks-active-tiles 13.06 foundry 13 перетворює tiles на інтерактивні тригери, кнопки, пастки, телепорти й автоматизації.  ">
+      <th class="module-name-cell" scope="row">
+        <div class="module-name-line"><div><h5><a href="https://foundryvtt.com/packages/monks-active-tiles" target="_blank" rel="noopener noreferrer">Monk’s Active Tile Triggers</a></h5><span class="module-id">monks-active-tiles</span></div></div>
+        <p class="module-description">Перетворює tiles на інтерактивні тригери, кнопки, пастки, телепорти й автоматизації.</p>
+      </th>
+      <td class="module-version-cell"><span class="module-version">13.06</span></td>
+      <td class="module-notes-cell"><span class="module-compat">Foundry 13</span></td>
+      <td class="module-actions-cell"><div class="module-actions">
+        <a class="module-action primary" href="https://raw.githubusercontent.com/ironmonk108/monks-active-tiles/13.06/module.json" target="_blank" rel="noopener noreferrer" data-manifest-link aria-label="Відкрити JSON manifest для Monk’s Active Tile Triggers"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg>JSON</a>
+        <button class="module-action" type="button" data-copy-text="https://raw.githubusercontent.com/ironmonk108/monks-active-tiles/13.06/module.json" aria-label="Копіювати JSON URL для Monk’s Active Tile Triggers"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg>Копіювати URL</button>
+      </div></td>
+    </tr>
+<tr class="module-row" id="module-monks-tokenbar" data-module-row data-search="monk’s tokenbar monks-tokenbar 13.02 foundry 13 gm-панель партії: контроль руху, групові та contested rolls, розподіл xp.  ">
+      <th class="module-name-cell" scope="row">
+        <div class="module-name-line"><div><h5><a href="https://foundryvtt.com/packages/monks-tokenbar" target="_blank" rel="noopener noreferrer">Monk’s TokenBar</a></h5><span class="module-id">monks-tokenbar</span></div></div>
+        <p class="module-description">GM-панель партії: контроль руху, групові та contested rolls, розподіл XP.</p>
+      </th>
+      <td class="module-version-cell"><span class="module-version">13.02</span></td>
+      <td class="module-notes-cell"><span class="module-compat">Foundry 13</span></td>
+      <td class="module-actions-cell"><div class="module-actions">
+        <a class="module-action primary" href="https://raw.githubusercontent.com/ironmonk108/monks-tokenbar/13.02/module.json" target="_blank" rel="noopener noreferrer" data-manifest-link aria-label="Відкрити JSON manifest для Monk’s TokenBar"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg>JSON</a>
+        <button class="module-action" type="button" data-copy-text="https://raw.githubusercontent.com/ironmonk108/monks-tokenbar/13.02/module.json" aria-label="Копіювати JSON URL для Monk’s TokenBar"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg>Копіювати URL</button>
+      </div></td>
+    </tr>
+<tr class="module-row" id="module-popout" data-module-row data-search="popout! popout 2.24 foundry 12–14 · браузер відкриває foundry-вікна як окремі вікна браузера.  не працює у standalone desktop app; використовуйте foundry у браузері.">
+      <th class="module-name-cell" scope="row">
+        <div class="module-name-line"><div><h5><a href="https://foundryvtt.com/packages/popout" target="_blank" rel="noopener noreferrer">PopOut!</a></h5><span class="module-id">popout</span></div></div>
+        <p class="module-description">Відкриває Foundry-вікна як окремі вікна браузера.</p>
+      </th>
+      <td class="module-version-cell"><span class="module-version">2.24</span></td>
+      <td class="module-notes-cell"><span class="module-compat">Foundry 12–14 · браузер</span><span class="module-note caution"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-alert"></use></svg>Не працює у standalone desktop app; використовуйте Foundry у браузері.</span></td>
+      <td class="module-actions-cell"><div class="module-actions">
+        <a class="module-action primary" href="https://raw.githubusercontent.com/League-of-Foundry-Developers/fvtt-module-popout/v2.24/module.json" target="_blank" rel="noopener noreferrer" data-manifest-link aria-label="Відкрити JSON manifest для PopOut!"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg>JSON</a>
+        <button class="module-action" type="button" data-copy-text="https://raw.githubusercontent.com/League-of-Foundry-Developers/fvtt-module-popout/v2.24/module.json" aria-label="Копіювати JSON URL для PopOut!"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg>Копіювати URL</button>
+      </div></td>
+    </tr>
+<tr class="module-row" id="module-quick-insert" data-module-row data-search="quick insert - search widget quick-insert 3.7.8 foundry 13.341+ швидкий глобальний пошук і вставка actor, item, journal та інших документів.  ">
+      <th class="module-name-cell" scope="row">
+        <div class="module-name-line"><div><h5><a href="https://foundryvtt.com/packages/quick-insert" target="_blank" rel="noopener noreferrer">Quick Insert - Search Widget</a></h5><span class="module-id">quick-insert</span></div></div>
+        <p class="module-description">Швидкий глобальний пошук і вставка Actor, Item, Journal та інших документів.</p>
+      </th>
+      <td class="module-version-cell"><span class="module-version">3.7.8</span></td>
+      <td class="module-notes-cell"><span class="module-compat">Foundry 13.341+</span></td>
+      <td class="module-actions-cell"><div class="module-actions">
+        <a class="module-action primary" href="https://gitlab.com/fvtt-modules-lab/quick-insert/-/releases/3.7.8/downloads/module.json" target="_blank" rel="noopener noreferrer" data-manifest-link aria-label="Відкрити JSON manifest для Quick Insert - Search Widget"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg>JSON</a>
+        <button class="module-action" type="button" data-copy-text="https://gitlab.com/fvtt-modules-lab/quick-insert/-/releases/3.7.8/downloads/module.json" aria-label="Копіювати JSON URL для Quick Insert - Search Widget"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg>Копіювати URL</button>
+      </div></td>
+    </tr>
+<tr class="module-row" id="module-ready-set-roll-5e" data-module-row data-search="ready set roll for d&amp;d5e ready-set-roll-5e 3.5.0 foundry 13 · d&amp;d5e 5+ компактні roll-картки та налаштування кидків для d&amp;d5e.  ">
+      <th class="module-name-cell" scope="row">
+        <div class="module-name-line"><div><h5><a href="https://foundryvtt.com/packages/ready-set-roll-5e/" target="_blank" rel="noopener noreferrer">Ready Set Roll for D&amp;D5e</a></h5><span class="module-id">ready-set-roll-5e</span></div></div>
+        <p class="module-description">Компактні roll-картки та налаштування кидків для D&amp;D5e.</p>
+      </th>
+      <td class="module-version-cell"><span class="module-version">3.5.0</span></td>
+      <td class="module-notes-cell"><span class="module-compat">Foundry 13 · D&amp;D5e 5+</span></td>
+      <td class="module-actions-cell"><div class="module-actions">
+        <a class="module-action primary" href="https://github.com/MangoFVTT/fvtt-ready-set-roll-5e/releases/download/release-3.5.0/module.json" target="_blank" rel="noopener noreferrer" data-manifest-link aria-label="Відкрити JSON manifest для Ready Set Roll for D&amp;D5e"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg>JSON</a>
+        <button class="module-action" type="button" data-copy-text="https://github.com/MangoFVTT/fvtt-ready-set-roll-5e/releases/download/release-3.5.0/module.json" aria-label="Копіювати JSON URL для Ready Set Roll for D&amp;D5e"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg>Копіювати URL</button>
+      </div></td>
+    </tr>
+<tr class="module-row" id="module-sequencer" data-module-row data-search="sequencer sequencer 4.2.3 foundry 13–14 рушій для vfx, звуків, снарядів, аур і послідовностей ефектів.  ">
+      <th class="module-name-cell" scope="row">
+        <div class="module-name-line"><div><h5><a href="https://foundryvtt.com/packages/sequencer" target="_blank" rel="noopener noreferrer">Sequencer</a></h5><span class="module-id">sequencer</span></div></div>
+        <p class="module-description">Рушій для VFX, звуків, снарядів, аур і послідовностей ефектів.</p>
+      </th>
+      <td class="module-version-cell"><span class="module-version">4.2.3</span></td>
+      <td class="module-notes-cell"><span class="module-compat">Foundry 13–14</span></td>
+      <td class="module-actions-cell"><div class="module-actions">
+        <a class="module-action primary" href="https://github.com/fantasycalendar/FoundryVTT-Sequencer/releases/download/4.2.3/module.json" target="_blank" rel="noopener noreferrer" data-manifest-link aria-label="Відкрити JSON manifest для Sequencer"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg>JSON</a>
+        <button class="module-action" type="button" data-copy-text="https://github.com/fantasycalendar/FoundryVTT-Sequencer/releases/download/4.2.3/module.json" aria-label="Копіювати JSON URL для Sequencer"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg>Копіювати URL</button>
+      </div></td>
+    </tr>
+<tr class="module-row" id="module-simple-dice-roller" data-module-row data-search="simple dice roller simple-dice-roller 14.0.0 foundry 13–14 проста панель для швидких кидків стандартних кубів.  версія модуля 14.0.0, але цей manifest офіційно дозволяє foundry 13–14.">
+      <th class="module-name-cell" scope="row">
+        <div class="module-name-line"><div><h5><a href="https://foundryvtt.com/packages/simple-dice-roller" target="_blank" rel="noopener noreferrer">Simple Dice Roller</a></h5><span class="module-id">simple-dice-roller</span></div></div>
+        <p class="module-description">Проста панель для швидких кидків стандартних кубів.</p>
+      </th>
+      <td class="module-version-cell"><span class="module-version">14.0.0</span></td>
+      <td class="module-notes-cell"><span class="module-compat">Foundry 13–14</span><span class="module-note caution"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-alert"></use></svg>Версія модуля 14.0.0, але цей manifest офіційно дозволяє Foundry 13–14.</span></td>
+      <td class="module-actions-cell"><div class="module-actions">
+        <a class="module-action primary" href="https://raw.githubusercontent.com/jopeek/fvtt-simple-dice-roller/14.0.0/module.json" target="_blank" rel="noopener noreferrer" data-manifest-link aria-label="Відкрити JSON manifest для Simple Dice Roller"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg>JSON</a>
+        <button class="module-action" type="button" data-copy-text="https://raw.githubusercontent.com/jopeek/fvtt-simple-dice-roller/14.0.0/module.json" aria-label="Копіювати JSON URL для Simple Dice Roller"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg>Копіювати URL</button>
+      </div></td>
+    </tr>
+<tr class="module-row" id="module-smalltime" data-module-row data-search="smalltime smalltime 2.0.5 foundry 13+ компактне відображення та керування часом доби на сцені. опціональна інтеграція з seasons &amp; stars ">
+      <th class="module-name-cell" scope="row">
+        <div class="module-name-line"><div><h5><a href="https://foundryvtt.com/packages/smalltime" target="_blank" rel="noopener noreferrer">SmallTime</a></h5><span class="module-id">smalltime</span></div></div>
+        <p class="module-description">Компактне відображення та керування часом доби на сцені.</p>
+      </th>
+      <td class="module-version-cell"><span class="module-version">2.0.5</span></td>
+      <td class="module-notes-cell"><span class="module-compat">Foundry 13+</span><span class="module-note relation"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-link"></use></svg>Опціональна інтеграція з Seasons &amp; Stars</span></td>
+      <td class="module-actions-cell"><div class="module-actions">
+        <a class="module-action primary" href="https://github.com/unsoluble/smalltime/releases/download/2.0.5/module.json" target="_blank" rel="noopener noreferrer" data-manifest-link aria-label="Відкрити JSON manifest для SmallTime"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg>JSON</a>
+        <button class="module-action" type="button" data-copy-text="https://github.com/unsoluble/smalltime/releases/download/2.0.5/module.json" aria-label="Копіювати JSON URL для SmallTime"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg>Копіювати URL</button>
+      </div></td>
+    </tr>
+<tr class="module-row" id="module-foundry-custom-fonts" data-module-row data-search="stardust’s custom fonts foundry-custom-fonts 1.0.0 foundry 13.339+ додає власні шрифти для інтерфейсу та journal-вмісту foundry.  ">
+      <th class="module-name-cell" scope="row">
+        <div class="module-name-line"><div><h5><a href="https://foundryvtt.com/packages/foundry-custom-fonts" target="_blank" rel="noopener noreferrer">StarDust’s Custom Fonts</a></h5><span class="module-id">foundry-custom-fonts</span></div></div>
+        <p class="module-description">Додає власні шрифти для інтерфейсу та journal-вмісту Foundry.</p>
+      </th>
+      <td class="module-version-cell"><span class="module-version">1.0.0</span></td>
+      <td class="module-notes-cell"><span class="module-compat">Foundry 13.339+</span></td>
+      <td class="module-actions-cell"><div class="module-actions">
+        <a class="module-action primary" href="https://github.com/kagangtuya-star/foundry-custom-fonts/releases/download/1.0.0/module.json" target="_blank" rel="noopener noreferrer" data-manifest-link aria-label="Відкрити JSON manifest для StarDust’s Custom Fonts"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg>JSON</a>
+        <button class="module-action" type="button" data-copy-text="https://github.com/kagangtuya-star/foundry-custom-fonts/releases/download/1.0.0/module.json" aria-label="Копіювати JSON URL для StarDust’s Custom Fonts"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg>Копіювати URL</button>
+      </div></td>
+    </tr>
+<tr class="module-row" id="module-tidy5e-sheet" data-module-row data-search="tidy 5e sheets tidy5e-sheet 12.5.5 foundry 13 · d&amp;d5e 5.2.x альтернативні компактні actor та item sheets для d&amp;d5e. точна гілка для d&amp;d5e 5.2.5 ">
+      <th class="module-name-cell" scope="row">
+        <div class="module-name-line"><div><h5><a href="https://foundryvtt.com/packages/tidy5e-sheet/" target="_blank" rel="noopener noreferrer">Tidy 5e Sheets</a></h5><span class="module-id">tidy5e-sheet</span></div></div>
+        <p class="module-description">Альтернативні компактні Actor та Item sheets для D&amp;D5e.</p>
+      </th>
+      <td class="module-version-cell"><span class="module-version">12.5.5</span></td>
+      <td class="module-notes-cell"><span class="module-compat">Foundry 13 · D&amp;D5e 5.2.x</span><span class="module-note relation"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-link"></use></svg>Точна гілка для D&amp;D5e 5.2.5</span></td>
+      <td class="module-actions-cell"><div class="module-actions">
+        <a class="module-action primary" href="https://github.com/kgar/foundry-vtt-tidy-5e-sheets/releases/download/v12.5.5/module.json" target="_blank" rel="noopener noreferrer" data-manifest-link aria-label="Відкрити JSON manifest для Tidy 5e Sheets"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg>JSON</a>
+        <button class="module-action" type="button" data-copy-text="https://github.com/kgar/foundry-vtt-tidy-5e-sheets/releases/download/v12.5.5/module.json" aria-label="Копіювати JSON URL для Tidy 5e Sheets"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg>Копіювати URL</button>
+      </div></td>
+    </tr>
+      </tbody>
+    </table>
+  </div>
+      <p class="module-empty" id="module-empty" hidden>За цим запитом модулів не знайдено.</p>
+    </section>
+  </section>
+
+  <section class="view macro-view" id="rage" data-view="rage" hidden>
+    <div class="back-row"><a class="back-link" href="#catalog"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-back"></use></svg>До каталогу</a></div>
+    <article class="foundry-window">
+      <header class="window-titlebar">
+        <span class="window-title-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-rage"></use></svg></span>
+        <span class="window-title-copy"><p>Персонаж · Toggle</p><h1>Path of the Giant — Rage Toggle</h1></span>
+        <span class="window-tools"><span class="window-chip">v13 Macro</span><a class="window-close" href="#catalog" aria-label="Закрити"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-close"></use></svg></a></span>
+      </header>
+      <div class="window-body">
+        <div class="section-tabs" role="tablist" aria-label="Path of the Giant — Rage">
+          <button class="section-tab" type="button" role="tab" id="rage-tab-overview" aria-controls="rage-panel-overview" aria-selected="true" data-tab="overview"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-info"></use></svg>Що робить</button>
+          <button class="section-tab" type="button" role="tab" id="rage-tab-settings" aria-controls="rage-panel-settings" aria-selected="false" data-tab="settings" tabindex="-1"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-settings"></use></svg>Налаштування</button>
+          <button class="section-tab" type="button" role="tab" id="rage-tab-macro" aria-controls="rage-panel-macro" aria-selected="false" data-tab="macro" tabindex="-1"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg>Макрос</button>
+        </div>
+        <section class="tab-panel" id="rage-panel-overview" role="tabpanel" aria-labelledby="rage-tab-overview">
+          <div class="content-heading"><p class="eyebrow">Path of the Giant</p><h2>Один перемикач для повного Rage</h2><p>Один макрос вмикає/вимикає Rage, витрачає використання тільки при ON, створює Active Effect на Actor, а при OFF видаляє його.</p></div>
+          <div class="feature-grid">
+            <article class="feature"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-rage"></use></svg><h3>Вмикає й вимикає</h3><p>Повторний запуск знаходить активний Rage effect і прибирає його.</p></article>
+            <article class="feature"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-clock"></use></svg><h3>Рахує використання</h3><p>Збільшує <code>system.uses.spent</code> тільки під час активації.</p></article>
+            <article class="feature"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-enlarge"></use></svg><h3>Збільшує токен</h3><p>ATL додає один крок ширини й висоти, щоб ефект складався з Enlarge.</p></article>
+          </div>
+          <div class="callout warning"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-alert"></use></svg><p>У цій спрощеній схемі <code>1d6</code> Elemental Cleaver лишається без damage type, щоб не моделювати щоразу Acid/Cold/Fire/Thunder/Lightning. Це технічне спрощення, не RAW.</p></div>
+        </section>
+        <section class="tab-panel" id="rage-panel-settings" role="tabpanel" aria-labelledby="rage-tab-settings" hidden>
+          <div class="content-heading"><p class="eyebrow">Перед запуском</p><h2>Active Effect для Rage</h2><p>Налаштуй effect у предметі Rage один раз; далі macro створює його копію на Actor.</p></div>
+          <ol class="setup-steps"><li>Встановити й увімкнути <strong>Active Token Effects 1.1.1</strong>.</li><li>У <strong>Rage → Effects → Rage → Changes</strong> налаштувати рядки нижче.</li><li>Для масштабування, яке нормально складається з Enlarge, використовувати <strong>Add +1</strong>, а не Override 2.</li></ol>
+          <h3 class="subheading"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-settings"></use></svg>Changes</h3>
+          <div class="settings-wrap"><table class="settings-table"><thead><tr><th>Ключ</th><th>Режим</th><th>Значення</th><th>Priority</th></tr></thead><tbody>
+            <tr><td data-copyable><code class="copy-payload">system.bonuses.mwak.damage</code></td><td data-copyable><code class="copy-payload">Додати</code></td><td data-copyable><code class="copy-payload">@scale.barbarian.rage-damage + 1d6</code></td><td data-copyable><code class="copy-payload">20</code></td></tr>
+            <tr><td data-copyable><code class="copy-payload">system.traits.dr.value</code></td><td data-copyable><code class="copy-payload">Додати</code></td><td data-copyable><code class="copy-payload">slashing</code></td><td data-copyable><code class="copy-payload">20</code></td></tr>
+            <tr><td data-copyable><code class="copy-payload">system.traits.dr.value</code></td><td data-copyable><code class="copy-payload">Додати</code></td><td data-copyable><code class="copy-payload">piercing</code></td><td data-copyable><code class="copy-payload">20</code></td></tr>
+            <tr><td data-copyable><code class="copy-payload">system.traits.dr.value</code></td><td data-copyable><code class="copy-payload">Додати</code></td><td data-copyable><code class="copy-payload">bludgeoning</code></td><td data-copyable><code class="copy-payload">20</code></td></tr>
+            <tr><td data-copyable><code class="copy-payload">system.abilities.str.check.roll.mode</code></td><td data-copyable><code class="copy-payload">Додати</code></td><td data-copyable><code class="copy-payload">1</code></td><td data-copyable><code class="copy-payload">20</code></td></tr>
+            <tr><td data-copyable><code class="copy-payload">system.abilities.str.save.roll.mode</code></td><td data-copyable><code class="copy-payload">Додати</code></td><td data-copyable><code class="copy-payload">1</code></td><td data-copyable><code class="copy-payload">20</code></td></tr>
+            <tr><td data-copyable><code class="copy-payload">system.traits.size</code></td><td data-copyable><code class="copy-payload">Перезаписати</code></td><td data-copyable><code class="copy-payload">lg</code></td><td data-copyable><code class="copy-payload">50</code></td></tr>
+            <tr><td data-copyable><code class="copy-payload">ATL.width</code></td><td data-copyable><code class="copy-payload">Додати</code></td><td data-copyable><code class="copy-payload">1</code></td><td data-copyable><code class="copy-payload">50</code></td></tr>
+            <tr><td data-copyable><code class="copy-payload">ATL.height</code></td><td data-copyable><code class="copy-payload">Додати</code></td><td data-copyable><code class="copy-payload">1</code></td><td data-copyable><code class="copy-payload">50</code></td></tr>
+          </tbody></table></div>
+          <h3 class="subheading"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg>Окремі значення для швидкого копіювання</h3>
+          <div class="quick-copy-grid">
+            <button class="quick-copy" type="button" data-copy-text="system.bonuses.mwak.damage"><code>system.bonuses.mwak.damage</code><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg></button>
+            <button class="quick-copy" type="button" data-copy-text="@scale.barbarian.rage-damage + 1d6"><code>@scale.barbarian.rage-damage + 1d6</code><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg></button>
+            <button class="quick-copy" type="button" data-copy-text="system.traits.size"><code>system.traits.size</code><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg></button>
+            <button class="quick-copy" type="button" data-copy-text="ATL.width"><code>ATL.width</code><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg></button>
+            <button class="quick-copy" type="button" data-copy-text="ATL.height"><code>ATL.height</code><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg></button>
+          </div>
+        </section>
+        <section class="tab-panel" id="rage-panel-macro" role="tabpanel" aria-labelledby="rage-tab-macro" hidden>
+          <div class="content-heading"><p class="eyebrow">Foundry Macro</p><h2>Rage Toggle</h2><p>Виділи токен персонажа й запускай один і той самий macro для ON та OFF.</p></div>
+          <div class="code-window"><div class="code-toolbar"><div class="code-title"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg><span>Rage Toggle.js</span><small>повний код</small></div><button class="copy-code" type="button" aria-label="Копіювати весь макрос"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg><span>Копіювати</span></button></div><pre><code>const token = canvas.tokens.controlled[0];
+
+if (!token) {
+  ui.notifications.warn("Спочатку виділи токен персонажа.");
+  return;
+}
+
+const actor = token.actor;
+const rageItem = actor.items.find(i =&gt; i.name.trim().toLowerCase() === "rage");
+
+if (!rageItem) {
+  ui.notifications.error("Не знайдено уміння Rage.");
+  return;
+}
+
+const activeRage = actor.effects.find(e =&gt;
+  e.name.trim().toLowerCase() === "rage" &amp;&amp; !e.disabled
+);
+
+if (activeRage) {
+  await activeRage.delete();
+  ui.notifications.info("Rage вимкнено.");
+  return;
+}
+
+const remaining = Number(rageItem.system.uses?.value ?? 0);
+const spent = Number(rageItem.system.uses?.spent ?? 0);
+
+if (remaining &lt;= 0) {
+  ui.notifications.warn("Не залишилося використань Rage.");
+  return;
+}
+
+const sourceEffect = rageItem.effects.find(e =&gt;
+  e.name.trim().toLowerCase() === "rage"
+);
+
+if (!sourceEffect) {
+  ui.notifications.error("У Rage не знайдено Active Effect.");
+  return;
+}
+
+const effectData = sourceEffect.toObject();
+delete effectData._id;
+
+effectData.disabled = false;
+effectData.transfer = false;
+effectData.origin = rageItem.uuid;
+
+await rageItem.update({ "system.uses.spent": spent + 1 });
+
+effectData.duration ??= {};
+effectData.duration.startTime = game.time.worldTime;
+
+if (game.combat) {
+  effectData.duration.startRound = game.combat.round;
+  effectData.duration.startTurn = game.combat.turn;
+}
+
+await actor.createEmbeddedDocuments("ActiveEffect", [effectData]);
+ui.notifications.info(`Rage активовано. Залишилось: ${remaining - 1}`);</code></pre></div>
+        </section>
+      </div>
+    </article>
+  </section>
+
+  <section class="view macro-view" id="enlarge" data-view="enlarge" hidden>
+    <div class="back-row"><a class="back-link" href="#catalog"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-back"></use></svg>До каталогу</a></div>
+    <article class="foundry-window">
+      <header class="window-titlebar"><span class="window-title-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-enlarge"></use></svg></span><span class="window-title-copy"><p>Персонаж · Effect</p><h1>Магічне збільшення — окремий Toggle</h1></span><span class="window-tools"><span class="window-chip">v13 Macro</span><a class="window-close" href="#catalog" aria-label="Закрити"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-close"></use></svg></a></span></header>
+      <div class="window-body">
+        <div class="section-tabs" role="tablist" aria-label="Магічне збільшення">
+          <button class="section-tab" type="button" role="tab" id="enlarge-tab-overview" aria-controls="enlarge-panel-overview" aria-selected="true" data-tab="overview"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-info"></use></svg>Що робить</button>
+          <button class="section-tab" type="button" role="tab" id="enlarge-tab-settings" aria-controls="enlarge-panel-settings" aria-selected="false" data-tab="settings" tabindex="-1"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-settings"></use></svg>Налаштування</button>
+          <button class="section-tab" type="button" role="tab" id="enlarge-tab-macro" aria-controls="enlarge-panel-macro" aria-selected="false" data-tab="macro" tabindex="-1"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg>Макрос</button>
+        </div>
+        <section class="tab-panel" id="enlarge-panel-overview" role="tabpanel" aria-labelledby="enlarge-tab-overview">
+          <div class="content-heading"><p class="eyebrow">Magical Enlarge</p><h2>Незалежне збільшення, що складається з Rage</h2><p>Окремий ефект, незалежний від Rage. Rage додає +1 size step, Enlarge додає ще +1. Разом: 1×1 → 2×2 → 3×3.</p></div>
+          <div class="feature-grid"><article class="feature"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-enlarge"></use></svg><h3>Ще один size step</h3><p><code>ATL.width</code> і <code>ATL.height</code> додають по одиниці.</p></article><article class="feature"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-rage"></use></svg><h3>Не залежить від Rage</h3><p>Effect має власну назву й окремо створюється або видаляється.</p></article><article class="feature"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-clock"></use></svg><h3>10 rounds</h3><p>Макрос задає тривалість ефекту на десять раундів.</p></article></div>
+          <div class="callout"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-info"></use></svg><p><strong>Стек розміру:</strong> звичайний токен 1×1 → Rage 2×2 → Rage + Enlarge 3×3.</p></div>
+        </section>
+        <section class="tab-panel" id="enlarge-panel-settings" role="tabpanel" aria-labelledby="enlarge-tab-settings" hidden>
+          <div class="content-heading"><p class="eyebrow">Active Effect</p><h2>Налаштування магічного збільшення</h2><p>У <strong>Магічне збільшення (чуже) → Effects → Temporary Effect → Changes</strong> додай три рядки.</p></div>
+          <div class="settings-wrap"><table class="settings-table"><thead><tr><th>Ключ</th><th>Режим</th><th>Значення</th><th>Priority</th></tr></thead><tbody>
+            <tr><td data-copyable><code class="copy-payload">ATL.width</code></td><td data-copyable><code class="copy-payload">Додати</code></td><td data-copyable><code class="copy-payload">1</code></td><td data-copyable><code class="copy-payload">20</code></td></tr>
+            <tr><td data-copyable><code class="copy-payload">ATL.height</code></td><td data-copyable><code class="copy-payload">Додати</code></td><td data-copyable><code class="copy-payload">1</code></td><td data-copyable><code class="copy-payload">20</code></td></tr>
+            <tr><td data-copyable><code class="copy-payload">system.bonuses.mwak.damage</code></td><td data-copyable><code class="copy-payload">Додати</code></td><td data-copyable><code class="copy-payload">1d8</code></td><td data-copyable><code class="copy-payload">20</code></td></tr>
+          </tbody></table></div>
+          <div class="setting-pills"><span class="setting-pill" data-copyable><strong>Duration</strong><span class="copy-payload">10 rounds</span></span><span class="setting-pill" data-copyable><strong>Paused</strong><span class="copy-payload">OFF</span></span></div>
+          <div class="callout"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-info"></use></svg><p>Для дубліката на Амалі можна не ставити Concentration — її тримає справжній caster.</p></div>
+          <h3 class="subheading"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg>Значення для копіювання</h3>
+          <div class="quick-copy-grid"><button class="quick-copy" type="button" data-copy-text="ATL.width"><code>ATL.width</code><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg></button><button class="quick-copy" type="button" data-copy-text="ATL.height"><code>ATL.height</code><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg></button><button class="quick-copy" type="button" data-copy-text="system.bonuses.mwak.damage"><code>system.bonuses.mwak.damage</code><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg></button><button class="quick-copy" type="button" data-copy-text="1d8"><code>1d8</code><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg></button></div>
+        </section>
+        <section class="tab-panel" id="enlarge-panel-macro" role="tabpanel" aria-labelledby="enlarge-tab-macro" hidden>
+          <div class="content-heading"><p class="eyebrow">Foundry Macro</p><h2>Магічне збільшення ON/OFF</h2><p>Працює з предметом і Active Effect під назвою <strong>«Магічне збільшення (чуже)»</strong>.</p></div>
+          <div class="code-window"><div class="code-toolbar"><div class="code-title"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg><span>Magical Enlarge Toggle.js</span><small>повний код</small></div><button class="copy-code" type="button" aria-label="Копіювати весь макрос"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg><span>Копіювати</span></button></div><pre><code>const token = canvas.tokens.controlled[0];
+
+if (!token) {
+  ui.notifications.warn("Спочатку виділи токен персонажа.");
+  return;
+}
+
+const actor = token.actor;
+const ITEM_NAME = "Магічне збільшення (чуже)";
+const EFFECT_NAME = "Магічне збільшення (чуже)";
+
+const item = actor.items.find(i =&gt;
+  i.name.trim().toLowerCase() === ITEM_NAME.toLowerCase()
+);
+
+if (!item) {
+  ui.notifications.error(`Не знайдено "${ITEM_NAME}".`);
+  return;
+}
+
+const activeEffect = actor.effects.find(e =&gt;
+  e.origin === item.uuid || e.name.trim().toLowerCase() === EFFECT_NAME.toLowerCase()
+);
+
+if (activeEffect) {
+  await activeEffect.delete();
+  ui.notifications.info("Магічне збільшення вимкнено.");
+  return;
+}
+
+const sourceEffect = item.effects.find(e =&gt;
+  e.name.trim().toLowerCase() === EFFECT_NAME.toLowerCase()
+) ?? item.effects.contents[0];
+
+if (!sourceEffect) {
+  ui.notifications.error("У заклятті не знайдено Active Effect.");
+  return;
+}
+
+const effectData = sourceEffect.toObject();
+delete effectData._id;
+
+effectData.disabled = false;
+effectData.transfer = false;
+effectData.origin = item.uuid;
+effectData.duration ??= {};
+effectData.duration.seconds = null;
+effectData.duration.rounds = 10;
+effectData.duration.turns = null;
+effectData.duration.startTime = game.time.worldTime;
+
+if (game.combat) {
+  effectData.duration.startRound = game.combat.round;
+  effectData.duration.startTurn = game.combat.turn;
+}
+
+await actor.createEmbeddedDocuments("ActiveEffect", [effectData]);
+ui.notifications.info("Магічне збільшення активовано.");</code></pre></div>
+        </section>
+      </div>
+    </article>
+  </section>
+
+  <section class="view macro-view" id="torch-token" data-view="torch-token" hidden>
+    <div class="back-row"><a class="back-link" href="#catalog"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-back"></use></svg>До каталогу</a></div>
+    <article class="foundry-window">
+      <header class="window-titlebar"><span class="window-title-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-torch"></use></svg></span><span class="window-title-copy"><p>Світло · Token</p><h1>Факел на вибраному токені — ON/OFF</h1></span><span class="window-tools"><span class="window-chip">v13 Macro</span><a class="window-close" href="#catalog" aria-label="Закрити"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-close"></use></svg></a></span></header>
+      <div class="window-body">
+        <div class="section-tabs" role="tablist" aria-label="Факел на токені"><button class="section-tab" type="button" role="tab" id="torch-token-tab-overview" aria-controls="torch-token-panel-overview" aria-selected="true" data-tab="overview"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-info"></use></svg>Що робить</button><button class="section-tab" type="button" role="tab" id="torch-token-tab-settings" aria-controls="torch-token-panel-settings" aria-selected="false" data-tab="settings" tabindex="-1"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-settings"></use></svg>Налаштування</button><button class="section-tab" type="button" role="tab" id="torch-token-tab-macro" aria-controls="torch-token-panel-macro" aria-selected="false" data-tab="macro" tabindex="-1"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg>Макрос</button></div>
+        <section class="tab-panel" id="torch-token-panel-overview" role="tabpanel" aria-labelledby="torch-token-tab-overview">
+          <div class="content-heading"><p class="eyebrow">Torch on Token</p><h2>Факел із пам’яттю попереднього світла</h2><p>20 ft Bright + 20 ft додаткового Dim. У Foundry це Bright 20 / Dim 40. Макрос запам’ятовує попереднє світло токена й повертає його при OFF.</p></div>
+          <div class="feature-grid"><article class="feature"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-token"></use></svg><h3>Один або кілька токенів</h3><p>Макрос проходить по всіх контрольованих токенах.</p></article><article class="feature"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-torch"></use></svg><h3>Анімація Torch</h3><p>Тепле світло з кольором <code>#a2642a</code> та стандартною анімацією.</p></article><article class="feature"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-shield"></use></svg><h3>Безпечний OFF</h3><p>Повний попередній light object зберігається у world flag і відновлюється.</p></article></div>
+        </section>
+        <section class="tab-panel" id="torch-token-panel-settings" role="tabpanel" aria-labelledby="torch-token-tab-settings" hidden>
+          <div class="content-heading"><p class="eyebrow">Light configuration</p><h2>Параметри факела</h2><p>Значення вже записані в macro; таблиця потрібна як швидкий довідник і для окремого копіювання.</p></div>
+          <div class="settings-wrap"><table class="settings-table"><thead><tr><th>Поле</th><th>Значення</th><th>Пояснення</th><th>Scope</th></tr></thead><tbody>
+            <tr><td data-copyable><code class="copy-payload">light.bright</code></td><td data-copyable><code class="copy-payload">20</code></td><td>20 ft яскравого світла</td><td data-copyable><code class="copy-payload">token</code></td></tr>
+            <tr><td data-copyable><code class="copy-payload">light.dim</code></td><td data-copyable><code class="copy-payload">40</code></td><td>Загальний радіус Dim</td><td data-copyable><code class="copy-payload">token</code></td></tr>
+            <tr><td data-copyable><code class="copy-payload">light.angle</code></td><td data-copyable><code class="copy-payload">360</code></td><td>Повне коло</td><td data-copyable><code class="copy-payload">token</code></td></tr>
+            <tr><td data-copyable><code class="copy-payload">light.color</code></td><td data-copyable><code class="copy-payload">#a2642a</code></td><td>Теплий колір факела</td><td data-copyable><code class="copy-payload">token</code></td></tr>
+            <tr><td data-copyable><code class="copy-payload">light.alpha</code></td><td data-copyable><code class="copy-payload">0.7</code></td><td>Інтенсивність кольору</td><td data-copyable><code class="copy-payload">token</code></td></tr>
+            <tr><td data-copyable><code class="copy-payload">light.animation.type</code></td><td data-copyable><code class="copy-payload">torch</code></td><td>Тип анімації</td><td data-copyable><code class="copy-payload">token</code></td></tr>
+            <tr><td data-copyable><code class="copy-payload">light.animation.speed</code></td><td data-copyable><code class="copy-payload">2</code></td><td>Швидкість</td><td data-copyable><code class="copy-payload">token</code></td></tr>
+            <tr><td data-copyable><code class="copy-payload">light.animation.intensity</code></td><td data-copyable><code class="copy-payload">3</code></td><td>Сила мерехтіння</td><td data-copyable><code class="copy-payload">token</code></td></tr>
+            <tr><td data-copyable><code class="copy-payload">light.animation.reverse</code></td><td data-copyable><code class="copy-payload">false</code></td><td>Без реверсу анімації</td><td data-copyable><code class="copy-payload">token</code></td></tr>
+          </tbody></table></div>
+          <h3 class="subheading"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-shield"></use></svg>World flags</h3><div class="setting-pills"><span class="setting-pill" data-copyable><strong>Scope</strong><span class="copy-payload">world</span></span><span class="setting-pill" data-copyable><strong>Active</strong><span class="copy-payload">torchMacroActive</span></span><span class="setting-pill" data-copyable><strong>Backup</strong><span class="copy-payload">torchMacroBackup</span></span></div>
+        </section>
+        <section class="tab-panel" id="torch-token-panel-macro" role="tabpanel" aria-labelledby="torch-token-tab-macro" hidden>
+          <div class="content-heading"><p class="eyebrow">Foundry Macro</p><h2>Torch on Token ON/OFF</h2><p>Перед запуском виділи хоча б один токен.</p></div>
+          <div class="code-window"><div class="code-toolbar"><div class="code-title"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg><span>Torch on Token.js</span><small>повний код</small></div><button class="copy-code" type="button" aria-label="Копіювати весь макрос"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg><span>Копіювати</span></button></div><pre><code>const tokens = canvas.tokens.controlled;
+
+if (!tokens.length) {
+  ui.notifications.warn("Спочатку виділи хоча б один токен.");
+  return;
+}
+
+const FLAG_SCOPE = "world";
+const FLAG_ACTIVE = "torchMacroActive";
+const FLAG_BACKUP = "torchMacroBackup";
+
+for (const token of tokens) {
+  const doc = token.document;
+  const isTorchActive = doc.getFlag(FLAG_SCOPE, FLAG_ACTIVE);
+
+  if (isTorchActive) {
+    const backup = doc.getFlag(FLAG_SCOPE, FLAG_BACKUP);
+    if (backup) await doc.update({ light: backup });
+    else await doc.update({ "light.bright": 0, "light.dim": 0 });
+    await doc.unsetFlag(FLAG_SCOPE, FLAG_ACTIVE);
+    await doc.unsetFlag(FLAG_SCOPE, FLAG_BACKUP);
+    continue;
+  }
+
+  const backup = doc.light.toObject();
+  await doc.setFlag(FLAG_SCOPE, FLAG_BACKUP, backup);
+  await doc.setFlag(FLAG_SCOPE, FLAG_ACTIVE, true);
+
+  await doc.update({
+    "light.bright": 20,
+    "light.dim": 40,
+    "light.angle": 360,
+    "light.color": "#a2642a",
+    "light.alpha": 0.7,
+    "light.animation.type": "torch",
+    "light.animation.speed": 2,
+    "light.animation.intensity": 3,
+    "light.animation.reverse": false
+  });
+}
+
+ui.notifications.info("Світло факела перемкнено.");</code></pre></div>
+        </section>
+      </div>
+    </article>
+  </section>
+
+  <section class="view macro-view" id="torch-point" data-view="torch-point" hidden>
+    <div class="back-row"><a class="back-link" href="#catalog"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-back"></use></svg>До каталогу</a></div>
+    <article class="foundry-window">
+      <header class="window-titlebar"><span class="window-title-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-light"></use></svg></span><span class="window-title-copy"><p>Світло · GM</p><h1>Поставити точкове світло на мапі</h1></span><span class="window-tools"><span class="window-chip">v13 Macro</span><a class="window-close" href="#catalog" aria-label="Закрити"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-close"></use></svg></a></span></header>
+      <div class="window-body">
+        <div class="section-tabs" role="tablist" aria-label="Точкове світло"><button class="section-tab" type="button" role="tab" id="torch-point-tab-overview" aria-controls="torch-point-panel-overview" aria-selected="true" data-tab="overview"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-info"></use></svg>Що робить</button><button class="section-tab" type="button" role="tab" id="torch-point-tab-settings" aria-controls="torch-point-panel-settings" aria-selected="false" data-tab="settings" tabindex="-1"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-settings"></use></svg>Налаштування</button><button class="section-tab" type="button" role="tab" id="torch-point-tab-macro" aria-controls="torch-point-panel-macro" aria-selected="false" data-tab="macro" tabindex="-1"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg>Макрос</button></div>
+        <section class="tab-panel" id="torch-point-panel-overview" role="tabpanel" aria-labelledby="torch-point-tab-overview">
+          <div class="content-heading"><p class="eyebrow">Ambient Light Placement</p><h2>Світло в один клік по canvas</h2><p>GM-макрос. Натискаєш → клікаєш точку на canvas → створюється звичайний Ambient Light Foundry.</p></div>
+          <div class="feature-grid"><article class="feature"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-cursor"></use></svg><h3>Click to place</h3><p>Наступний лівий клік визначає координати нового джерела.</p></article><article class="feature"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-map"></use></svg><h3>Core Ambient Light</h3><p>Створює стандартний embedded document поточної сцени.</p></article><article class="feature"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-close"></use></svg><h3>ESC скасовує</h3><p>Обробники очищаються після розміщення або скасування.</p></article></div>
+        </section>
+        <section class="tab-panel" id="torch-point-panel-settings" role="tabpanel" aria-labelledby="torch-point-tab-settings" hidden>
+          <div class="content-heading"><p class="eyebrow">AmbientLight config</p><h2>Параметри джерела світла</h2><p>Macro запускається лише на готовій сцені та перевіряє права GM.</p></div>
+          <div class="requirements"><article class="requirement"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-map"></use></svg><div><strong>Canvas ready</strong><p>Спочатку відкрий сцену.</p></div></article><article class="requirement"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-shield"></use></svg><div><strong>GM only</strong><p>Створення AmbientLight потребує прав GM.</p></div></article></div>
+          <h3 class="subheading"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-settings"></use></svg>Config</h3>
+          <div class="settings-wrap"><table class="settings-table"><thead><tr><th>Поле</th><th>Значення</th><th>Поле</th><th>Значення</th></tr></thead><tbody>
+            <tr><td data-copyable><code class="copy-payload">bright</code></td><td data-copyable><code class="copy-payload">20</code></td><td data-copyable><code class="copy-payload">dim</code></td><td data-copyable><code class="copy-payload">40</code></td></tr>
+            <tr><td data-copyable><code class="copy-payload">angle</code></td><td data-copyable><code class="copy-payload">360</code></td><td data-copyable><code class="copy-payload">color</code></td><td data-copyable><code class="copy-payload">#a2642a</code></td></tr>
+            <tr><td data-copyable><code class="copy-payload">alpha</code></td><td data-copyable><code class="copy-payload">0.7</code></td><td data-copyable><code class="copy-payload">animation.type</code></td><td data-copyable><code class="copy-payload">torch</code></td></tr>
+            <tr><td data-copyable><code class="copy-payload">animation.speed</code></td><td data-copyable><code class="copy-payload">2</code></td><td data-copyable><code class="copy-payload">animation.intensity</code></td><td data-copyable><code class="copy-payload">3</code></td></tr>
+            <tr><td data-copyable><code class="copy-payload">walls</code></td><td data-copyable><code class="copy-payload">true</code></td><td data-copyable><code class="copy-payload">vision</code></td><td data-copyable><code class="copy-payload">false</code></td></tr>
+            <tr><td data-copyable><code class="copy-payload">rotation</code></td><td data-copyable><code class="copy-payload">0</code></td><td data-copyable><code class="copy-payload">hidden</code></td><td data-copyable><code class="copy-payload">false</code></td></tr>
+            <tr><td data-copyable><code class="copy-payload">negative</code></td><td data-copyable><code class="copy-payload">false</code></td><td data-copyable><code class="copy-payload">priority</code></td><td data-copyable><code class="copy-payload">0</code></td></tr>
+            <tr><td data-copyable><code class="copy-payload">animation.reverse</code></td><td data-copyable><code class="copy-payload">false</code></td><td data-copyable><code class="copy-payload">ESC</code></td><td data-copyable><code class="copy-payload">Escape</code></td></tr>
+          </tbody></table></div>
+        </section>
+        <section class="tab-panel" id="torch-point-panel-macro" role="tabpanel" aria-labelledby="torch-point-tab-macro" hidden>
+          <div class="content-heading"><p class="eyebrow">Foundry Macro</p><h2>Ambient Light Placement</h2><p>Запусти macro, клікни потрібну точку або натисни ESC.</p></div>
+          <div class="code-window"><div class="code-toolbar"><div class="code-title"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg><span>Ambient Light Placement.js</span><small>повний код</small></div><button class="copy-code" type="button" aria-label="Копіювати весь макрос"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg><span>Копіювати</span></button></div><pre><code>if (!canvas.ready || !canvas.scene) {
+  ui.notifications.warn("Спочатку відкрий сцену.");
+  return;
+}
+
+if (!game.user.isGM) {
+  ui.notifications.warn("Цей макрос призначений для GM.");
+  return;
+}
+
+if (globalThis._torchPlacementHandler) {
+  canvas.stage.off("pointertap", globalThis._torchPlacementHandler);
+}
+if (globalThis._torchPlacementKeyHandler) {
+  window.removeEventListener("keydown", globalThis._torchPlacementKeyHandler);
+}
+
+ui.notifications.info("Клікни по карті, щоб поставити світло. ESC — скасувати.");
+
+const cleanup = () =&gt; {
+  if (globalThis._torchPlacementHandler) canvas.stage.off("pointertap", globalThis._torchPlacementHandler);
+  if (globalThis._torchPlacementKeyHandler) window.removeEventListener("keydown", globalThis._torchPlacementKeyHandler);
+  globalThis._torchPlacementHandler = null;
+  globalThis._torchPlacementKeyHandler = null;
+};
+
+globalThis._torchPlacementKeyHandler = event =&gt; {
+  if (event.key !== "Escape") return;
+  cleanup();
+  ui.notifications.info("Розміщення світла скасовано.");
+};
+window.addEventListener("keydown", globalThis._torchPlacementKeyHandler);
+
+globalThis._torchPlacementHandler = async event =&gt; {
+  if (event.button !== 0) return;
+  const { x, y } = canvas.mousePosition;
+  cleanup();
+
+  await canvas.scene.createEmbeddedDocuments("AmbientLight", [{
+    x, y, rotation: 0, walls: true, vision: false, hidden: false,
+    config: {
+      bright: 20,
+      dim: 40,
+      angle: 360,
+      color: "#a2642a",
+      alpha: 0.7,
+      negative: false,
+      priority: 0,
+      animation: { type: "torch", speed: 2, intensity: 3, reverse: false }
+    }
+  }]);
+
+  ui.notifications.info("Джерело світла створено.");
+};
+
+canvas.stage.on("pointertap", globalThis._torchPlacementHandler);</code></pre></div>
+        </section>
+      </div>
+    </article>
+  </section>
+
+  <section class="view macro-view" id="vision60" data-view="vision60" hidden>
+    <div class="back-row"><a class="back-link" href="#catalog"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-back"></use></svg>До каталогу</a></div>
+    <article class="foundry-window">
+      <header class="window-titlebar"><span class="window-title-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-eye"></use></svg></span><span class="window-title-copy"><p>Зір · Token + Prototype</p><h1>Vision 60 ft — вибрані токени + Prototype Token</h1></span><span class="window-tools"><span class="window-chip">60 ft</span><a class="window-close" href="#catalog" aria-label="Закрити"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-close"></use></svg></a></span></header>
+      <div class="window-body">
+        <div class="section-tabs" role="tablist" aria-label="Vision 60 ft"><button class="section-tab" type="button" role="tab" id="vision60-tab-overview" aria-controls="vision60-panel-overview" aria-selected="true" data-tab="overview"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-info"></use></svg>Що робить</button><button class="section-tab" type="button" role="tab" id="vision60-tab-settings" aria-controls="vision60-panel-settings" aria-selected="false" data-tab="settings" tabindex="-1"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-settings"></use></svg>Налаштування</button><button class="section-tab" type="button" role="tab" id="vision60-tab-macro" aria-controls="vision60-panel-macro" aria-selected="false" data-tab="macro" tabindex="-1"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg>Макрос</button></div>
+        <section class="tab-panel" id="vision60-panel-overview" role="tabpanel" aria-labelledby="vision60-tab-overview">
+          <div class="content-heading"><p class="eyebrow">Minimum vision</p><h2>Зір щонайменше 60 ft</h2><p>Піднімає sight мінімум до 60 ft. Значення, що вже більші за 60, не зменшує. Unlimited не чіпає.</p></div>
+          <div class="feature-grid"><article class="feature"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-token"></use></svg><h3>Selected Tokens</h3><p>Вмикає sight і змінює range на поточних токенах.</p></article><article class="feature"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-book"></use></svg><h3>Prototype Token</h3><p>Оновлює base Actor один раз, навіть якщо виділено кілька його токенів.</p></article><article class="feature"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-shield"></use></svg><h3>Не зменшує</h3><p>Зберігає більшу дальність і <code>null</code> як Unlimited.</p></article></div>
+        </section>
+        <section class="tab-panel" id="vision60-panel-settings" role="tabpanel" aria-labelledby="vision60-tab-settings" hidden>
+          <div class="content-heading"><p class="eyebrow">Правила оновлення</p><h2>Безпечна мінімальна дальність</h2><p>Макрос не потребує модуля: він працює з Token Document та base Actor.</p></div>
+          <div class="setting-pills"><span class="setting-pill" data-copyable><strong>MIN_VISION</strong><span class="copy-payload">60</span></span><span class="setting-pill" data-copyable><strong>sight.enabled</strong><span class="copy-payload">true</span></span></div>
+          <div class="requirements"><article class="requirement"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-token"></use></svg><div><strong>Потрібен вибраний токен</strong><p>Без вибраних токенів macro показує попередження й завершується.</p></div></article><article class="requirement"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-eye"></use></svg><div><strong>Лише нижчі значення</strong><p>Finite range нижче 60 змінюється; 60+, а також Unlimited, зберігаються.</p></div></article></div>
+        </section>
+        <section class="tab-panel" id="vision60-panel-macro" role="tabpanel" aria-labelledby="vision60-tab-macro" hidden>
+          <div class="content-heading"><p class="eyebrow">Foundry Macro</p><h2>Vision 60 ft</h2><p>Виділи один або кілька токенів і запусти macro.</p></div>
+          <div class="code-window"><div class="code-toolbar"><div class="code-title"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg><span>Vision 60 ft.js</span><small>повний код</small></div><button class="copy-code" type="button" aria-label="Копіювати весь макрос"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg><span>Копіювати</span></button></div><pre><code>const MIN_VISION = 60;
+const tokens = canvas.tokens.controlled;
+if (!tokens.length) {
+  ui.notifications.warn("Спочатку виділи хоча б один токен.");
+  return;
+}
+let changedTokens = 0;
+let changedActors = 0;
+const updatedActors = new Set();
+for (const token of tokens) {
+  const doc = token.document;
+  const currentRange = doc.sight.range;
+  const tokenUpdate = { "sight.enabled": true };
+  if (currentRange !== null &amp;&amp; currentRange &lt; MIN_VISION) {
+    tokenUpdate["sight.range"] = MIN_VISION;
+  }
+  await doc.update(tokenUpdate);
+  changedTokens++;
+  const actor = doc.baseActor;
+  if (actor &amp;&amp; !updatedActors.has(actor.id)) {
+    const prototypeRange = actor.prototypeToken.sight.range;
+    const actorUpdate = { "prototypeToken.sight.enabled": true };
+    if (prototypeRange !== null &amp;&amp; prototypeRange &lt; MIN_VISION) {
+      actorUpdate["prototypeToken.sight.range"] = MIN_VISION;
+    }
+    await actor.update(actorUpdate);
+    updatedActors.add(actor.id);
+    changedActors++;
+  }
+}
+ui.notifications.info(`Vision: ${changedTokens} токен(ів), ${changedActors} Prototype Token(ів). Мінімум ${MIN_VISION} ft.`);</code></pre></div>
+        </section>
+      </div>
+    </article>
+  </section>
+
+  <section class="view macro-view" id="vision120" data-view="vision120" hidden>
+    <div class="back-row"><a class="back-link" href="#catalog"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-back"></use></svg>До каталогу</a></div>
+    <article class="foundry-window">
+      <header class="window-titlebar"><span class="window-title-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-eye"></use></svg></span><span class="window-title-copy"><p>Зір · Token + Prototype</p><h1>Vision 120 ft — вибрані токени + Prototype Token</h1></span><span class="window-tools"><span class="window-chip">120 ft</span><a class="window-close" href="#catalog" aria-label="Закрити"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-close"></use></svg></a></span></header>
+      <div class="window-body">
+        <div class="section-tabs" role="tablist" aria-label="Vision 120 ft"><button class="section-tab" type="button" role="tab" id="vision120-tab-overview" aria-controls="vision120-panel-overview" aria-selected="true" data-tab="overview"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-info"></use></svg>Що робить</button><button class="section-tab" type="button" role="tab" id="vision120-tab-settings" aria-controls="vision120-panel-settings" aria-selected="false" data-tab="settings" tabindex="-1"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-settings"></use></svg>Налаштування</button><button class="section-tab" type="button" role="tab" id="vision120-tab-macro" aria-controls="vision120-panel-macro" aria-selected="false" data-tab="macro" tabindex="-1"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg>Макрос</button></div>
+        <section class="tab-panel" id="vision120-panel-overview" role="tabpanel" aria-labelledby="vision120-tab-overview">
+          <div class="content-heading"><p class="eyebrow">Minimum vision</p><h2>Зір щонайменше 120 ft</h2><p>Те саме, але мінімум 120 ft.</p></div>
+          <div class="feature-grid"><article class="feature"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-token"></use></svg><h3>Selected Tokens</h3><p>Вмикає sight і змінює range на поточних токенах.</p></article><article class="feature"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-book"></use></svg><h3>Prototype Token</h3><p>Оновлює base Actor один раз, навіть якщо виділено кілька його токенів.</p></article><article class="feature"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-shield"></use></svg><h3>Не зменшує</h3><p>Зберігає більшу дальність і <code>null</code> як Unlimited.</p></article></div>
+        </section>
+        <section class="tab-panel" id="vision120-panel-settings" role="tabpanel" aria-labelledby="vision120-tab-settings" hidden>
+          <div class="content-heading"><p class="eyebrow">Правила оновлення</p><h2>Безпечна мінімальна дальність</h2><p>Логіка така сама, як у версії 60 ft; змінюється лише поріг.</p></div>
+          <div class="setting-pills"><span class="setting-pill" data-copyable><strong>MIN_VISION</strong><span class="copy-payload">120</span></span><span class="setting-pill" data-copyable><strong>sight.enabled</strong><span class="copy-payload">true</span></span></div>
+          <div class="requirements"><article class="requirement"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-token"></use></svg><div><strong>Потрібен вибраний токен</strong><p>Без вибраних токенів macro показує попередження й завершується.</p></div></article><article class="requirement"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-eye"></use></svg><div><strong>Лише нижчі значення</strong><p>Finite range нижче 120 змінюється; 120+, а також Unlimited, зберігаються.</p></div></article></div>
+        </section>
+        <section class="tab-panel" id="vision120-panel-macro" role="tabpanel" aria-labelledby="vision120-tab-macro" hidden>
+          <div class="content-heading"><p class="eyebrow">Foundry Macro</p><h2>Vision 120 ft</h2><p>Виділи один або кілька токенів і запусти macro.</p></div>
+          <div class="code-window"><div class="code-toolbar"><div class="code-title"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-code"></use></svg><span>Vision 120 ft.js</span><small>повний код</small></div><button class="copy-code" type="button" aria-label="Копіювати весь макрос"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg><span>Копіювати</span></button></div><pre><code>const MIN_VISION = 120;
+const tokens = canvas.tokens.controlled;
+if (!tokens.length) {
+  ui.notifications.warn("Спочатку виділи хоча б один токен.");
+  return;
+}
+let changedTokens = 0;
+let changedActors = 0;
+const updatedActors = new Set();
+for (const token of tokens) {
+  const doc = token.document;
+  const currentRange = doc.sight.range;
+  const tokenUpdate = { "sight.enabled": true };
+  if (currentRange !== null &amp;&amp; currentRange &lt; MIN_VISION) {
+    tokenUpdate["sight.range"] = MIN_VISION;
+  }
+  await doc.update(tokenUpdate);
+  changedTokens++;
+  const actor = doc.baseActor;
+  if (actor &amp;&amp; !updatedActors.has(actor.id)) {
+    const prototypeRange = actor.prototypeToken.sight.range;
+    const actorUpdate = { "prototypeToken.sight.enabled": true };
+    if (prototypeRange !== null &amp;&amp; prototypeRange &lt; MIN_VISION) {
+      actorUpdate["prototypeToken.sight.range"] = MIN_VISION;
+    }
+    await actor.update(actorUpdate);
+    updatedActors.add(actor.id);
+    changedActors++;
+  }
+}
+ui.notifications.info(`Vision: ${changedTokens} токен(ів), ${changedActors} Prototype Token(ів). Мінімум ${MIN_VISION} ft.`);</code></pre></div>
+        </section>
+      </div>
+    </article>
+  </section>
+</main>
+
+<footer class="site-footer">Foundry VTT v13 Macro Library — локальний довідник.</footer>
+<div class="toast" id="copy-toast" role="status" aria-live="polite"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-check"></use></svg><span>Скопійовано в буфер</span></div>
+
+<script>
+(() => {
+  const macroRoutes = new Set(["rage", "enlarge", "torch-token", "torch-point", "vision60", "vision120"]);
+  const landingRoutes = new Set(["home", "catalog", "about", "modules"]);
+  const validRoutes = new Set([...landingRoutes, ...macroRoutes]);
+  const views = [...document.querySelectorAll("[data-view]")];
+  const anchorLinks = [...document.querySelectorAll("[data-anchor-link]")];
+  let toastTimer;
+
+  function currentRoute() {
+    let route = "home";
+    try { route = decodeURIComponent(location.hash.slice(1)); } catch (_) { return "home"; }
+    return validRoutes.has(route) ? route : "home";
+  }
+
+  function showRoute(route, moveFocus = false) {
+    const requested = validRoutes.has(route) ? route : "catalog";
+    const selectedView = macroRoutes.has(requested) ? requested : "home";
+    const landingTarget = ["about", "modules"].includes(requested) ? requested : "catalog";
+    const activeAnchor = landingTarget === "modules" ? "about" : landingTarget;
+    views.forEach(view => { view.hidden = view.dataset.view !== selectedView; });
+    anchorLinks.forEach(link => {
+      const active = selectedView === "home" && link.dataset.anchorLink === activeAnchor;
+      if (active) link.setAttribute("aria-current", "page");
+      else link.removeAttribute("aria-current");
+    });
+    document.title = selectedView === "home" ? "Foundry VTT v13 — Macro Library" : `${document.querySelector(`[data-view="${selectedView}"] h1`)?.textContent || "Macro Library"} — Foundry VTT v13`;
+
+    if (selectedView === "home") {
+      requestAnimationFrame(() => {
+        const target = document.getElementById(landingTarget);
+        target?.scrollIntoView({ block: "start", behavior: "auto" });
+        if (moveFocus) {
+          const heading = target?.querySelector("h1, h2");
+          if (heading) { heading.setAttribute("tabindex", "-1"); heading.focus({ preventScroll: true }); }
+        }
+      });
+    } else {
+      window.scrollTo({ top: 0, behavior: "auto" });
+      if (moveFocus) {
+        const heading = document.querySelector(`[data-view="${selectedView}"] h1`);
+        if (heading) { heading.setAttribute("tabindex", "-1"); heading.focus({ preventScroll: true }); }
+      }
+    }
+  }
+
+  window.addEventListener("hashchange", () => showRoute(currentRoute(), true));
+  showRoute(currentRoute());
+
+  document.querySelectorAll(".filter-btn").forEach(button => {
+    button.addEventListener("click", () => {
+      const filter = button.dataset.filter;
+      document.querySelectorAll(".filter-btn").forEach(item => item.setAttribute("aria-pressed", String(item === button)));
+      document.querySelectorAll(".macro-card").forEach(card => { card.hidden = filter !== "all" && card.dataset.category !== filter; });
+    });
+  });
+
+  const moduleSearch = document.getElementById("module-search");
+  const moduleRows = [...document.querySelectorAll("[data-module-row]")];
+  const moduleContainers = [...document.querySelectorAll("[data-module-container]")];
+  const moduleCount = document.getElementById("module-count");
+  const moduleEmpty = document.getElementById("module-empty");
+  const copyFeedbackTimers = new WeakMap();
+
+  function filterModules() {
+    const query = moduleSearch.value.trim().toLocaleLowerCase("uk-UA");
+    let visible = 0;
+    moduleRows.forEach(row => {
+      const matches = !query || row.dataset.search.includes(query);
+      row.hidden = !matches;
+      if (matches) visible += 1;
+    });
+    moduleContainers.forEach(container => {
+      container.hidden = !container.querySelector("[data-module-row]:not([hidden])");
+    });
+    moduleCount.textContent = String(visible);
+    moduleEmpty.hidden = visible !== 0;
+  }
+
+  moduleSearch?.addEventListener("input", filterModules);
+
+  document.querySelectorAll(".section-tabs").forEach(tablist => {
+    const tabs = [...tablist.querySelectorAll('[role="tab"]')];
+    const windowBody = tablist.closest(".window-body");
+    const activateTab = (tab, focus = false) => {
+      tabs.forEach(item => {
+        const active = item === tab;
+        item.setAttribute("aria-selected", String(active));
+        item.tabIndex = active ? 0 : -1;
+        const panel = windowBody.querySelector(`#${item.getAttribute("aria-controls")}`);
+        if (panel) panel.hidden = !active;
+      });
+      if (focus) tab.focus();
+    };
+    tabs.forEach((tab, index) => {
+      tab.addEventListener("click", () => activateTab(tab));
+      tab.addEventListener("keydown", event => {
+        let next = null;
+        if (event.key === "ArrowRight") next = tabs[(index + 1) % tabs.length];
+        if (event.key === "ArrowLeft") next = tabs[(index - 1 + tabs.length) % tabs.length];
+        if (event.key === "Home") next = tabs[0];
+        if (event.key === "End") next = tabs[tabs.length - 1];
+        if (next) { event.preventDefault(); activateTab(next, true); }
+      });
+    });
+  });
+
+  const copyIcon = '<svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-copy"></use></svg>';
+  document.querySelectorAll("code").forEach(code => {
+    if (code.closest("pre, [data-copyable], [data-copy-text]")) return;
+    const wrapper = document.createElement("span");
+    wrapper.className = "inline-copy-value";
+    wrapper.setAttribute("data-copyable", "");
+    code.before(wrapper);
+    code.classList.add("copy-payload");
+    wrapper.appendChild(code);
+  });
+  document.querySelectorAll("[data-copyable]").forEach(container => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "copy-mini";
+    button.setAttribute("aria-label", "Копіювати значення");
+    button.title = "Копіювати";
+    button.innerHTML = copyIcon;
+    container.appendChild(button);
+  });
+
+  async function writeClipboard(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      try { await navigator.clipboard.writeText(text); return true; } catch (_) {}
+    }
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    textarea.setAttribute("readonly", "");
+    textarea.style.position = "fixed";
+    textarea.style.opacity = "0";
+    document.body.appendChild(textarea);
+    textarea.select();
+    let copied = false;
+    try { copied = Boolean(document.execCommand("copy")); } catch (_) { copied = false; }
+    textarea.remove();
+    return copied;
+  }
+
+  function showToast(message = "Скопійовано в буфер", isError = false) {
+    const toast = document.getElementById("copy-toast");
+    toast.querySelector("span").textContent = message;
+    toast.classList.toggle("error", isError);
+    toast.querySelector("use").setAttribute("href", isError ? "#icon-alert" : "#icon-check");
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove("show"), 1400);
+  }
+
+  document.addEventListener("click", async event => {
+    const mini = event.target.closest(".copy-mini");
+    const quick = event.target.closest("[data-copy-text]");
+    const codeButton = event.target.closest(".copy-code");
+    if (!mini && !quick && !codeButton) return;
+    event.preventDefault();
+    let text = "";
+    let button = mini || quick || codeButton;
+    if (mini) text = mini.parentElement.querySelector(".copy-payload")?.textContent ?? "";
+    if (quick) text = quick.dataset.copyText ?? "";
+    if (codeButton) text = codeButton.closest(".code-window")?.querySelector("pre code")?.innerText ?? "";
+    const copied = await writeClipboard(text);
+    if (!copied) { showToast("Не вдалося скопіювати", true); return; }
+    showToast();
+    const previousTimer = copyFeedbackTimers.get(button);
+    if (previousTimer) clearTimeout(previousTimer);
+    button.classList.add("copied");
+    const feedbackTimer = setTimeout(() => {
+      button.classList.remove("copied");
+      copyFeedbackTimers.delete(button);
+    }, 1100);
+    copyFeedbackTimers.set(button, feedbackTimer);
+  });
+})();
+</script>
+</body>
+</html>

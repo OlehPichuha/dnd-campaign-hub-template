@@ -1,0 +1,92 @@
+@font-face{font-family:Inter;font-style:normal;font-display:swap;font-weight:400;src:url('/fonts/inter-cyrillic-400.woff2') format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:Inter;font-style:normal;font-display:swap;font-weight:400;src:url('/fonts/inter-latin-400.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:Inter;font-style:normal;font-display:swap;font-weight:500;src:url('/fonts/inter-cyrillic-500.woff2') format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:Inter;font-style:normal;font-display:swap;font-weight:500;src:url('/fonts/inter-latin-500.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:Inter;font-style:normal;font-display:swap;font-weight:600;src:url('/fonts/inter-cyrillic-600.woff2') format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:Inter;font-style:normal;font-display:swap;font-weight:600;src:url('/fonts/inter-latin-600.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:Inter;font-style:normal;font-display:swap;font-weight:700;src:url('/fonts/inter-cyrillic-700.woff2') format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:Inter;font-style:normal;font-display:swap;font-weight:700;src:url('/fonts/inter-latin-700.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+
+body.portal-theme-dark{
+  --portal-bg:#090b13;--portal-bg-2:#0d101c;--portal-panel:#121627;--portal-panel-2:#191e31;
+  --portal-line:#29324e;--portal-line-strong:#394768;--portal-text:#edf1fb;--portal-muted:#a0a9c0;--portal-soft:#737e9d;
+  --portal-primary:#c6465a;--portal-primary-hover:#dc596e;--portal-cyan:#83c9d6;--portal-orange:#e0843c;--portal-gold:#e3c473;--portal-magenta:#df4388;--portal-success:#2bb39d;
+  --bg:var(--portal-bg);--bg2:var(--portal-bg-2);--panel:var(--portal-panel);--panel2:var(--portal-panel-2);--panel-2:var(--portal-panel);--panel-3:var(--portal-panel-2);
+  --line:var(--portal-line);--line2:var(--portal-line-strong);--edge:var(--portal-line-strong);--edge-soft:var(--portal-line);
+  --ink:var(--portal-text);--ink-dim:var(--portal-muted);--mute:var(--portal-soft);--text:var(--portal-text);--muted:var(--portal-muted);
+  --silver:var(--portal-muted);--silver-hi:var(--portal-text);--moon:var(--portal-cyan);--gold-hi:var(--portal-gold);
+  --maroon:var(--portal-primary);--maroon-soft:#8f3244;--teal:var(--portal-cyan);--pink:var(--portal-magenta);--orange:var(--portal-orange);--good:var(--portal-success);
+  --font:Inter,sans-serif;--mono:Inter,sans-serif;--radius:8px;
+}
+body.portal-theme-light{
+  --portal-bg:#f4f2f7;--portal-bg-2:#ece8f0;--portal-panel:#fbfaff;--portal-panel-2:#ffffff;
+  --portal-line:#dcd7e3;--portal-line-strong:#c7c0cf;--portal-text:#24232b;--portal-muted:#6e6b79;--portal-soft:#9691a1;
+  --portal-primary:#ad3d55;--portal-primary-hover:#c54b64;--portal-cyan:#397f8d;--portal-orange:#c76e32;--portal-gold:#9a792f;--portal-magenta:#bd3c7a;--portal-success:#227d70;
+  --canvas:var(--portal-bg);--canvas-deep:var(--portal-bg-2);--paper:var(--portal-panel);--paper-strong:var(--portal-panel-2);--paper-muted:#eeebf2;
+  --ink:var(--portal-text);--muted:var(--portal-muted);--line:var(--portal-line-strong);--line-strong:#aaa2b3;
+  --titlebar:#111522;--titlebar-2:#191e31;--ember:var(--portal-primary);--orange:var(--portal-orange);--gold:var(--portal-gold);--wine:#7f2940;
+  --success:var(--portal-success);--code:#111522;--code-top:#1b2132;--code-text:#eef2fb;--radius:8px;--display:Inter,sans-serif;--ui:Inter,sans-serif;--mono:Inter,sans-serif;
+}
+
+body.portal-page{padding-top:58px!important;font-family:Inter,sans-serif!important;-webkit-font-smoothing:antialiased}
+body.portal-page *{font-family:Inter,sans-serif!important}
+body.portal-page,body.portal-page button,body.portal-page input,body.portal-page select,body.portal-page textarea,body.portal-page code,body.portal-page pre,body.portal-page kbd,body.portal-page h1,body.portal-page h2,body.portal-page h3,body.portal-page h4,body.portal-page h5,body.portal-page h6{font-family:Inter,sans-serif!important}
+body.portal-page button,body.portal-page a,body.portal-page input,body.portal-page select,body.portal-page textarea,body.portal-page summary{transition-duration:180ms!important;transition-timing-function:cubic-bezier(.16,1,.3,1)!important}
+body.portal-page :focus-visible{outline:3px solid color-mix(in srgb,var(--portal-gold) 72%,transparent)!important;outline-offset:3px!important}
+
+.campaign-hub-rail{position:fixed;z-index:2147483646;inset:0 0 auto;height:58px;display:flex;align-items:center;padding:0 clamp(18px,3vw,42px);color:#edf1fb;background:#0b0e17;border-top:2px solid #c6465a;border-bottom:1px solid #242d45;box-shadow:0 4px 20px rgba(0,0,0,.18)}
+.campaign-hub-breadcrumbs{min-width:0;display:flex;align-items:center;gap:12px}
+.campaign-hub-home{min-height:40px;display:inline-flex;align-items:center;gap:9px;padding:0 8px 0 4px;color:#aab5ca!important;border-radius:8px;text-decoration:none!important;font:650 13px/1 Inter,sans-serif!important}
+.campaign-hub-home:hover{color:#fff!important;background:#171c2b}.campaign-hub-back{width:18px;height:18px;color:#83c9d6;flex:none}.campaign-hub-logo{width:25px;height:25px;display:block;flex:none}.campaign-hub-home strong{font:650 13px/1 Inter,sans-serif!important;letter-spacing:0!important}
+.campaign-hub-chevron{width:15px;height:15px;color:#57627a;flex:none}.campaign-hub-current{min-width:0;display:inline-flex;align-items:center;gap:8px;color:#f0f3fa}.campaign-hub-current strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:700 13px/1 Inter,sans-serif!important;letter-spacing:0!important}.campaign-hub-resource-icon{width:17px;height:17px;flex:none;color:#83c9d6}
+
+/* The compact Jockie page needs breathing room below the shared rail. */
+body.portal-resource-dm-notes{padding-top:calc(58px + 1.5rem)!important}
+
+/* Moonlit pages: Jockie and Silverymoon */
+body.portal-theme-dark{color:var(--portal-text)!important;background:radial-gradient(900px 500px at 82% -8%,rgba(131,201,214,.09),transparent 58%),radial-gradient(800px 500px at 8% 105%,rgba(198,70,90,.09),transparent 60%),var(--portal-bg)!important}
+body.portal-theme-dark h1,body.portal-theme-dark h2,body.portal-theme-dark h3,body.portal-theme-dark .brandmark,body.portal-theme-dark .fn,body.portal-theme-dark .wn,body.portal-theme-dark .nname{color:var(--portal-text)!important;font-weight:650!important;letter-spacing:-.025em!important}
+body.portal-theme-dark .tag,body.portal-theme-dark .group-num,body.portal-theme-dark .eyebrow,body.portal-theme-dark .tier-label,body.portal-theme-dark .nrole,body.portal-theme-dark .fr,body.portal-theme-dark .facts .k,body.portal-theme-dark th{letter-spacing:.12em!important}
+body.portal-theme-dark .quick,body.portal-theme-dark .action,body.portal-theme-dark .cmd,body.portal-theme-dark .whocard,body.portal-theme-dark .facts div,body.portal-theme-dark .node,body.portal-theme-dark .fig,body.portal-theme-dark details.inst{background:var(--portal-panel)!important;border-color:var(--portal-line)!important;border-radius:10px!important;box-shadow:none!important}
+body.portal-theme-dark .quick{background:linear-gradient(180deg,var(--portal-panel-2),var(--portal-panel))!important;border-color:#7f2940!important;box-shadow:0 20px 50px rgba(0,0,0,.22)!important;top:76px!important}
+body.portal-theme-dark .action:hover,body.portal-theme-dark .cmd:hover,body.portal-theme-dark .whocard:hover,body.portal-theme-dark .fig:hover,body.portal-theme-dark details.inst>summary:hover{background:var(--portal-panel-2)!important;border-color:var(--portal-cyan)!important}
+body.portal-theme-dark .action.play-btn{background:linear-gradient(90deg,rgba(198,70,90,.2),var(--portal-panel))!important;border-left-color:var(--portal-primary)!important}
+body.portal-theme-dark .field input{background:#0c0f19!important;border-color:var(--portal-line-strong)!important;border-radius:8px!important;color:var(--portal-text)!important}
+body.portal-theme-dark .ok-btn{min-height:42px!important;padding:0 16px!important;color:#fff!important;background:var(--portal-primary)!important;border:1px solid var(--portal-primary)!important;border-radius:8px!important;font-weight:650!important}
+body.portal-theme-dark .ok-btn:hover{background:var(--portal-primary-hover)!important;border-color:var(--portal-primary-hover)!important}
+body.portal-theme-dark nav.side{top:58px!important;height:calc(100vh - 58px)!important;background:linear-gradient(180deg,#0d101c,#090b13)!important;border-color:var(--portal-line)!important}
+body.portal-theme-dark .navlist button{min-height:40px;border-radius:8px!important;color:var(--portal-muted)!important}
+body.portal-theme-dark .navlist button:hover{color:var(--portal-text)!important;background:var(--portal-panel)!important}
+body.portal-theme-dark .navlist button[aria-current="true"]{color:var(--portal-text)!important;border-left-color:var(--portal-cyan)!important;background:linear-gradient(90deg,rgba(131,201,214,.12),transparent)!important}
+body.portal-theme-dark .moon-rune{box-shadow:0 0 22px rgba(131,201,214,.34)!important}.brandmark small{font-family:Inter,sans-serif!important}
+body.portal-theme-dark .facts{background:var(--portal-line)!important;border-color:var(--portal-line)!important;border-radius:10px!important}.facts .v,.facts .v small{font-family:Inter,sans-serif!important}.node.root{background:linear-gradient(150deg,var(--portal-panel-2),var(--portal-bg-2))!important}
+body.portal-theme-dark table{border-radius:10px;overflow:hidden}body.portal-theme-dark tbody tr:hover{background:rgba(131,201,214,.05)!important}
+
+/* Archive page: Foundry library */
+body.portal-theme-light{color:var(--portal-text)!important;background:radial-gradient(circle at 85% 0,rgba(57,127,141,.07),transparent 32%),var(--portal-bg)!important}
+body.portal-theme-light h1,body.portal-theme-light h2,body.portal-theme-light h3,body.portal-theme-light h4,body.portal-theme-light h5,body.portal-theme-light .brand-name,body.portal-theme-light .card-title,body.portal-theme-light .window-title-copy{font-family:Inter,sans-serif!important;color:var(--portal-text);font-weight:650!important;letter-spacing:-.025em!important}
+body.portal-theme-light .site-header,body.portal-theme-light .window-titlebar{background:linear-gradient(180deg,#191e31,#111522)!important;border-color:var(--portal-primary)!important}
+body.portal-theme-light .macro-card,body.portal-theme-light .feature,body.portal-theme-light .callout,body.portal-theme-light .module-install-note,body.portal-theme-light .module-table-wrap,body.portal-theme-light .window-shell,body.portal-theme-light .setting-pill{background:var(--portal-panel)!important;border-color:var(--portal-line)!important;border-radius:10px!important;box-shadow:none!important}
+body.portal-theme-light .macro-card:hover{border-color:var(--portal-primary)!important;box-shadow:0 12px 28px rgba(45,34,53,.12)!important;transform:translateY(-2px)!important}
+body.portal-theme-light .filter-btn,body.portal-theme-light .section-tab,body.portal-theme-light .module-action,body.portal-theme-light .copy-code,body.portal-theme-light .quick-copy,body.portal-theme-light .back-link,body.portal-theme-light .window-close{min-height:40px!important;border-radius:8px!important;font-family:Inter,sans-serif!important;font-weight:600!important}
+body.portal-theme-light .filter-btn,body.portal-theme-light .module-action,body.portal-theme-light .quick-copy{color:var(--portal-text)!important;background:var(--portal-panel-2)!important;border-color:var(--portal-line-strong)!important}
+body.portal-theme-light .filter-btn:hover,body.portal-theme-light .module-action:hover,body.portal-theme-light .quick-copy:hover{color:var(--portal-primary)!important;border-color:var(--portal-primary)!important;background:#fff!important}
+body.portal-theme-light .filter-btn[aria-pressed="true"],body.portal-theme-light .module-action.primary,body.portal-theme-light .copy-code{color:#fff!important;background:var(--portal-primary)!important;border-color:var(--portal-primary)!important}
+body.portal-theme-light .filter-btn[aria-pressed="true"]:hover,body.portal-theme-light .module-action.primary:hover,body.portal-theme-light .copy-code:hover{background:var(--portal-primary-hover)!important;border-color:var(--portal-primary-hover)!important}
+body.portal-theme-light input{color:var(--portal-text)!important;background:#fff!important;border-color:var(--portal-line-strong)!important;border-radius:8px!important}
+body.portal-theme-light .code-window,body.portal-theme-light pre{border-radius:10px!important}.module-table tbody tr:hover{background:#f8f3f6!important}
+
+@media(max-width:860px){
+  .campaign-hub-rail{padding:0 10px}
+  body.portal-theme-dark nav.side{top:auto!important;height:auto!important}
+  body.portal-page{padding-top:58px!important}
+}
+@media(max-width:480px){.campaign-hub-home{gap:7px;padding-right:4px}.campaign-hub-home strong{display:none}.campaign-hub-breadcrumbs{gap:7px}.campaign-hub-current strong{font-size:12px!important}}
+@media(prefers-reduced-motion:reduce){body.portal-page *,body.portal-page *::before,body.portal-page *::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+/* Every standalone material receives this rail from the shared page wrapper. */
+@media(max-width:600px){.campaign-hub-rail{transition:transform .2s ease}body.portal-page.campaign-hub-rail-hidden .campaign-hub-rail{transform:translateY(-100%);pointer-events:none}}
+
+/* Keep the dropdown affordance inset consistently on standalone materials. */
+body.portal-page select:not([multiple]){appearance:none;-webkit-appearance:none;padding-right:38px!important;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23e4e9f5' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")!important;background-repeat:no-repeat!important;background-position:right 12px center!important;background-size:16px 16px!important}
+body.portal-theme-light select:not([multiple]){background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23616b7b' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")!important}
